@@ -3,9 +3,7 @@ import { ApiService } from '../api.service';
 import { Product } from '../../models/product/product.model';
 import { Observable } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class ProductService extends ApiService<Product>{
 
   private url: string = '/products';
