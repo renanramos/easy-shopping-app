@@ -16,6 +16,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { ScaffoldModule } from './scaffold/scaffold.module';
+import localePt from '@angular/common/locales/pt';
+
+registerLocaleData(localePt, 'pt-BR');
 
 @NgModule({
   declarations: [
@@ -38,7 +41,7 @@ import { ScaffoldModule } from './scaffold/scaffold.module';
   ],
   providers: [
     {
-      provide: LOCALE_ID, useValue: 'pt'
+      provide: LOCALE_ID, useValue: 'pt-BR'
     },
     AsyncPipe,
     CookieService,
