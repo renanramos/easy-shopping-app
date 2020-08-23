@@ -1,8 +1,29 @@
-.example-card {
+.products-list {
+  width: 100%;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-items: baseline;
+  padding-inline-start: 0px;
+}
+
+.products-list > li {
+  margin: 1%;
+  flex-shrink: 1;
+}
+
+.products-card {
+  width: 100vw;
   max-width: 400px;
 }
 
-.example-header-image {
+.products-header-image {
   background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
   background-size: cover;
+}
+
+.product-price-info {
+  font-size: 25px;
+  font-weight: 300;
 }

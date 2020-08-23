@@ -1,19 +1,17 @@
-
-
-<mat-card class="example-card" *ngFor="let product of products">
-  <mat-card-header>
-    <!-- <div mat-card-avatar class="example-header-image"></div> -->
-    <mat-card-title>{{ product.name }}</mat-card-title>
-    <mat-card-subtitle>{{ product.productCategoryName }}</mat-card-subtitle>
-  </mat-card-header>
-  <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
-  <mat-card-content>
-    <p>
-     {{product.description}}
-    </p>
-  </mat-card-content>
-  <mat-card-actions>
-    <button mat-button>LIKE</button>
-    <button mat-button>SHARE</button>
-  </mat-card-actions>
-</mat-card>
+<ul class="products-list">
+  <li *ngFor="let product of products">
+    <mat-card class="products-card">
+      <mat-card-header>
+        <div mat-card-avatar class="products-header-image"></div>
+        <mat-card-title>{{ product.name }}</mat-card-title>
+        <mat-card-subtitle>{{ product.productCategoryName }}</mat-card-subtitle>
+      </mat-card-header>
+      <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+      <mat-card-content>
+        <p class="product-price-info">
+         Preço: {{ product.price | currency : 'BRL'}}
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </li>
+</ul>
