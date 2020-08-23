@@ -1,21 +1,34 @@
-<mat-drawer-container class="example-container" autosize>
-  <mat-drawer #drawer class="example-sidenav" mode="side">
-    <a [routerLink]="['/products']">products</a>
+<mat-drawer-container class="scaffold-container" autosize>
+  <mat-drawer #drawer class="scaffold-sidenav" mode="side">
+    <img src="../../assets/logo.png" alt="Easy Shopping" class="logo-image">
+    <ul class="categories-list">
+      <li class="category-item" *ngFor="let productCategory of productsCategories">
+        <a (click)="getSubcategory(productCategory)">{{ productCategory.name }}</a>
+        <ul class="categories-list" *ngIf="subcategories.length && productCategory.enabled">
+          <li class="subcategory-item" *ngFor="let sub of subcategories">
+            <a >{{ sub.name }}</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+
   </mat-drawer>
   <mat-drawer-content>
     <mat-toolbar>
-      <button mat-icon-button class="example-icon" (click)="drawer.toggle();">
+      <button mat-icon-button class="scaffold-icon" (click)="drawer.toggle();">
         <mat-icon>menu</mat-icon>
       </button>
       <span>Easy Shopping</span>
-      <span class="example-spacer"></span>
-      <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+      <span class="scaffold-spacer"></span>
+      <button mat-icon-button class="scaffold-icon favorite-icon">
         <mat-icon>favorite</mat-icon>
       </button>
-      <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+      <button mat-icon-button class="scaffold-icon">
         <mat-icon>share</mat-icon>
       </button>
     </mat-toolbar>
-    <router-outlet></router-outlet>
+    <div class="main">
+      <router-outlet></router-outlet>
+    </div>
   </mat-drawer-content>
 </mat-drawer-container>
