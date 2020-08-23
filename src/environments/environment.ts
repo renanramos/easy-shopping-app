@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://easy-shopping-puc-minas.herokuapp.com/api/'
+  apiUrl: 'http://localhost:8081/api'
 };
 
 /*
