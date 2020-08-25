@@ -1,18 +1,23 @@
-<div class="container-list">
-  <div class="filter-container">
-    <div class="filter-list-content" *ngIf="isListFiltererd">
-      <span>Filtro: </span>
-      <mat-chip-list>
-        <mat-chip (removed)="removeFilter();">
-          {{ categoryFiltered }}
-          <mat-icon matChipRemove>cancel</mat-icon>
-        </mat-chip>
-      </mat-chip-list>
-    </div>
+<div class="filter-container">
+  <div class="title">
+    Nossos produtos
   </div>
+  <div class="filter-list-content" *ngIf="isListFiltererd">
+    <span>Filtro: </span>
+    <mat-chip-list>
+      <mat-chip (removed)="removeFilter();">
+        {{ categoryFiltered }}
+        <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+    </mat-chip-list>
+  </div>
+</div>
+<div class="container-list">
   <ul class="products-list">
-    <li *ngFor="let product of products">
-      <div class="products-card">
+    <p *ngIf="noProductsFound">Nenhum produto encontrado 
+      <span *ngIf="categoryFiltered"> para a categoria <b>{{ categoryFiltered }}</b></span>.
+    </p>
+    <li *ngFor="let product of products" class="card-items">
         <mat-card >
           <mat-card-header>
             <div mat-card-avatar class="products-header-image"></div>
@@ -26,7 +31,6 @@
             </p>
           </mat-card-content>
         </mat-card>
-      </div>
     </li>
   </ul>
 </div>

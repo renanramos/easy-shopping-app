@@ -17,7 +17,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   products: Product[] = [];
   isListFiltererd: boolean = false;
   categoryFiltered: String = "";
-
+  noProductsFound: boolean = false;
   subscription: Subscription;
 
   constructor(private productService: ProductService,
@@ -39,12 +39,19 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   }
 
   async loadProducts(subcategory?: Subcategory) {
+    this.products = [];
+    this.noProductsFound = false;
     const receivedProducts = {
       next: (products: Product[]) => {
-        this.products = products;
+        if (products.length) {
+          this.products = products;
+        } else {
+          this.noProductsFound = true;
+        }
       },
       error: (error) => {
         console.error(error);
+        this.noProductsFound = false;
       }
     }
 
