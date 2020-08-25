@@ -25,8 +25,7 @@ registerLocaleData(localePt, 'pt-BR');
 
 @NgModule({
   declarations: [
-    AppComponent,
-    SignUpComponent
+    AppComponent
   ],
   imports: [
     BrowserAnimationsModule,
