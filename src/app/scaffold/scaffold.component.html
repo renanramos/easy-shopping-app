@@ -2,6 +2,20 @@
   <mat-drawer #drawer class="scaffold-sidenav" mode="side">
     <img src="../../assets/logo.png" alt="Easy Shopping" class="logo-image">
     <mat-divider></mat-divider>
+    <div class="profile-access">
+      <span class="icon-loggin">
+        <mat-icon>account_circle</mat-icon>
+      </span>
+      <span class="menu-icon" *ngIf="userLoggedName">
+        <mat-icon>more_vert</mat-icon>
+      </span>
+      <div class="login">
+        <button *ngIf="userLoggedName" mat-raised-button color="primary" (click)="logout();">Sair</button>
+        <button *ngIf="!userLoggedName" mat-raised-button color="primary" (click)="onRedirectSignUp();">Cadastrar</button>
+        <button *ngIf="!userLoggedName" mat-stroked-button color="primary" (click)="openLoginDialog();">Acessar</button>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
     <ul class="categories-list">
       <li class="category-item" *ngFor="let productCategory of productsCategories">
         <div class="item-option" (click)="getSubcategory(productCategory)">
@@ -22,12 +36,9 @@
       </button>
       <span>Easy Shopping</span>
       <span class="scaffold-spacer"></span>
-      <button mat-icon-button class="scaffold-icon favorite-icon">
-        <mat-icon>favorite</mat-icon>
-      </button>
-      <button mat-icon-button class="scaffold-icon">
-        <mat-icon>share</mat-icon>
-      </button>
+      <div class="user-logged-details">
+        {{ userLoggedName }}
+      </div>
     </mat-toolbar>
     <div class="main">
       <router-outlet></router-outlet>

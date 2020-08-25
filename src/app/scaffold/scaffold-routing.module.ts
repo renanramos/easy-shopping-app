@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from "@angular/router";
 import { ScaffoldComponent } from './scaffold.component';
-import { ProductsListComponent } from '../main/product-management/products-list/products-list.component';
 
 const routes: Routes = [
   {
@@ -11,6 +10,10 @@ const routes: Routes = [
       {
         path: '',
         loadChildren: () => import('./../main/product-management/product-management.module').then(m => m.ProductManagementModule)
+      },
+      {
+        path: 'sign',
+        loadChildren: () => import('../main/sign-up/sign-up.module').then(m => m.SignUpModule)
       }
     ]
   }
