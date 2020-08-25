@@ -17,27 +17,32 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { ScaffoldModule } from './scaffold/scaffold.module';
 import localePt from '@angular/common/locales/pt';
+import { LoginModule } from './login/login.module';
+import { SignUpComponent } from './main/sign-up/sign-up.component';
+import { SignUpModule } from './main/sign-up/sign-up.module';
 
 registerLocaleData(localePt, 'pt-BR');
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SignUpComponent
   ],
   imports: [
-    AppRoutingModule,
     BrowserAnimationsModule,
     BrowserModule,
-    FormsModule,
-    HttpClientModule,
+    AppRoutingModule,
     RouterModule,
+    HttpClientModule,
     LayoutModule,
     MatToolbarModule,
     MatButtonModule,
     MatSidenavModule,
     MatIconModule,
     MatListModule,
-    ScaffoldModule
+    ScaffoldModule,
+    LoginModule,
+    SignUpModule
   ],
   providers: [
     {
