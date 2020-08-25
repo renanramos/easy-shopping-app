@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
 import { ProductCategoryService } from '../core/service/productCategory/product-category.service';
 import { ProductCategory } from '../core/models/product-category/product-category.model';
@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { tap } from 'rxjs/operators';
 import { SubcategoryService } from '../core/service/subcategory/subcategory.service';
 import { Subcategory } from '../core/models/subcategory/subcategory.model';
+import { MenuService } from '../core/shared/service/menu-service.service';
 
 @Component({
   selector: 'es-scaffold',
@@ -17,11 +18,13 @@ export class ScaffoldComponent implements OnInit {
 
   productsCategories: ProductCategory[] = [];
   subcategories: Subcategory[] = [];
+  changeArrowIcon = true;
 
   @ViewChild('drawer', { static: true}) drawer: MatDrawer;
 
   constructor(private productCategoryService: ProductCategoryService,
     private subcategoryService: SubcategoryService,
+    private menuService: MenuService,
     private snackBar: MatSnackBar) {
   }
 
@@ -54,17 +57,18 @@ export class ScaffoldComponent implements OnInit {
     this.productsCategories.map(proCateg => {
       if (productCategory != proCateg) {
         proCateg.enabled = false;
+        this.changeArrowIcon = true;
       }
     });
   }
 
   async getSubcategory(productCategory: ProductCategory) {
+    this.changeArrowIcon = !this.changeArrowIcon;
     await this.loadSubcategory(productCategory);
   }
 
   async loadSubcategory(productCategory: ProductCategory) {
 
-    // productCategory = this.handleOpenedAndClosedSubcategories(productCategory);
     this.disableProductCategoryToShow(productCategory);
     productCategory.enabled = !productCategory.enabled;
 
@@ -80,5 +84,9 @@ export class ScaffoldComponent implements OnInit {
     .toPromise()
     .then()
     .catch();
+  }
+
+  subcategorySelected(sub: Subcategory) {
+    this.menuService.setSubategory(sub);
   }
 }

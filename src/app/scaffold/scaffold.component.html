@@ -1,17 +1,19 @@
 <mat-drawer-container class="scaffold-container" autosize>
   <mat-drawer #drawer class="scaffold-sidenav" mode="side">
     <img src="../../assets/logo.png" alt="Easy Shopping" class="logo-image">
+    <mat-divider></mat-divider>
     <ul class="categories-list">
       <li class="category-item" *ngFor="let productCategory of productsCategories">
-        <a (click)="getSubcategory(productCategory)">{{ productCategory.name }}</a>
+        <div class="item-option" (click)="getSubcategory(productCategory)">
+          <span>{{ productCategory.name }}</span><mat-icon>{{ (changeArrowIcon && !productCategory.enabled ) ? 'keyboard_arrow_right' : 'keyboard_arrow_down' }}</mat-icon>
+        </div>
         <ul class="categories-list" *ngIf="subcategories.length && productCategory.enabled">
           <li class="subcategory-item" *ngFor="let sub of subcategories">
-            <a >{{ sub.name }}</a>
+            <a (click)="subcategorySelected(sub)">{{ sub.name }}</a>
           </li>
         </ul>
       </li>
     </ul>
-
   </mat-drawer>
   <mat-drawer-content>
     <mat-toolbar>
