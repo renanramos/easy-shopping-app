@@ -1,17 +1,33 @@
-<ul class="products-list">
-  <li *ngFor="let product of products">
-    <mat-card class="products-card">
-      <mat-card-header>
-        <div mat-card-avatar class="products-header-image"></div>
-        <mat-card-title>{{ product.name }}</mat-card-title>
-        <mat-card-subtitle>{{ product.productCategoryName }}</mat-card-subtitle>
-      </mat-card-header>
-      <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
-      <mat-card-content>
-        <p class="product-price-info">
-         Preço: {{ product.price | currency : 'BRL'}}
-        </p>
-      </mat-card-content>
-    </mat-card>
-  </li>
-</ul>
+<div class="container-list">
+  <div class="filter-container">
+    <div class="filter-list-content" *ngIf="isListFiltererd">
+      <span>Filtro: </span>
+      <mat-chip-list>
+        <mat-chip (removed)="removeFilter();">
+          {{ categoryFiltered }}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+      </mat-chip-list>
+    </div>
+  </div>
+  <ul class="products-list">
+    <li *ngFor="let product of products">
+      <div class="products-card">
+        <mat-card >
+          <mat-card-header>
+            <div mat-card-avatar class="products-header-image"></div>
+            <mat-card-title>{{ product.name }}</mat-card-title>
+            <mat-card-subtitle>{{ product.productSubcategoryName }}</mat-card-subtitle>
+          </mat-card-header>
+          <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+          <mat-card-content>
+            <p class="product-price-info">
+             Preço: {{ product.price | currency : 'BRL'}}
+            </p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </li>
+  </ul>
+</div>
+

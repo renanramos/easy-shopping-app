@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ProductService } from '../../../core/service/product/product.service';
 import { Product } from 'src/app/core/models/product/product.model';
 import { tap } from 'rxjs/operators';
+import { MenuService } from 'src/app/core/shared/service/menu-service.service';
+import { Subject, Observable, Subscription } from 'rxjs';
+import { Subcategory } from 'src/app/core/models/subcategory/subcategory.model';
 
 @Component({
   selector: 'es-products-list',
@@ -9,33 +12,52 @@ import { tap } from 'rxjs/operators';
   styleUrls: ['./products-list.component.css'],
   providers: [ProductService]
 })
-export class ProductsListComponent implements OnInit {
+export class ProductsListComponent implements OnInit, OnDestroy {
 
   products: Product[] = [];
+  isListFiltererd: boolean = false;
+  categoryFiltered: String = "";
 
-  constructor(private productService: ProductService) { }
+  subscription: Subscription;
+
+  constructor(private productService: ProductService,
+    private menuService: MenuService) { }
 
   async ngOnInit() {
     await this.loadProducts();
+    this.subscription = this.menuService.currentSubcategoryId.subscribe(subcategory => {
+      if (subcategory.id) {
+        this.isListFiltererd = true;
+        this.categoryFiltered = subcategory.name;
+        this.loadProducts(subcategory);
+      }
+    });
   }
 
-  async loadProducts() {
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  async loadProducts(subcategory?: Subcategory) {
     const receivedProducts = {
       next: (products: Product[]) => {
-        if (products.length) {
-          this.products = products;
-        }
+        this.products = products;
       },
       error: (error) => {
         console.error(error);
       }
     }
 
-    await this.productService.getProducts()
+    await this.productService.getProducts(subcategory?.id)
     .pipe(tap(receivedProducts))
     .toPromise()
     .then()
     .catch();
   }
 
+  async removeFilter() {
+    this.isListFiltererd = false;
+    this.categoryFiltered = "";
+    await this.loadProducts();
+  }
 }
