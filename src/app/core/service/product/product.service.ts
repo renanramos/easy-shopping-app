@@ -12,7 +12,12 @@ export class ProductService extends ApiService<Product>{
     super(injector);
    }
 
-   getProducts(): Observable<Product | Product[]> {
-    return this.get(`${this.url}`);
+   getProducts(subcategoryId?:number): Observable<Product | Product[]> {
+    let url = `${this.url}`;
+
+    if (subcategoryId) {
+      url += `/subcategory?subcategoryId=${subcategoryId}`;
+    }
+    return this.get(url);
    }
 }
