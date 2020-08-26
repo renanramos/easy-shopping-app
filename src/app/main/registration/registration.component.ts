@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'es-registration',
@@ -7,11 +8,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RegistrationComponent implements OnInit {
 
-  customerOption: string = 'customer';
+  customerFormGroup: FormGroup;
 
-  constructor() { }
+  constructor(private formBuider: FormBuilder) { }
 
   ngOnInit() {
+    this.createForm();
   }
 
+  createForm() {
+    this.customerFormGroup = this.formBuider.group({
+      name: ['', [Validators.required]],
+      cpf: ['', [Validators.required]],
+      email: ['', [Validators.email, Validators.required]],
+      password: ['', [Validators.required]],
+    });
+  }
 }

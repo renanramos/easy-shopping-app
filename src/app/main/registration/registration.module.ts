@@ -7,6 +7,7 @@ import { RegistrationComponent } from './registration.component';
 import { RegistrationRoutingModule } from './registration-routing.module';
 import { SharedComponentsModule } from '../../core/shared/components/shared-components.module';
 import { CompanyFormComponent } from './company-form/company-form.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,8 @@ import { CompanyFormComponent } from './company-form/company-form.component';
   ],
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     SharedComponentsModule,
     SharedModule,
     AngularMaterialModule,
