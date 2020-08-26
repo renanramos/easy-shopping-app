@@ -8,8 +8,7 @@ import { Routes, Router } from '@angular/router';
 })
 export class RegistrationHeaderComponent implements OnInit {
 
-  @Input() option: String;
-  isCustomerOption: boolean = false;
+  @Input() isCustomerOption: boolean;
 
   constructor(private route: Router) { }
 
@@ -20,6 +19,5 @@ export class RegistrationHeaderComponent implements OnInit {
     this.isCustomerOption ?
     this.route.navigateByUrl('registration/customer') :
     this.route.navigateByUrl('registration/company');
-    this.isCustomerOption = !this.isCustomerOption;
   }
 }
