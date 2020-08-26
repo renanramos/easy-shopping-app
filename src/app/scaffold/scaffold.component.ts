@@ -123,6 +123,6 @@ export class ScaffoldComponent implements OnInit {
   }
 
   onRedirectSignUp() {
-    this.router.navigate(['/sign']);
+    this.router.navigate(['/registration']);
   }
 }
