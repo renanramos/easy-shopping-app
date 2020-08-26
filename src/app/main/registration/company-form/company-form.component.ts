@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-company-form',
@@ -7,12 +8,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CompanyFormComponent implements OnInit {
 
-  companyOption = 'company';
+companyFormGroup: FormGroup;
 
-  constructor() { }
+  constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit() {
-    console.log(this.companyOption);
+    this.createForm();
+  }
+
+  createForm() {
+    this.companyFormGroup = this.formBuilder.group({
+      name: ['', [Validators.required]],
+      registeredNumber: ['', [Validators.required]],
+      phone: ['', [Validators.required]],
+      email: ['', [Validators.required]],
+      password: ['', Validators.required]
+    });
   }
 
 }

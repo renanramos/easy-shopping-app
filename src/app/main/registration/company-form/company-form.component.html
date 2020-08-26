@@ -1,1 +1,31 @@
-<es-registration-header [option]="companyOption"></es-registration-header>
+<es-registration-header [isCustomerOption]="true"></es-registration-header>
+<div class="page-form-content">
+  <div class="registration-subtitle">
+    Complete os dados da sua empresa
+  </div>
+  <mat-card class="card-form">
+    <form class="container-registration-form" [formGroup]="companyFormGroup">
+      <mat-form-field class="input-full-width">
+        <mat-label>Nome</mat-label>
+        <input type="text" matInput formControlName="name" id="name">
+      </mat-form-field>
+      <mat-form-field class="input-full-width">
+        <mat-label>CNPJ</mat-label>
+        <input type="text" matInput formControlName="registeredNumber" id="registeredNumber">
+      </mat-form-field>
+      <mat-form-field class="input-full-width">
+        <mat-label>Telefone</mat-label>
+        <input type="text" matInput formControlName="phone" id="phone">
+      </mat-form-field>
+      <mat-form-field class="input-full-width">
+        <mat-label>Email</mat-label>
+        <input type="text" matInput formControlName="email" id="email">
+      </mat-form-field>
+      <mat-form-field class="input-full-width">
+        <mat-label>Senha</mat-label>
+        <input type="password" matInput formControlName="password" id="password">
+      </mat-form-field>
+      <button mat-raised-button color="primary" >ACESSAR</button>
+    </form>
+  </mat-card>
+</div>
