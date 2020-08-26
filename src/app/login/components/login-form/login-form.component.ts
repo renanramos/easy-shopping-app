@@ -63,4 +63,8 @@ export class LoginFormComponent implements OnInit {
     .then()
     .catch();
   }
+
+  get loginFormControls() {
+    return this.loginForm
+  }
 }

@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  apiUrl: 'https://easy-shopping-puc-minas.herokuapp.com/api/'
 };

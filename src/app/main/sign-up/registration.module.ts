@@ -3,14 +3,16 @@ import { CommonModule } from '@angular/common';
 
 import { SharedModule } from '../../shared/shared.module';
 import { AngularMaterialModule } from '../../shared/angular-material.module';
-import { SignUpComponent } from './sign-up.component';
+import { RegistrationComponent } from './registration.component';
+import { RegistrationRoutingModule } from './registration-routing.module';
 
 @NgModule({
-  declarations: [SignUpComponent],
+  declarations: [RegistrationComponent],
   imports: [
     CommonModule,
     SharedModule,
     AngularMaterialModule,
+    RegistrationRoutingModule
   ]
 })
-export class SignUpModule { }
+export class RegistrationModule { }

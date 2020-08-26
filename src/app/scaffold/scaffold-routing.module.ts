@@ -13,7 +13,7 @@ const routes: Routes = [
       },
       {
         path: 'sign',
-        loadChildren: () => import('../main/sign-up/sign-up.module').then(m => m.SignUpModule)
+        loadChildren: () => import('../main/sign-up/registration.module').then(m => m.RegistrationModule)
       }
     ]
   }

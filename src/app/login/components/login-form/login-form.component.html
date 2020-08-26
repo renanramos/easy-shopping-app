@@ -1,7 +1,5 @@
-<div mat-dialog-title>
-  Login
-</div>
-<div mat-dialog-content>
+<div mat-dialog-content class="login-form-content">
+  <img src="../../assets/logo.png" alt="Easy Shopping">
   <form class="example-form" [formGroup]="loginForm" >
     <mat-form-field class="example-full-width">
       <mat-label>Email</mat-label>
@@ -14,7 +12,9 @@
     </mat-form-field>
   </form>
 </div>
-<div mat-dialog-actions align="end">
-  <button mat-raised-button (click)="onCloseDialog();">CANCELAR</button>
-  <button mat-raised-button color="primary" (click)="onSubmitLogin();">ACESSAR</button>
+<div mat-dialog-actions align="center">
+  <div class="login-buttons">
+    <button mat-raised-button (click)="onCloseDialog();">CANCELAR</button>
+    <button mat-raised-button color="primary" (click)="onSubmitLogin();">ACESSAR</button>
+  </div>
 </div>

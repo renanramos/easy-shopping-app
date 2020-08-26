@@ -2,3 +2,80 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.es-dialog {
+  max-width: 100vw !important;
+  width: 530px !important;
+}
+
+.es-small-dialog {
+  max-width: 100vw !important;
+  width: 400px !important;
+}
+
+.es-large-dialog {
+  max-width: 80vw !important;
+  width: 100% !important;
+}
+
+.mat-dialog-title {
+  color: #101c36;
+  font-family: Roboto;
+  font-size: 24px;
+  font-stretch: normal;
+  font-style: normal;
+  font-weight: 300;
+  height: auto;
+  letter-spacing: 0.35px;
+  line-height: normal;
+}
+
+.mat-dialog-actions {
+  padding-top: 30px !important;
+  padding-bottom: 30px !important;
+  padding-right: 5px !important;
+}
+
+.mat-dialog-content {
+  overflow-x: hidden !important;
+  position: relative;
+}
+
+@media screen and (orientation: landscape) and (min-height: 250px) and (max-height: 500px) {
+  .mat-dialog-actions {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .mat-dialog-content {
+    max-height: 60vh !important;
+  }
+
+  .mat-dialog-content#dialog-table {
+    overflow-x: scroll !important;
+  }
+}
+
+@media screen and (min-width: 250px) and (max-width: 530px) {
+
+  .es-small-dialog,
+  .es-dialog,
+  .es-large-dialog {
+    width: 100vw;
+  }
+
+  .es-large-dialog {
+    max-width: unset !important;
+  }
+
+  .mat-dialog-title {
+    font-size: 20px !important;
+    width: 100% !important;
+  }
+}
+
+@media screen and (min-width: 250px) and (max-width: 800px) {
+  .mat-dialog-content#dialog-table {
+    overflow-x: scroll !important;
+  }
+}

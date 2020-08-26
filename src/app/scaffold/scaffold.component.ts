@@ -34,7 +34,7 @@ export class ScaffoldComponent implements OnInit {
     private snackBar: MatSnackBar,
     public dialog: MatDialog,
     private cookieService: CookieService,
-    private router: Router) {
+    public router: Router) {
   }
 
   async ngOnInit() {

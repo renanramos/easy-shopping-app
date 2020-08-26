@@ -18,8 +18,7 @@ import { MatListModule } from '@angular/material/list';
 import { ScaffoldModule } from './scaffold/scaffold.module';
 import localePt from '@angular/common/locales/pt';
 import { LoginModule } from './login/login.module';
-import { SignUpComponent } from './main/sign-up/sign-up.component';
-import { SignUpModule } from './main/sign-up/sign-up.module';
+import { RegistrationModule } from './main/sign-up/registration.module';
 
 registerLocaleData(localePt, 'pt-BR');
 
@@ -41,7 +40,7 @@ registerLocaleData(localePt, 'pt-BR');
     MatListModule,
     ScaffoldModule,
     LoginModule,
-    SignUpModule
+    RegistrationModule
   ],
   providers: [
     {
