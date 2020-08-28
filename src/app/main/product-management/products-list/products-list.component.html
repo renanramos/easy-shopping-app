@@ -13,7 +13,7 @@
   </div>
 </div>
 <div class="container-list">
-  <ul class="products-list" *ngIf="isLoadingProducts; else showLoadSpinner">
+  <ul class="products-list" *ngIf="!isLoadingProducts; else showLoadSpinner">
     <p *ngIf="noProductsFound">Nenhum produto encontrado 
       <span *ngIf="categoryFiltered"> para a categoria <b>{{ categoryFiltered }}</b></span>.
     </p>
