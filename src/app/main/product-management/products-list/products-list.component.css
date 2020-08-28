@@ -81,3 +81,10 @@ mat-chip {
   overflow: hidden;
   white-space: nowrap;
 }
+
+.loading-products {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 15%;
+}

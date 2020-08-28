@@ -19,6 +19,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   categoryFiltered: String = "";
   noProductsFound: boolean = false;
   subscription: Subscription;
+  isLoadingProducts: boolean = false;
 
   constructor(private productService: ProductService,
     private menuService: MenuService) { }
@@ -41,6 +42,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   async loadProducts(subcategory?: Subcategory) {
     this.products = [];
     this.noProductsFound = false;
+    this.isLoadingProducts = true;
     const receivedProducts = {
       next: (products: Product[]) => {
         if (products.length) {
@@ -48,10 +50,11 @@ export class ProductsListComponent implements OnInit, OnDestroy {
         } else {
           this.noProductsFound = true;
         }
+        this.isLoadingProducts = false;
       },
       error: (error) => {
-        console.error(error);
         this.noProductsFound = false;
+        this.isLoadingProducts = false;
       }
     }
 
