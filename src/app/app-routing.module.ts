@@ -5,6 +5,10 @@ const routes: Routes = [
     {
         path: '', 
         loadChildren: () => import('./scaffold/scaffold.module').then(m => m.ScaffoldModule) 
+    },
+    {
+      path: 'registration',
+      loadChildren: () => import('./main/registration/registration.module').then(m => m.RegistrationModule)
     }
 ];
 
