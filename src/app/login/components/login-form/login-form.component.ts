@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { CookieService } from 'ngx-cookie-service';
 import { UserAuthService } from '../../../core/service/auth/user-auth-service.service';
 import { Login } from 'src/app/core/models/user/login.model';
 import { tap } from 'rxjs/operators';
@@ -14,6 +13,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class LoginFormComponent implements OnInit {
 
+  isValidatingLogin: boolean = false;
   loginForm: FormGroup = null;
 
   constructor(
@@ -22,12 +22,12 @@ export class LoginFormComponent implements OnInit {
     private authService: UserAuthService,
     private snackBar: MatSnackBar) { }
 
-  ngOnInit() {
-    this.initializeLoginForm();
+  async ngOnInit() {
+   await this.initializeLoginForm();
   }
 
-  initializeLoginForm() {
-    this.loginForm = this.formBuider.group({
+  async initializeLoginForm() {
+    this.loginForm = await this.formBuider.group({
       email: ['', [Validators.email, Validators.required]],
       password: ['', [Validators.required]]
     });
@@ -37,6 +37,7 @@ export class LoginFormComponent implements OnInit {
     if (this.loginForm.valid) {
       await this.authenticateUser(this.loginForm.getRawValue());
     } else {
+      this.loginForm.updateValueAndValidity();
       this.loginForm.markAllAsTouched();
     }
   }
@@ -46,17 +47,18 @@ export class LoginFormComponent implements OnInit {
   }
 
   async authenticateUser(login: Login) {
-    
+    this.isValidatingLogin = true;
     const receiveUserCredentials = {
       next: (userCredentials) => {
+        this.isValidatingLogin = false;
         this.dialogRef.close(userCredentials);
       },
       error: (response) => {
+        this.isValidatingLogin = false;
         this.loginForm.markAllAsTouched();
-        this.snackBar.open(response.error.message, 'close');
+        this.snackBar.open(response.error.message);
       }
     }
-
     await this.authService.login(login)
     .pipe(tap(receiveUserCredentials))
     .toPromise()
@@ -64,7 +66,11 @@ export class LoginFormComponent implements OnInit {
     .catch();
   }
 
-  get loginFormControls() {
-    return this.loginForm
+  get emailControl() {
+    return this.loginForm.get('email');
+  }
+
+  get passwordControl() {
+    return this.loginForm.get('password');
   }
 }
