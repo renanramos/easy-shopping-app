@@ -1,0 +1,12 @@
+.user-logged-details {
+  font-size: 1.3rem;
+}
+
+span.icon-loggin > mat-icon {
+  font-size: 4em;
+  color: #1c3f90;
+}
+
+.scaffold-spacer {
+  flex: 1 1 auto;
+}

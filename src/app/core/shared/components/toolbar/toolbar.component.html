@@ -11,4 +11,21 @@
   <div class="user-logged-details">
     {{ userLoggedName }}
   </div>
+  <button mat-icon-button [matMenuTriggerFor]="menu"> 
+    <mat-icon>account_circle</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu" >
+    <button mat-menu-item (click)="openLoginDialog();">
+      <mat-icon>login</mat-icon>
+      <span>Entrar</span>
+    </button>
+    <button mat-menu-item (click)="logout();" *ngIf="userLoggedName">
+      <mat-icon>power_settings_new</mat-icon>
+      <span>Sair</span>
+    </button>
+    <button mat-menu-item (click)="onRedirectSignUp();">
+      <mat-icon>person_add</mat-icon>
+      <span>Cadastrar</span>
+    </button>
+  </mat-menu>
 </mat-toolbar>
