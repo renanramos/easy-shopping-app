@@ -1,0 +1,14 @@
+<mat-toolbar>
+  <button *ngIf="showMenuIcon; else showHomeIcon" mat-icon-button class="scaffold-icon" (click)="eventMenuHandler($event);" >
+    <mat-icon>menu</mat-icon>
+  </button>
+  <ng-template #showHomeIcon>
+    <button mat-icon-button class="scaffold-icon" (click)="homePage();">
+      <mat-icon>home</mat-icon>
+    </button>
+  </ng-template>
+  <span class="scaffold-spacer"></span>
+  <div class="user-logged-details">
+    {{ userLoggedName }}
+  </div>
+</mat-toolbar>
