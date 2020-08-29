@@ -1,3 +1,4 @@
+<es-toolbar [showMenuIcon]="false"></es-toolbar>
 <es-registration-header [isCustomerOption]="true"></es-registration-header>
 <div class="page-form-content">
   <div class="registration-subtitle">
@@ -9,14 +10,16 @@
         <mat-label>Nome</mat-label>
         <input type="text" matInput formControlName="name" id="name">
       </mat-form-field>
-      <mat-form-field class="input-full-width">
-        <mat-label>CNPJ</mat-label>
-        <input type="text" matInput formControlName="registeredNumber" id="registeredNumber">
-      </mat-form-field>
-      <mat-form-field class="input-full-width">
-        <mat-label>Telefone</mat-label>
-        <input type="text" matInput formControlName="phone" id="phone">
-      </mat-form-field>
+      <div class="input-full-width">
+        <mat-form-field class="input-half-width">
+          <mat-label>CNPJ</mat-label>
+          <input type="text" matInput formControlName="registeredNumber" id="registeredNumber">
+        </mat-form-field>
+        <mat-form-field class="input-half-width">
+          <mat-label>Telefone</mat-label>
+          <input type="text" matInput formControlName="phone" id="phone">
+        </mat-form-field>
+      </div>
       <mat-form-field class="input-full-width">
         <mat-label>Email</mat-label>
         <input type="text" matInput formControlName="email" id="email">
