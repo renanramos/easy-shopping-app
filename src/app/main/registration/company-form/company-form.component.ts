@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-company-form',
+  selector: 'es-company-form',
   templateUrl: './company-form.component.html',
   styleUrls: ['./company-form.component.css']
 })
