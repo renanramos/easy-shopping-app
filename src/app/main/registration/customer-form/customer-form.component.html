@@ -13,7 +13,7 @@
       </mat-form-field>
       <mat-form-field class="input-full-width">
         <mat-label>CPF</mat-label>
-        <input type="text" matInput formControlName="cpf" id="cpf">
+        <input type="text" matInput formControlName="cpf" id="cpf" mask="000.000.000-00">
         <mat-error *ngIf="cpf.hasError('required')">Campo obrigatório</mat-error>
       </mat-form-field>
       <mat-form-field class="input-full-width">

@@ -8,6 +8,9 @@ import { SharedComponentsModule } from '../../core/shared/components/shared-comp
 import { CompanyFormComponent } from './company-form/company-form.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CustomerFormComponent } from './customer-form/customer-form.component';
+import { NgxMaskModule, IConfig } from 'ngx-mask';
+
+export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
 @NgModule({
   declarations: [
@@ -21,7 +24,8 @@ import { CustomerFormComponent } from './customer-form/customer-form.component';
     SharedComponentsModule,
     SharedModule,
     AngularMaterialModule,
-    RegistrationRoutingModule
+    RegistrationRoutingModule,
+    NgxMaskModule.forRoot()
   ]
 })
 export class RegistrationModule { }
