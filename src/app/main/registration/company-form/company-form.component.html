@@ -40,7 +40,7 @@
           <mat-label>Confirmar senha</mat-label>
           <input type="password" matInput formControlName="confirmPassword" id="confirmPassword">
           <mat-error *ngIf="confirmPassword.hasError('required')">Campo obrigatório</mat-error>
-          <mat-error *ngIf="confirmPassword.hasError('notMatch')">Campos não conferem</mat-error>
+          <mat-error *ngIf="confirmPassword.hasError('notMatch')">Campo senha e confirmar senha não são iguais</mat-error>
         </mat-form-field>
       </div>
       <button mat-raised-button color="primary" (click)="onSubmitCompany();">SALVAR</button>
