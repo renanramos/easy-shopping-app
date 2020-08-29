@@ -5,20 +5,22 @@ import { RegistrationHeaderComponent } from './registration-header/registration-
 import { SharedModule } from '../../../shared/shared.module';
 import { AngularMaterialModule } from '../../../shared/angular-material.module';
 import { RegistrationRoutingModule } from 'src/app/main/registration/registration-routing.module';
+import { ToolbarComponent } from './toolbar/toolbar.component';
 
 const components = [
-  RegistrationHeaderComponent
+  RegistrationHeaderComponent, 
+  ToolbarComponent
 ]
 
 @NgModule({
-  declarations: [RegistrationHeaderComponent],
+  declarations: [...components],
   imports:[
     CommonModule,
     SharedModule,
     AngularMaterialModule,
     RegistrationRoutingModule
   ],
-  exports: [RegistrationHeaderComponent]
+  exports: [...components]
 })
 export class SharedComponentsModule {
 }
