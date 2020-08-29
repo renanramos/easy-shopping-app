@@ -7,10 +7,6 @@ import { tap } from 'rxjs/operators';
 import { SubcategoryService } from '../core/service/subcategory/subcategory.service';
 import { Subcategory } from '../core/models/subcategory/subcategory.model';
 import { MenuService } from '../core/shared/service/menu-service.service';
-import { MatDialog } from '@angular/material/dialog';
-import { LoginFormComponent } from '../login/components/login-form/login-form.component';
-import { CookieService } from 'ngx-cookie-service';
-import { UserCredentials } from '../core/models/user/user-credentials.model';
 import { Router } from '@angular/router';
 
 @Component({
@@ -32,14 +28,11 @@ export class ScaffoldComponent implements OnInit {
     private subcategoryService: SubcategoryService,
     private menuService: MenuService,
     private snackBar: MatSnackBar,
-    public dialog: MatDialog,
-    private cookieService: CookieService,
     public router: Router) {
   }
 
   async ngOnInit() {
     this.drawer.open();
-    this.userLoggedName = this.cookieService.get('username');
     await this.loadProductsCategories();
   }
 
@@ -98,32 +91,6 @@ export class ScaffoldComponent implements OnInit {
 
   subcategorySelected(sub: Subcategory) {
     this.menuService.setSubategory(sub);
-  }
-
-  openLoginDialog() {
-    const dialogRef = this.dialog.open(LoginFormComponent, {
-      disableClose: true,
-      autoFocus: false,
-      panelClass: 'es-dialog'
-    });
-
-    dialogRef.afterClosed().subscribe((userCredentials: UserCredentials) => {
-      if (userCredentials) {
-        this.cookieService.set('role', userCredentials.roles[0]);
-        this.cookieService.set('username', userCredentials.username);
-        this.cookieService.set('token', userCredentials.token);
-        this.userLoggedName = this.cookieService.get('username');
-      }
-    })
-  }
-
-  logout() {
-    this.cookieService.deleteAll();
-    this.userLoggedName = "";
-  }
-
-  onRedirectSignUp() {
-    this.router.navigate(['/registration']);
   }
 
   handlerEventMenu($event) {

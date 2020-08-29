@@ -5,42 +5,6 @@
   cursor: pointer;
 }
 
-.profile-access {
-  width: 100%;
-  height: 12vh;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  padding: 5% 0;
-}
-
-.icon-loggin {
-  width: 100%;
-  margin-left: 32%;
-}
-
-.menu-icon {
-  position: absolute;
-  right: 0;
-}
-
-span.icon-loggin > mat-icon {
-  font-size: 4em;
-  color: #1c3f90;
-}
-
-.login {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-evenly;
-}
-
-.scaffold-spacer {
-  flex: 1 1 auto;
-}
-
 .scaffold-container {
   width: auto;
   height: 100%;
