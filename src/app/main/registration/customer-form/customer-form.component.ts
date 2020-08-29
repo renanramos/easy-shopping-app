@@ -47,9 +47,11 @@ export class CustomerFormComponent implements OnInit {
 
     const customerReceived = {
       next: (newCustomer) => {
-       this.route.navigate(['/']);
-       this.isWaitingReponse = false;
-       this.snackBar.openSnackBar('Usuário criado com sucesso!');
+        newCustomer ?
+          this.snackBar.openSnackBar('Usuário criado com sucesso!') :
+          this.snackBar.openSnackBar('A requisição foi efetuada, mas não obtivemos resposta');
+        this.route.navigate(['/']);
+        this.isWaitingReponse = false;
       },
       error: (response) => {
        const errorMessage = this.handleErrorMessage(response);
