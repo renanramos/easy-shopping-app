@@ -5,6 +5,7 @@ import { CustomerService } from 'src/app/core/service/customer/customer.service'
 import { Customer } from 'src/app/core/models/registration/customer.model';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { UtilsService } from 'src/app/core/shared/utils/utils.service';
 
 @Component({
   selector: 'es-customer-form',
@@ -14,12 +15,13 @@ import { Router } from '@angular/router';
 })
 export class CustomerFormComponent implements OnInit {
 
-  isWaitingReponse: boolean = false;
+  isWaitingResponse: boolean = false;
   customerForm: FormGroup;
 
   constructor(private formBuider: FormBuilder,
     private customerService: CustomerService,
     private snackBar: SnackbarService,
+    private utilsService: UtilsService,
     private route: Router) { }
 
   ngOnInit() {
@@ -42,7 +44,7 @@ export class CustomerFormComponent implements OnInit {
   }
 
   async saveCustomer() {
-    this.isWaitingReponse = true;
+    this.isWaitingResponse = true;
     const customer: Customer = this.customerForm.getRawValue();
 
     const customerReceived = {
@@ -51,12 +53,12 @@ export class CustomerFormComponent implements OnInit {
           this.snackBar.openSnackBar('Usuário criado com sucesso!') :
           this.snackBar.openSnackBar('A requisição foi efetuada, mas não obtivemos resposta');
         this.route.navigate(['/']);
-        this.isWaitingReponse = false;
+        this.isWaitingResponse = false;
       },
       error: (response) => {
-       const errorMessage = this.handleErrorMessage(response);
+       const errorMessage = this.utilsService.handleErrorMessage(response);
        this.snackBar.openSnackBar(errorMessage);
-       this.isWaitingReponse = false;
+       this.isWaitingResponse = false;
       }
     };
 
@@ -67,11 +69,7 @@ export class CustomerFormComponent implements OnInit {
     .catch(() => false);
   }
 
-  handleErrorMessage(response: any) {
-    return response.error.errors && response.error.errors.length ? 
-                response.error.errors[0] :
-                response.error.message;
-  }
+  
 
   get name() {
     return this.customerForm.get('name');
