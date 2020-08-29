@@ -23,7 +23,7 @@
       <mat-icon>power_settings_new</mat-icon>
       <span>Sair</span>
     </button>
-    <button mat-menu-item (click)="onRedirectSignUp();">
+    <button mat-menu-item (click)="onRedirectSignUp();" *ngIf="!userLoggedName">
       <mat-icon>person_add</mat-icon>
       <span>Cadastrar</span>
     </button>
