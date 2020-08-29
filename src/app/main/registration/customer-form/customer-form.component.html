@@ -4,25 +4,39 @@
   <div class="registration-subtitle">
     Complete seus dados
   </div>
-  <mat-card class="card-form">
-    <form class="container-registration-form" [formGroup]="customerFormGroup">
+  <mat-card class="card-form" *ngIf="customerForm">
+    <form class="container-registration-form" [formGroup]="customerForm">
       <mat-form-field class="input-full-width">
         <mat-label>Nome</mat-label>
         <input type="text" matInput formControlName="name" id="name">
+        <mat-error *ngIf="name.hasError('required')">Campo obrigatório</mat-error>
       </mat-form-field>
       <mat-form-field class="input-full-width">
         <mat-label>CPF</mat-label>
         <input type="text" matInput formControlName="cpf" id="cpf">
+        <mat-error *ngIf="cpf.hasError('required')">Campo obrigatório</mat-error>
       </mat-form-field>
       <mat-form-field class="input-full-width">
         <mat-label>Email</mat-label>
         <input type="text" matInput formControlName="email" id="email">
+        <mat-error *ngIf="email.hasError('required')">Campo obrigatório</mat-error>
+        <mat-error *ngIf="email.hasError('email')">Email inválido</mat-error>
       </mat-form-field>
       <mat-form-field class="input-full-width">
         <mat-label>Senha</mat-label>
         <input type="password" matInput formControlName="password" id="password">
+        <mat-error *ngIf="password.hasError('required')">Campo obrigatório</mat-error>
       </mat-form-field>
-      <button mat-raised-button color="primary" >ACESSAR</button>
+      <div class="actions-container">
+        <div class="submit-user-container" *ngIf="!isWaitingReponse; else showLoading">
+          <button mat-raised-button color="primary" (click)="onSubmitCustomer();">SALVAR</button>
+        </div>
+        <ng-template #showLoading>
+          <div class="loading">
+            <mat-spinner diameter="50"></mat-spinner>
+          </div>
+        </ng-template>
+      </div>
     </form>
   </mat-card>
 </div>
