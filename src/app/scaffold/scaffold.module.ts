@@ -5,12 +5,7 @@ import { AngularMaterialModule } from '../shared/angular-material.module';
 import { ScaffoldComponent } from './scaffold.component';
 import { ScaffoldRoutingModule } from './scaffold-routing.module';
 import { WelcomeComponent } from './welcome/welcome.component';
-import { RouterModule } from '@angular/router';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { BrowserModule } from '@angular/platform-browser';
+import { SharedComponentsModule } from '../core/shared/components/shared-components.module';
 
 const components = [
   ScaffoldComponent,
@@ -25,7 +20,8 @@ const components = [
     CommonModule,
     SharedModule,
     AngularMaterialModule,
-    ScaffoldRoutingModule
+    ScaffoldRoutingModule,
+    SharedComponentsModule
   ],
   exports: [
     ...components
