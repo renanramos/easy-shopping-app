@@ -5,6 +5,7 @@ import { UserAuthService } from '../../../core/service/auth/user-auth-service.se
 import { Login } from 'src/app/core/models/user/login.model';
 import { tap } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackbarService } from 'src/app/core/shared/service/snackbar.service';
 
 @Component({
   selector: 'es-login-form',
@@ -20,7 +21,7 @@ export class LoginFormComponent implements OnInit {
     private dialogRef: MatDialogRef<LoginFormComponent>,
     private formBuider: FormBuilder,
     private authService: UserAuthService,
-    private snackBar: MatSnackBar) { }
+    private snackBarService: SnackbarService) { }
 
   async ngOnInit() {
    await this.initializeLoginForm();
@@ -56,7 +57,7 @@ export class LoginFormComponent implements OnInit {
       error: (response) => {
         this.isValidatingLogin = false;
         this.loginForm.markAllAsTouched();
-        this.snackBar.open(response.error.message);
+        this.snackBarService.openSnackBar(response.error.message);
       }
     }
     await this.authService.login(login)
