@@ -13,7 +13,10 @@
   </div>
 </div>
 <div class="container-list">
-  <ul class="products-list" *ngIf="!isLoadingProducts; else showLoadSpinner">
+  <div *ngIf="isLoadingProducts" class="loading">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+  <ul class="products-list" *ngIf="!isLoadingProducts">
     <p *ngIf="noProductsFound">Nenhum produto encontrado 
       <span *ngIf="categoryFiltered"> para a categoria <b>{{ categoryFiltered }}</b></span>.
     </p>
@@ -34,9 +37,9 @@
     </li>
   </ul>
 </div>
-<ng-template #showLoadSpinner>
-  <div class="loading-products">
+<!-- <ng-template #showLoadSpinner> -->
+  <!-- <div class="loading">
     <mat-spinner diameter="50"></mat-spinner>
-  </div>
-</ng-template>
+  </div> -->
+<!-- </ng-template> -->
 
