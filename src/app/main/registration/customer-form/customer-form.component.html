@@ -22,11 +22,19 @@
         <mat-error *ngIf="email.hasError('required')">Campo obrigatório</mat-error>
         <mat-error *ngIf="email.hasError('email')">Email inválido</mat-error>
       </mat-form-field>
-      <mat-form-field class="input-full-width">
-        <mat-label>Senha</mat-label>
-        <input type="password" matInput formControlName="password" id="password">
-        <mat-error *ngIf="password.hasError('required')">Campo obrigatório</mat-error>
-      </mat-form-field>
+      <div class="input-full-width">
+        <mat-form-field class="input-half-width">
+          <mat-label>Senha</mat-label>
+          <input type="password" matInput formControlName="password" id="password">
+          <mat-error *ngIf="password.hasError('required')">Campo obrigatório</mat-error>
+        </mat-form-field>
+        <mat-form-field class="input-half-width">
+          <mat-label>Confirmar senha</mat-label>
+          <input type="password" matInput formControlName="confirmPassword" id="confirmPassword">
+          <mat-error *ngIf="confirmPassword.hasError('required')">Campo obrigatório</mat-error>
+          <mat-error *ngIf="confirmPassword.hasError('notMatch')">Campo senha e confirmar senha não são iguais</mat-error>
+        </mat-form-field>
+      </div>
       <div class="actions-container">
         <div class="submit-user-container" *ngIf="!isWaitingResponse; else showLoading">
           <button mat-raised-button color="primary" (click)="onSubmitCustomer();">SALVAR</button>

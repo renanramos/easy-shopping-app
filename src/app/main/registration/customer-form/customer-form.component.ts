@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { tap } from 'rxjs/operators';
+
 import { SnackbarService } from 'src/app/core/shared/service/snackbar.service';
 import { CustomerService } from 'src/app/core/service/customer/customer.service';
 import { Customer } from 'src/app/core/models/registration/customer.model';
-import { tap } from 'rxjs/operators';
-import { Router } from '@angular/router';
 import { UtilsService } from 'src/app/core/shared/utils/utils.service';
+import { passwordMatcher } from 'src/app/core/shared/validators/password-matcher';
 
 @Component({
   selector: 'es-customer-form',
@@ -34,6 +36,9 @@ export class CustomerFormComponent implements OnInit {
       cpf: ['', [Validators.required]],
       email: ['', [Validators.email, Validators.required]],
       password: ['', [Validators.required]],
+      confirmPassword: ['', [Validators.required]]
+    },{
+      validator: passwordMatcher('password', 'confirmPassword')
     });
   }
 
@@ -69,8 +74,6 @@ export class CustomerFormComponent implements OnInit {
     .catch(() => false);
   }
 
-  
-
   get name() {
     return this.customerForm.get('name');
   }
@@ -85,5 +88,9 @@ export class CustomerFormComponent implements OnInit {
 
   get password() {
     return this.customerForm.get('password');
+  }
+
+  get  confirmPassword() {
+    return this.customerForm.get('confirmPassword');
   }
 }
