@@ -10,7 +10,8 @@
     </mat-form-field>
     <mat-form-field class="input-full-width">
       <mat-label>Password</mat-label>
-      <input matInput formControlName="password" id="password" type="password">
+      <input matInput formControlName="password" id="password" [type]="passwordInputType">
+      <mat-icon matSuffix (click)="changeInputPasswordVisibility();"> {{ passwordVisibility ? 'visibility' : 'visibility_off' }} </mat-icon>
       <mat-error *ngIf="passwordControl.hasError('required')">Campo obrigatório.</mat-error>
     </mat-form-field>
   </form>

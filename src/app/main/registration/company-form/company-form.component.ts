@@ -20,6 +20,9 @@ export class CompanyFormComponent implements OnInit {
   isWaitingResponse: boolean = false;
   companyForm: FormGroup;
 
+  passwordVisibility: boolean = false;
+  passwordInputType: string = 'password';
+
   constructor(
     private companyService: CompanyService,
     private snackBar: SnackbarService,
@@ -76,6 +79,13 @@ export class CompanyFormComponent implements OnInit {
       .toPromise()
       .then(() => true)
       .catch(() => false);
+  }
+
+  changeInputPasswordVisibility() {
+    this.passwordVisibility = !this.passwordVisibility;
+    this.passwordVisibility ?
+      this.passwordInputType = 'text' :
+      this.passwordInputType = 'password';
   }
 
   get name() {

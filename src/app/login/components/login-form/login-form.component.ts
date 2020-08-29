@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { tap } from 'rxjs/operators';
+
 import { UserAuthService } from '../../../core/service/auth/user-auth-service.service';
 import { Login } from 'src/app/core/models/user/login.model';
-import { tap } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarService } from 'src/app/core/shared/service/snackbar.service';
 
 @Component({
@@ -16,6 +16,9 @@ export class LoginFormComponent implements OnInit {
 
   isValidatingLogin: boolean = false;
   loginForm: FormGroup = null;
+
+  passwordVisibility: boolean = false;
+  passwordInputType: string = 'password';
 
   constructor(
     private dialogRef: MatDialogRef<LoginFormComponent>,
@@ -65,6 +68,13 @@ export class LoginFormComponent implements OnInit {
     .toPromise()
     .then()
     .catch();
+  }
+  
+  changeInputPasswordVisibility() {
+    this.passwordVisibility = !this.passwordVisibility;
+    this.passwordVisibility ?
+      this.passwordInputType = 'text' :
+      this.passwordInputType = 'password';
   }
 
   get emailControl() {

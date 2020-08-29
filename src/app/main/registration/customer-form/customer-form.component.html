@@ -25,7 +25,8 @@
       <div class="input-full-width">
         <mat-form-field class="input-half-width">
           <mat-label>Senha</mat-label>
-          <input type="password" matInput formControlName="password" id="password">
+          <input [type]="passwordInputType" matInput formControlName="password" id="password">
+          <mat-icon matSuffix (click)="changeInputPasswordVisibility();"> {{ passwordVisibility ? 'visibility' : 'visibility_off' }} </mat-icon>
           <mat-error *ngIf="password.hasError('required')">Campo obrigatório</mat-error>
         </mat-form-field>
         <mat-form-field class="input-half-width">
