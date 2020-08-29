@@ -30,16 +30,7 @@
     </ul>
   </mat-drawer>
   <mat-drawer-content>
-    <mat-toolbar>
-      <button mat-icon-button class="scaffold-icon" (click)="drawer.toggle();">
-        <mat-icon>menu</mat-icon>
-      </button>
-      <!-- <span style="cursor: pointer;" (click)="router.navigate(['/'])">Easy Shopping</span> -->
-      <span class="scaffold-spacer"></span>
-      <div class="user-logged-details">
-        {{ userLoggedName }}
-      </div>
-    </mat-toolbar>
+    <es-toolbar (menuEvent)="handlerEventMenu($event)"></es-toolbar>
     <div class="main">
       <router-outlet></router-outlet>
     </div>

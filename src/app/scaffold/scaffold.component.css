@@ -32,7 +32,6 @@ span.icon-loggin > mat-icon {
 .login {
   width: 100%;
   display: flex;
-  /* margin-left: 28%; */
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: space-evenly;

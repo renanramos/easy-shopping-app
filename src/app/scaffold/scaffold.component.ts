@@ -125,4 +125,8 @@ export class ScaffoldComponent implements OnInit {
   onRedirectSignUp() {
     this.router.navigate(['/registration']);
   }
+
+  handlerEventMenu($event) {
+    this.drawer.toggle();
+  }
 }
