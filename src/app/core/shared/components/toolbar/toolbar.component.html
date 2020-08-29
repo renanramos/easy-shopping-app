@@ -15,7 +15,7 @@
     <mat-icon>account_circle</mat-icon>
   </button>
   <mat-menu #menu="matMenu" >
-    <button mat-menu-item (click)="openLoginDialog();">
+    <button mat-menu-item (click)="openLoginDialog();" *ngIf="!userLoggedName">
       <mat-icon>login</mat-icon>
       <span>Entrar</span>
     </button>
