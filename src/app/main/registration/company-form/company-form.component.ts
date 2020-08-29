@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { passwordMatcher } from 'src/app/core/shared/validators/password-matcher';
 
 @Component({
   selector: 'es-company-form',
@@ -8,7 +9,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class CompanyFormComponent implements OnInit {
 
-companyFormGroup: FormGroup;
+companyForm: FormGroup;
 
   constructor(private formBuilder: FormBuilder) { }
 
@@ -17,13 +18,50 @@ companyFormGroup: FormGroup;
   }
 
   createForm() {
-    this.companyFormGroup = this.formBuilder.group({
+    this.companyForm = this.formBuilder.group({
       name: ['', [Validators.required]],
       registeredNumber: ['', [Validators.required]],
       phone: ['', [Validators.required]],
       email: ['', [Validators.required]],
-      password: ['', Validators.required]
+      password: ['', [Validators.required]],
+      confirmPassword: ['', [Validators.required]]
+    },
+    {
+     validator: passwordMatcher('password', 'confirmPassword')
     });
   }
 
+  onSubmitCompany() {
+    this.companyForm.invalid ?
+      this.companyForm.markAllAsTouched() :
+      this.saveCompany();
+  }
+
+  saveCompany() {
+    console.log(this.companyForm.getRawValue());
+  }
+
+  get name() {
+    return this.companyForm.get('name');
+  }
+  
+  get registeredNumber() {
+    return this.companyForm.get('registeredNumber');
+  }
+
+  get phone() {
+    return this.companyForm.get('phone');
+  }
+
+  get email() {
+    return this.companyForm.get('email');
+  }
+
+  get password() {
+    return this.companyForm.get('password');
+  }
+
+  get confirmPassword() {
+    return this.companyForm.get('confirmPassword');
+  }
 }
