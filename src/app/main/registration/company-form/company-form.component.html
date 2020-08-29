@@ -43,7 +43,16 @@
           <mat-error *ngIf="confirmPassword.hasError('notMatch')">Campo senha e confirmar senha não são iguais</mat-error>
         </mat-form-field>
       </div>
-      <button mat-raised-button color="primary" (click)="onSubmitCompany();">SALVAR</button>
+      <div class="actions-container">
+        <div class="submit-user-container" *ngIf="!isWaitingResponse; else showLoading">
+          <button mat-raised-button color="primary" (click)="onSubmitCompany();">SALVAR</button>
+        </div>
+        <ng-template #showLoading>
+          <div class="loading">
+            <mat-spinner diameter="50"></mat-spinner>
+          </div>
+        </ng-template>
+      </div>
     </form>
   </mat-card>
 </div>
