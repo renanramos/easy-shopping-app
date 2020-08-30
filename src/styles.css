@@ -132,6 +132,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .title {
+  color: #434c49f2;
   width: 100%;
   margin-left: 1vw;
   margin-top: 1vw;
@@ -142,7 +143,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .container-list {
-  width: auto;
+  width: 100%;
   display: flex;
   flex-shrink: 2;
   margin-top: 1vw;
@@ -152,15 +153,16 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .card-items {
   border-radius: 5px;
-  width: 19%;
+  height: auto;
+  margin-bottom: 25px;
+  margin-right: 25px;
   box-shadow: 0 3px 8px 0 rgba(62, 100, 146, 0.16);
   background-color: white;
-  margin-right: 1%;
-  margin-bottom: 1%;
 }
 
 .content-list {
   padding: 0;
+  margin: 0;
   list-style: none;
 
   display: -webkit-box;
@@ -171,12 +173,18 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
   -webkit-flex-flow: row wrap;
   flex-flow: row wrap;
-  width: 100%;
+  justify-content: flex-start;
 }
 
 .content-list p {
   font-size: 26px;
   font-weight: 100;
+}
+
+.mat-card {
+  /* box-shadow: none !important; */
+  border-radius: 5px !important;
+  padding: 16px 30px 10px !important;
 }
 
 .mat-card > .mat-icon {
@@ -195,6 +203,33 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   text-overflow: ellipsis;
 }
 
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background-color: #f5f5f5;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #ada5a5;
+}
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #f5f5f5;
+}
+
+.mat-drawer-content {
+  height: 100vh !important;
+}
+
+@media screen and (min-width: 250px) and (max-width: 720px) {
+
+  .mat-drawer-content {
+    padding-left: 15px;
+  }
+
+}
 
 @media screen and (orientation: landscape) and (min-height: 250px) and (max-height: 500px) {
   .mat-dialog-actions {
@@ -232,5 +267,46 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 @media screen and (min-width: 250px) and (max-width: 800px) {
   .mat-dialog-content#dialog-table {
     overflow-x: scroll !important;
+  }
+}
+
+@media screen and (min-width: 280px) and (max-width: 570px) {
+  .card-items {
+    width: calc(100% - 15px);
+    margin: 10px 13px 10px 2px !important;
+  }
+
+  .mat-card-title {
+    width: 85%;
+  }
+}
+
+@media screen and (min-width: 480px) and (max-width: 768px) and (orientation: landscape) {
+  .card-items {
+    width: calc(100% - 25px);
+  }
+}
+
+@media screen and (min-width: 571px) and (max-width: 1366px) {
+  .card-items {
+    width: calc(50% - 25px);
+  }
+}
+
+@media screen and (min-width: 1367px) and (max-width: 1920px) {
+  .card-items {
+    width: calc(33.3333333% - 25px);
+  }
+}
+
+@media screen and (min-width: 1921px) and (max-width: 2160px) {
+  .card-items {
+    width: calc(25% - 25px);
+  }
+}
+
+@media screen and (min-width: 2161px) {
+  .card-items {
+    width: calc(20% - 25px);
   }
 }
