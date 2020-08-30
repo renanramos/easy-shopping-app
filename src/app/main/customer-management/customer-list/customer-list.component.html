@@ -1,0 +1,39 @@
+<es-toolbar [showMenuIcon]="false"></es-toolbar>
+<div class="title">
+  Clientes
+</div>
+<div class="container-list">
+  <div *ngIf="isLoadingCustomers" class="loading">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+  <ul class="content-list" *ngIf="!isLoadingCustomers" >
+    <li *ngFor="let customer of customers" class="card-items">
+      <mat-card>
+        <mat-icon mat-icon-button [matMenuTriggerFor]="cardOption">more_vert</mat-icon>
+        <mat-card-title>{{customer.name}}</mat-card-title>
+        <mat-card-content>
+          <p>
+            <span>CPF:</span>
+            {{customer.cpf}}
+          </p>
+          <p>
+            <span>Email:</span>
+            {{customer.email}}
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </li>
+  </ul>
+
+  <mat-menu #cardOption="matMenu">
+    <button mat-menu-item>
+      <span>Visualizar</span>
+    </button>
+    <button mat-menu-item>
+      <span>Editar</span>
+    </button>
+    <button mat-menu-item>
+      <span>Remover</span>
+    </button>
+  </mat-menu>
+</div>
