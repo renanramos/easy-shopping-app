@@ -4,7 +4,7 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .mat-toolbar {
-  background-color: #3e559d;
+  background-color: #50a591;
   color: whitesmoke;
   font: 400 26px Roboto, "Helvetica Neue", sans-serif;
 }
@@ -51,7 +51,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  /* align-items: flex-end; */
   width: 100%;
 }
 
