@@ -18,7 +18,7 @@ export class ApiService<T> {
     this.httpClient = injector.get(HttpClient);
   }
 
-  protected get(url: string, filter?: string, showLoading: boolean = false): Observable<T> {
+  protected get(url: string, filter?: string, showLoading: boolean = false): Observable<T | T[]> {
     return this.httpClient.get<T>(`${this.API_URL}${url}${filter ? filter : ''}`);
   }
 
