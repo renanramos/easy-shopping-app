@@ -57,4 +57,8 @@ export class ToolbarComponent implements OnInit {
   onRedirectSignUp() {
     this.router.navigate(['/registration']);
   }
+
+  redirectCustomerList() {
+    this.router.navigate(['/customer-management']);
+  }
 }

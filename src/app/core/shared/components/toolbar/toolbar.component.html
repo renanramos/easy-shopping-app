@@ -16,7 +16,7 @@
   </button>
 
   <mat-menu #menu="matMenu" >
-    <button mat-menu-item *ngIf="userLoggedName">
+    <button mat-menu-item *ngIf="userLoggedName" (click)="redirectCustomerList();">
       <span>Clientes</span>
     </button>
     <button mat-menu-item [matMenuTriggerFor]="companies" *ngIf="userLoggedName">
