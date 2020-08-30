@@ -15,4 +15,8 @@ export class CustomerService extends ApiService<Customer> {
   saveCustomer(customer: Customer): Observable<Customer> {
     return this.post(`${this.url}/register`, customer);
   }
+
+  getCustomers(): Observable<Customer | Customer[]> {
+    return this.get(this.url);
+  }
 }
