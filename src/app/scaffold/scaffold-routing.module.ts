@@ -11,11 +11,6 @@ const routes: Routes = [
         path: '',
         loadChildren: () => import('./../main/product-management/product-management.module').then(m => m.ProductManagementModule)
       }
-      // ,
-      // {
-      //   path: 'registration',
-      //   loadChildren: () => import('../main/registration/registration.module').then(m => m.RegistrationModule)
-      // }
     ]
   }
 ];
