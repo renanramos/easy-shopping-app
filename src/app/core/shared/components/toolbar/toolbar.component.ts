@@ -40,6 +40,7 @@ export class ToolbarComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((userCredentials: UserCredentials) => {
+      this.clearCookieValues();
       if (userCredentials) {
         this.cookieService.set('role', userCredentials.roles[0]);
         this.cookieService.set('username', userCredentials.username);
@@ -52,6 +53,7 @@ export class ToolbarComponent implements OnInit {
   logout() {
     this.cookieService.deleteAll();
     this.userLoggedName = "";
+    this.router.navigate(['/']);
   }
 
   onRedirectSignUp() {
@@ -60,5 +62,9 @@ export class ToolbarComponent implements OnInit {
 
   redirectCustomerList() {
     this.router.navigate(['/customer-management']);
+  }
+
+  clearCookieValues() {
+    this.cookieService.deleteAll('localhost');
   }
 }
