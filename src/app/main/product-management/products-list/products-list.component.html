@@ -12,15 +12,15 @@
     </mat-chip-list>
   </div>
 </div>
-<div class="container-list">
+<div class="products-list">
   <div *ngIf="isLoadingProducts" class="loading">
     <mat-spinner diameter="50"></mat-spinner>
   </div>
-  <ul class="products-list" *ngIf="!isLoadingProducts">
+  <ul class="content-list" *ngIf="!isLoadingProducts">
     <p *ngIf="noProductsFound">Nenhum produto encontrado 
       <span *ngIf="categoryFiltered"> para a categoria <b>{{ categoryFiltered }}</b></span>.
     </p>
-    <li *ngFor="let product of products" class="card-items">
+    <li *ngFor="let product of products" class="card-products-items">
         <mat-card >
           <mat-card-header>
             <div mat-card-avatar class="products-header-image"></div>
@@ -37,9 +37,4 @@
     </li>
   </ul>
 </div>
-<!-- <ng-template #showLoadSpinner> -->
-  <!-- <div class="loading">
-    <mat-spinner diameter="50"></mat-spinner>
-  </div> -->
-<!-- </ng-template> -->
 
