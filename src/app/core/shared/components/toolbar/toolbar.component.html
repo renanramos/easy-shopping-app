@@ -14,7 +14,18 @@
   <button mat-icon-button [matMenuTriggerFor]="menu"> 
     <mat-icon>account_circle</mat-icon>
   </button>
+
   <mat-menu #menu="matMenu" >
+    <button mat-menu-item *ngIf="userLoggedName">
+      <span>Clientes</span>
+    </button>
+    <button mat-menu-item [matMenuTriggerFor]="companies" *ngIf="userLoggedName">
+      <span>Empresas</span>
+    </button>
+    <button mat-menu-item *ngIf="userLoggedName" [matMenuTriggerFor]="products" >
+      <span>Produtos</span>
+    </button>
+    <mat-divider></mat-divider>
     <button mat-menu-item (click)="openLoginDialog();" *ngIf="!userLoggedName">
       <mat-icon>login</mat-icon>
       <span>Entrar</span>
@@ -26,6 +37,28 @@
     <button mat-menu-item (click)="onRedirectSignUp();" *ngIf="!userLoggedName">
       <mat-icon>person_add</mat-icon>
       <span>Cadastrar</span>
+    </button>
+  </mat-menu>
+
+  <mat-menu #products="matMenu">
+    <button mat-menu-item *ngIf="userLoggedName">
+      <mat-icon>category</mat-icon>
+      <span>Categorias</span>
+    </button>
+    <button mat-menu-item *ngIf="userLoggedName">
+      <mat-icon>category</mat-icon>
+      <span>Subcategorias</span>
+    </button>
+  </mat-menu>
+
+  <mat-menu #companies="matMenu">
+    <button mat-menu-item *ngIf="userLoggedName">
+      <mat-icon>store</mat-icon>
+      <span>Lojas</span>
+    </button>
+    <button mat-menu-item *ngIf="userLoggedName">
+      <mat-icon>list</mat-icon>
+      <span>Lista de empresas</span>
     </button>
   </mat-menu>
 </mat-toolbar>

@@ -13,7 +13,6 @@ import { UserCredentials } from 'src/app/core/models/user/user-credentials.model
 export class ToolbarComponent implements OnInit {
 
   @Output() menuEvent = new EventEmitter<any>();
-
   @Input() showMenuIcon: boolean = true;
   userLoggedName: string = "";
 

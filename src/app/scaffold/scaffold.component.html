@@ -2,7 +2,6 @@
   <mat-drawer #drawer class="scaffold-sidenav" mode="side">
     <img  (click)="router.navigate(['/'])" src="../../assets/logo.png" alt="Easy Shopping" class="logo-image">
     <mat-divider></mat-divider>
-    <mat-divider></mat-divider>
     <ul class="categories-list">
       <li class="category-item" *ngFor="let productCategory of productsCategories">
         <div class="item-option" (click)="getSubcategory(productCategory)">
