@@ -36,7 +36,8 @@ export class CustomerListComponent implements OnInit {
         }
         this.isLoadingCustomers = false;
       },
-      error: () => {
+      error: (error) => {
+        console.log(error);
         this.isLoadingCustomers = false;
         this.noCustomerFound = true;
       }
