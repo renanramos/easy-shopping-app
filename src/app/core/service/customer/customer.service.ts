@@ -19,4 +19,8 @@ export class CustomerService extends ApiService<Customer> {
   getCustomers(): Observable<Customer | Customer[]> {
     return this.get(this.url);
   }
+
+  getCustomerById(customerId: number): Observable<Customer | Customer[]> {
+    return this.get(`${this.url}/${customerId}`);
+  }
 }
