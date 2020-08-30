@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { CustomerService } from 'src/app/core/service/customer/customer.service';
 import { Customer } from 'src/app/core/models/registration/customer.model';
 import { tap } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { CustomerDetailComponent } from '../customer-detail/customer-detail.component';
 
 @Component({
   selector: 'es-customer-list',
@@ -16,10 +18,10 @@ export class CustomerListComponent implements OnInit {
   noCustomerFound: boolean = false;
   customers: Customer[] = [];
 
-  constructor(private customerService: CustomerService) { }
+  constructor(private customerService: CustomerService,
+    private dialog: MatDialog) { }
 
   async ngOnInit() {
-    console.log('aqui')
     await this.loadCustomers();
   }
 
@@ -29,7 +31,6 @@ export class CustomerListComponent implements OnInit {
       next: (customers: Customer[]) => {
         if (customers.length) {
           this.customers = customers;
-          console.log(this.customers);
         } else {
           this.noCustomerFound = true;
         }
@@ -46,5 +47,14 @@ export class CustomerListComponent implements OnInit {
       .toPromise()
       .then(() => true)
       .catch(() => false);
+  }
+
+  openEditCustomer(customer: Customer) {
+    this.dialog.open(CustomerDetailComponent, {
+      data: { customer: customer, isViewing: true },
+      autoFocus: false,
+      disableClose: true,
+      panelClass: 'es-dialog'
+    });
   }
 }

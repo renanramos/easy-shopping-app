@@ -10,6 +10,16 @@
     <li *ngFor="let customer of customers" class="card-items">
       <mat-card>
         <mat-icon mat-icon-button [matMenuTriggerFor]="cardOption">more_vert</mat-icon>
+
+        <mat-menu #cardOption="matMenu">
+          <button mat-menu-item (click)="openEditCustomer(customer);">
+            <span>Editar</span>
+          </button>
+          <button mat-menu-item>
+            <span>Remover</span>
+          </button>
+        </mat-menu>
+
         <mat-card-title>{{customer.name}}</mat-card-title>
         <mat-card-content>
           <p>
@@ -24,16 +34,4 @@
       </mat-card>
     </li>
   </ul>
-
-  <mat-menu #cardOption="matMenu">
-    <button mat-menu-item>
-      <span>Visualizar</span>
-    </button>
-    <button mat-menu-item>
-      <span>Editar</span>
-    </button>
-    <button mat-menu-item>
-      <span>Remover</span>
-    </button>
-  </mat-menu>
 </div>
