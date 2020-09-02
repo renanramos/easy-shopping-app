@@ -1,6 +1,6 @@
 import { AsyncPipe, CurrencyPipe, DatePipe, DecimalPipe, PercentPipe, registerLocaleData } from "@angular/common";
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { CookieService } from "ngx-cookie-service";
 import localePt from '@angular/common/locales/pt';
@@ -18,6 +18,7 @@ import { MatListModule } from '@angular/material/list';
 import { ScaffoldModule } from './scaffold/scaffold.module';
 import { LoginModule } from './login/login.module';
 import { RegistrationModule } from './main/registration/registration.module';
+import { HttpIntercept } from './core/interceptors/http-intercept.service';
 
 registerLocaleData(localePt, 'pt-BR');
 
@@ -42,6 +43,11 @@ registerLocaleData(localePt, 'pt-BR');
     RegistrationModule
   ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpIntercept,
+      multi: true
+    },
     {
       provide: LOCALE_ID, useValue: 'pt-BR'
     },
