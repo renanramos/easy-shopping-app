@@ -16,7 +16,7 @@
   </button>
 
   <mat-menu #menu="matMenu" >
-    <button mat-menu-item *ngIf="userLoggedName" (click)="redirectCustomerList();">
+    <button mat-menu-item *ngIf="userLoggedName" (click)="redirectPage('/customer-management');">
       <span>Clientes</span>
     </button>
     <button mat-menu-item [matMenuTriggerFor]="companies" *ngIf="userLoggedName">
@@ -34,7 +34,7 @@
       <mat-icon>power_settings_new</mat-icon>
       <span>Sair</span>
     </button>
-    <button mat-menu-item (click)="onRedirectSignUp();" *ngIf="!userLoggedName">
+    <button mat-menu-item (click)="redirectPage('/registration');" *ngIf="!userLoggedName">
       <mat-icon>person_add</mat-icon>
       <span>Cadastrar</span>
     </button>
@@ -52,7 +52,7 @@
   </mat-menu>
 
   <mat-menu #companies="matMenu">
-    <button mat-menu-item *ngIf="userLoggedName">
+    <button mat-menu-item (click)="redirectPage('/company-management');" *ngIf="userLoggedName">
       <mat-icon>list</mat-icon>
       <span>Lista de empresas</span>
     </button>

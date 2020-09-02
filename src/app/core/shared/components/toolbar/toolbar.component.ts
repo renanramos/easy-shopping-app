@@ -56,12 +56,8 @@ export class ToolbarComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
-  onRedirectSignUp() {
-    this.router.navigate(['/registration']);
-  }
-
-  redirectCustomerList() {
-    this.router.navigate(['/customer-management']);
+  redirectPage(routeName: string) {
+    this.router.navigate([routeName]);
   }
 
   clearCookieValues() {
