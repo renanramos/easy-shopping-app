@@ -1,5 +1,5 @@
 <div mat-dialog-title>
-  Editar cliente: {{ customer.name }}
+  Editar: {{ customer.name }}
 </div>
 <div mat-dialog-content *ngIf="customerForm">
   <form class="container-registration-form" [formGroup]="customerForm">
@@ -28,7 +28,7 @@
     </div>
   </form>
 </div>
-<div mat-dialog-actions align="center">
+<div mat-dialog-actions align="right">
   <button mat-raised-button mat-dialog-close>FECHAR</button>
   <button mat-raised-button color="primary" (click)="submitCustomerUpdated();">SALVAR</button>
 </div>
