@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { Customer } from 'src/app/core/models/registration/customer.model';
@@ -24,6 +24,7 @@ export class CustomerDetailComponent implements OnInit {
     private snackBarService: SnackbarService,
     private utilsService: UtilsService,
     private formBuilder: FormBuilder,
+    private dialogRef: MatDialogRef<CustomerDetailComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit() {
@@ -51,7 +52,9 @@ export class CustomerDetailComponent implements OnInit {
 
     const receivedCustomerUpdate = {
       next: (customerUpdated) => {
-        console.log(customerUpdated);
+        if (customerUpdated) {
+          this.dialogRef.close(customerUpdated);
+        }
       },
       error: (response) => {
         const errorMessage = this.utilsService.handleErrorMessage(response);
