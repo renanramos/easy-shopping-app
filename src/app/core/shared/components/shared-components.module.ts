@@ -6,10 +6,12 @@ import { SharedModule } from '../../../shared/shared.module';
 import { AngularMaterialModule } from '../../../shared/angular-material.module';
 import { RegistrationRoutingModule } from 'src/app/main/registration/registration-routing.module';
 import { ToolbarComponent } from './toolbar/toolbar.component';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 const components = [
   RegistrationHeaderComponent, 
-  ToolbarComponent
+  ToolbarComponent,
+  ConfirmDialogComponent
 ]
 
 @NgModule({
