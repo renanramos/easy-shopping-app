@@ -60,6 +60,7 @@ export class CustomerListComponent implements OnInit {
       next: (customerUpdated) => {
         if(customerUpdated) {
           this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_UPDATED);
+          this.loadCustomers();
         }
       }
     }
