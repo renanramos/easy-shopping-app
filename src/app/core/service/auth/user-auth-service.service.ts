@@ -14,7 +14,6 @@ export class UserAuthService extends ApiService<Login>{
     super(injector);
   }
 
-
   login(login: Login): Observable<Login> {
     return this.post(`${this.url}`, login);
   }

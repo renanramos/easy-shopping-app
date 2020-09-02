@@ -25,6 +25,6 @@ export class CustomerService extends ApiService<Customer> {
   }
 
   updateCustomer(customer: Customer): Observable<Customer> {
-    return this.put(`${this.url}/${customer['id']}`, customer);
+    return this.patch(`${this.url}/${customer['id']}`, customer);
   }
 }
