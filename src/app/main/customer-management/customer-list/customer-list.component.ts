@@ -7,6 +7,8 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CustomerDetailComponent } from '../customer-detail/customer-detail.component';
 import { SnackbarService } from 'src/app/core/shared/service/snackbar.service';
 import { ConstantMessages } from 'src/app/core/shared/constants/constant-messages';
+import { ConfirmDialogComponent } from 'src/app/core/shared/components/confirm-dialog/confirm-dialog.component';
+import { UtilsService } from 'src/app/core/shared/utils/utils.service';
 
 @Component({
   selector: 'es-customer-list',
@@ -21,8 +23,10 @@ export class CustomerListComponent implements OnInit {
   customers: Customer[] = [];
 
   dialogRef: MatDialogRef<CustomerDetailComponent>;
+  confirmDialogRef: MatDialogRef<ConfirmDialogComponent>;
 
   constructor(private customerService: CustomerService,
+    private utilsService: UtilsService,
     private dialog: MatDialog,
     private snackBarService: SnackbarService) { }
 
@@ -73,5 +77,40 @@ export class CustomerListComponent implements OnInit {
     });
 
     this.dialogRef.afterClosed().subscribe(receivedDialogResponse);
+  }
+
+  openRemoveCustomer(customer: Customer) {
+    this.confirmDialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: customer,
+      autoFocus: false,
+      disableClose: true,
+      panelClass: 'es-small-dialog'
+    });
+
+    this.confirmDialogRef.afterClosed().subscribe((response) => {
+      if (response) {
+        this.removeCustomer(customer);
+      }
+    });
+  }
+
+  async removeCustomer(customer: Customer) {
+
+    const removedCustomerResponse = {
+      next: () => {
+        this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_REMOVED, 'close');
+        this.loadCustomers();
+      },
+      error: (error) => {
+        const message = this.utilsService.handleErrorMessage(error);
+        this.snackBarService.openSnackBar(message, 'close');
+      }
+    }
+
+    await this.customerService.removeCustomer(customer.id)
+      .pipe(tap(removedCustomerResponse))
+      .toPromise()
+      .then(() => true)
+      .catch(() => false);
   }
 }
