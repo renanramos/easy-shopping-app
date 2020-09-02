@@ -53,12 +53,12 @@
 
   <mat-menu #companies="matMenu">
     <button mat-menu-item *ngIf="userLoggedName">
-      <mat-icon>store</mat-icon>
-      <span>Lojas</span>
-    </button>
-    <button mat-menu-item *ngIf="userLoggedName">
       <mat-icon>list</mat-icon>
       <span>Lista de empresas</span>
+    </button>
+    <button mat-menu-item *ngIf="userLoggedName">
+      <mat-icon>store</mat-icon>
+      <span>Lojas</span>
     </button>
   </mat-menu>
 </mat-toolbar>
