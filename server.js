@@ -10,6 +10,4 @@ app.get('/*', (req, res) => {
   res.sendFile('index.html', {root: 'dist/easy-shopping-app/'});
 });
 
-app.listen(port, () => {
-  console.log(`Running on port ${port}`);
-});
+app.listen(port);
