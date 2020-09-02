@@ -26,8 +26,8 @@ export class ApiService<T> {
     return this.httpClient.post<T>(`${this.API_URL}${url}`, object);
   }
 
-  protected put(url: string, object: T, showLoading: boolean = false): Observable<T> {
-    return this.httpClient.put<T>(`${this.API_URL}${url}`, object);
+  protected patch(url: string, object: T, showLoading: boolean = false): Observable<T> {
+    return this.httpClient.patch<T>(`${this.API_URL}${url}`, object);
   }
 
   protected delete(url: string, showLoading: boolean = false): Observable<T> {
