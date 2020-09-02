@@ -8,7 +8,7 @@ export class SnackbarService {
 
   snackBarOption: string = 'close';
   snackBarConfig = {
-    duration: 3000
+    duration: 2000
   }
 
   constructor(private snackbar: MatSnackBar) { }
