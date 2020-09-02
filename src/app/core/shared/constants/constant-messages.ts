@@ -4,4 +4,5 @@ export class ConstantMessages {
   public static CANT_GET_PRODUCT_CATEGORIES: string = 'Não foi possível buscar subcategorias.';
 
   public static SUCCESSFULLY_UPDATED: string = 'Registro atualizado com sucesso!';
+  public static SUCCESSFULLY_REMOVED: string = 'Registro removido com sucesso!';
 }
