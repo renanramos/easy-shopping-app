@@ -40,6 +40,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   padding-top: 30px !important;
   padding-bottom: 30px !important;
   padding-right: 5px !important;
+  display: block !important;
+  flex-wrap: unset !important;
 }
 
 .mat-dialog-content {
@@ -174,6 +176,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   -webkit-flex-flow: row wrap;
   flex-flow: row wrap;
   justify-content: flex-start;
+  width: 100%;
 }
 
 .content-list p {
@@ -182,7 +185,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .mat-card {
-  /* box-shadow: none !important; */
   border-radius: 5px !important;
   padding: 16px 30px 10px !important;
 }
