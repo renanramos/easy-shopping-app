@@ -15,4 +15,8 @@ export class CompanyService extends ApiService<Company>{
   saveCompany(company: Company): Observable<Company> {
     return this.post(`${this.url}/register`, company);
   }
+
+  getCompanies(companyId?: number): Observable<Company | Company[]> {
+    return this.get(`${this.url}/${companyId ? companyId : ''}`);
+  }
 }
