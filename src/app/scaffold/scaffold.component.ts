@@ -8,6 +8,7 @@ import { SubcategoryService } from '../core/service/subcategory/subcategory.serv
 import { Subcategory } from '../core/models/subcategory/subcategory.model';
 import { MenuService } from '../core/shared/service/menu-service.service';
 import { Router } from '@angular/router';
+import { ConstantMessages } from '../core/shared/constants/constant-messages';
 
 @Component({
   selector: 'es-scaffold',
@@ -42,11 +43,9 @@ export class ScaffoldComponent implements OnInit {
         if (productsCategories.length) {
           this.productsCategories = productsCategories;
           this.disableProductCategoryToShow();
-        } else {
-          this.snackBar.open('Não há categorias de produtos cadastradas.');
         }
       },
-      error: () => this.snackBar.open('Não foi possível carregar as categorias dos produtos.')
+      error: () => this.snackBar.open(ConstantMessages.CANT_GET_PRODUCT_CATEGORIES)
     };
 
     await this.productCategoryService.getProductCategories()
@@ -79,7 +78,7 @@ export class ScaffoldComponent implements OnInit {
       next: (subcategories: Subcategory[]) => {
         this.subcategories = subcategories;
       },
-      error: () => this.snackBar.open('Não foi possível buscar subcategorias.')
+      error: () => this.snackBar.open(ConstantMessages.CANT_GET_PRODUCT_CATEGORIES)
     };
 
     await this.subcategoryService.getSubcategories(productCategory.id)
