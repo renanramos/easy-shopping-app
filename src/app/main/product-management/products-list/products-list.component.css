@@ -49,6 +49,10 @@
 }
 
 .products-list p {
+  width: 100%;
+  margin-left: 1vw;
+  margin-top: 1vw;
+  margin-bottom: auto;
   font-size: 26px;
   font-weight: 100;
 }

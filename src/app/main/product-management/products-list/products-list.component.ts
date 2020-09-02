@@ -36,7 +36,8 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.subscription &&
+      this.subscription.unsubscribe();
   }
 
   async loadProducts(subcategory?: Subcategory) {

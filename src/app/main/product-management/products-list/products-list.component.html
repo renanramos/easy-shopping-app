@@ -18,7 +18,7 @@
   </div>
   <ul class="content-list" *ngIf="!isLoadingProducts">
     <p *ngIf="noProductsFound">Nenhum produto encontrado 
-      <span *ngIf="categoryFiltered"> para a categoria <b>{{ categoryFiltered }}</b></span>.
+      <span *ngIf="categoryFiltered"> para a categoria<b> {{ categoryFiltered }}</b></span>
     </p>
     <li *ngFor="let product of products" class="card-products-items">
         <mat-card >
