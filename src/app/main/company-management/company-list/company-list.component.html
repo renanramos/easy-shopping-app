@@ -1,0 +1,44 @@
+<es-toolbar [showMenuIcon]="false"></es-toolbar>
+<div class="title">
+  Empresas
+</div>
+<div class="container-list">
+  <div *ngIf="isLoadingCompanies" class="loading">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+  <ul class="content-list" *ngIf="!isLoadingCompanies" >
+    <p *ngIf="noCompanyFound">
+      Não há empresas cadastrados.
+    </p>
+    <li *ngFor="let company of companies" class="card-items">
+      <mat-card>
+        <mat-icon mat-icon-button [matMenuTriggerFor]="cardOption">more_vert</mat-icon>
+
+        <mat-menu #cardOption="matMenu">
+          <button mat-menu-item (click)="openEditCompany(company);">
+            <span>Editar</span>
+          </button>
+          <button mat-menu-item>
+            <span>Remover</span>
+          </button>
+        </mat-menu>
+
+        <mat-card-title>{{company.name}}</mat-card-title>
+        <mat-card-content>
+          <p>
+            <span>CNPJ:</span>
+            {{company.registeredNumber}}
+          </p>
+          <p>
+            <span>Email:</span>
+            {{company.email}}
+          </p>
+          <p>
+            <span>Telefone:</span>
+            {{ company.phone | phone }}
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </li>
+  </ul>
+</div>
