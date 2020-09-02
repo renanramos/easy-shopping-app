@@ -6,12 +6,13 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs/internal/Observable';
 import { tap } from 'rxjs/operators';
 import { SnackbarService } from '../shared/service/snackbar.service';
+import { SecurityUserService } from '../service/auth/security-user.service';
 
 @Injectable()
 export class HttpIntercept implements HttpInterceptor {
 
   constructor(
-    private cookieService: CookieService,
+    private securityUserService: SecurityUserService,
     private router: Router,
     private snackBar: SnackbarService) { }
 
@@ -19,8 +20,8 @@ export class HttpIntercept implements HttpInterceptor {
     let headers = new HttpHeaders();
 
     if (req.url.indexOf('/assests/') < 0) {
-      if (!!this.cookieService.get('token')) {
-        const token = !!this.cookieService.get('token') ? this.cookieService.get('token') : null;
+      if (!!this.securityUserService.isUserLogged()) {
+        const token = !!this.securityUserService.isUserLogged() ? this.securityUserService.getUserLoggedToken() : null;
         headers = headers.set('Authorization', `Bearer ${token}`);
       }
     }

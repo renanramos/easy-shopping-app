@@ -4,6 +4,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { CookieService } from 'ngx-cookie-service';
 import { LoginFormComponent } from 'src/app/login/components/login-form/login-form.component';
 import { UserCredentials } from 'src/app/core/models/user/user-credentials.model';
+import { SecurityUserService } from 'src/app/core/service/auth/security-user.service';
+import { UserAuthService } from 'src/app/core/service/auth/user-auth-service.service';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'es-toolbar',
@@ -18,10 +21,11 @@ export class ToolbarComponent implements OnInit {
 
   constructor(private router: Router,
     public dialog: MatDialog,
-    private cookieService: CookieService) { }
+    private authService: UserAuthService,
+    private securityUserService: SecurityUserService) { }
 
   ngOnInit(): void {
-    this.userLoggedName = this.cookieService.get('username');
+    this.userLoggedName = this.securityUserService.getLoggedUsername();
   }
 
   eventMenuHandler($event) {
@@ -42,18 +46,28 @@ export class ToolbarComponent implements OnInit {
     dialogRef.afterClosed().subscribe((userCredentials: UserCredentials) => {
       this.clearCookieValues();
       if (userCredentials) {
-        this.cookieService.set('role', userCredentials.roles[0]);
-        this.cookieService.set('username', userCredentials.username);
-        this.cookieService.set('token', userCredentials.token);
-        this.userLoggedName = this.cookieService.get('username');
+        this.securityUserService.setUserRole(userCredentials.roles[0]);
+        this.securityUserService.setUsername(userCredentials.username);
+        this.securityUserService.setToken(userCredentials.token);
+        this.userLoggedName = this.securityUserService.getLoggedUsername();
       }
     });
   }
 
-  logout() {
-    this.cookieService.deleteAll();
-    this.userLoggedName = "";
-    this.router.navigate(['/']);
+  async logout() {
+
+    const receivedLogout = {
+      next: (response) => {
+        this.securityUserService.deleteCookieAndRedirect();
+        this.userLoggedName = "";
+        this.router.navigate(['/']);
+      }
+    }
+
+    await this.authService.logout().pipe(tap(receivedLogout))
+      .toPromise()
+      .then(() => true)
+      .catch(() => false);
   }
 
   redirectPage(routeName: string) {
@@ -61,6 +75,6 @@ export class ToolbarComponent implements OnInit {
   }
 
   clearCookieValues() {
-    this.cookieService.deleteAll('localhost');
+    this.securityUserService.deleteCookieFromStorage();
   }
 }

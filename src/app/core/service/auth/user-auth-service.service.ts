@@ -8,13 +8,17 @@ import { Observable } from 'rxjs';
 })
 export class UserAuthService extends ApiService<Login>{
 
-  private url: string = '/users/login';
+  private url: string = '/users';
 
   constructor(injector: Injector) {
     super(injector);
   }
 
   login(login: Login): Observable<Login> {
-    return this.post(`${this.url}`, login);
+    return this.post(`${this.url}/login`, login);
+  }
+
+  logout(): Observable<any>{
+    return this.post(`${this.url}/logout`, null);
   }
 }

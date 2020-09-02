@@ -1,6 +1,7 @@
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { MainComponent } from './main.component';
+import { AuthGuard } from '../core/guard/auth.guard';
 
 const routes: Routes = [
   {
@@ -9,11 +10,13 @@ const routes: Routes = [
   },
   {
     path: 'customer-management',
-    loadChildren: () => import('./customer-management/customer-management.module').then(m => m.CustomerManagementModule)
+    loadChildren: () => import('./customer-management/customer-management.module').then(m => m.CustomerManagementModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'company-management',
-    loadChildren: () => import('./company-management/company-management.module').then(m => m.CompanyManagementModule)
+    loadChildren: () => import('./company-management/company-management.module').then(m => m.CompanyManagementModule),
+    canActivate: [AuthGuard]
   }
 ]
 

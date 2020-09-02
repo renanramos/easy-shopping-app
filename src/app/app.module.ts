@@ -21,6 +21,7 @@ import { RegistrationModule } from './main/registration/registration.module';
 import { HttpIntercept } from './core/interceptors/http-intercept.service';
 import { MainModule } from './main/main.module';
 import { PipeModule } from './core/shared/pipe/pipe.module';
+import { SecurityUserService } from './core/service/auth/security-user.service';
 
 registerLocaleData(localePt, 'pt-BR');
 
@@ -47,6 +48,7 @@ registerLocaleData(localePt, 'pt-BR');
     RegistrationModule
   ],
   providers: [
+    SecurityUserService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpIntercept,
