@@ -7,12 +7,12 @@ const routes: Routes = [
         loadChildren: () => import('./scaffold/scaffold.module').then(m => m.ScaffoldModule) 
     },
     {
-      path: 'registration',
-      loadChildren: () => import('./main/registration/registration.module').then(m => m.RegistrationModule)
+      path: 'main',
+      loadChildren: () => import('./main/main.module').then(m => m.MainModule)
     },
     {
-      path: 'customer-management',
-      loadChildren: () => import('./main/customer-management/customer-management.module').then(m => m.CustomerManagementModule)
+      path: 'registration',
+      loadChildren: () => import('./main/registration/registration.module').then(m => m.RegistrationModule)
     }
 ];
 

@@ -19,6 +19,8 @@ import { ScaffoldModule } from './scaffold/scaffold.module';
 import { LoginModule } from './login/login.module';
 import { RegistrationModule } from './main/registration/registration.module';
 import { HttpIntercept } from './core/interceptors/http-intercept.service';
+import { MainModule } from './main/main.module';
+import { PipeModule } from './core/shared/pipe/pipe.module';
 
 registerLocaleData(localePt, 'pt-BR');
 
@@ -40,6 +42,8 @@ registerLocaleData(localePt, 'pt-BR');
     MatListModule,
     ScaffoldModule,
     LoginModule,
+    MainModule,
+    PipeModule,
     RegistrationModule
   ],
   providers: [
