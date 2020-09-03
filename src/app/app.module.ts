@@ -22,6 +22,9 @@ import { HttpIntercept } from './core/interceptors/http-intercept.service';
 import { MainModule } from './main/main.module';
 import { PipeModule } from './core/shared/pipe/pipe.module';
 import { SecurityUserService } from './core/service/auth/security-user.service';
+import { NgxMaskModule, IConfig } from 'ngx-mask';
+
+// const options: Partial<IConfig> | (() => Partial<IConfig>);
 
 registerLocaleData(localePt, 'pt-BR');
 
@@ -45,7 +48,8 @@ registerLocaleData(localePt, 'pt-BR');
     LoginModule,
     MainModule,
     PipeModule,
-    RegistrationModule
+    RegistrationModule,
+    NgxMaskModule.forRoot()
   ],
   providers: [
     SecurityUserService,
