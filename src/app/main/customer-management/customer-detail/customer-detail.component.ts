@@ -18,6 +18,7 @@ export class CustomerDetailComponent implements OnInit {
 
   customer: Customer;
   customerForm: FormGroup;
+  isWaitingResponse: boolean = false;
 
   constructor(
     private customerService: CustomerService,
@@ -35,7 +36,7 @@ export class CustomerDetailComponent implements OnInit {
   createForm() {
     this.customerForm = this.formBuilder.group({
       name: [this.customer['name'], [Validators.required]],
-      cpf: [this.customer['cpf'], [Validators.required]],
+      cpf: [this.customer['cpf'], [Validators.required, Validators.pattern(/^\d{3}[\.]\d{3}[\.]\d{3}[\-]\d{2}$/)]],
       email: [this.customer['email'], [Validators.email, Validators.required]],
     });
   }
@@ -49,16 +50,18 @@ export class CustomerDetailComponent implements OnInit {
   async updateCustomer() {
     const customer = this.customerForm.getRawValue();
     customer['id'] = this.customer['id'];
-
+    this.isWaitingResponse = true;
     const receivedCustomerUpdate = {
       next: (customerUpdated) => {
         if (customerUpdated) {
           this.dialogRef.close(customerUpdated);
         }
+        this.isWaitingResponse = false;
       },
       error: (response) => {
         const errorMessage = this.utilsService.handleErrorMessage(response);
         this.snackBarService.openSnackBar(errorMessage);
+        this.isWaitingResponse = false;
       }
     }
 
@@ -79,13 +82,5 @@ export class CustomerDetailComponent implements OnInit {
 
   get email() {
     return this.customerForm.get('email');
-  }
-
-  get password() {
-    return this.customerForm.get('password');
-  }
-
-  get  confirmPassword() {
-    return this.customerForm.get('confirmPassword');
   }
 }
