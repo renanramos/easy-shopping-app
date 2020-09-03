@@ -23,7 +23,9 @@
     "@angular/router": "~9.1.11",
     "express": "^4.17.1",
     "ngx-cookie-service": "^10.0.1",
+    "ngx-infinite-scroll": "^9.0.0",
     "ngx-mask": "^10.0.1",
+    "ngx-slimscroll": "^10.0.0",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"

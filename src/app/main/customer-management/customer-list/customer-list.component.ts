@@ -18,9 +18,11 @@ import { UtilsService } from 'src/app/core/shared/utils/utils.service';
 })
 export class CustomerListComponent implements OnInit {
 
+  selector: string = '.main-container';
   isLoadingCustomers: boolean = false;
   noCustomerFound: boolean = false;
   customers: Customer[] = [];
+  pageNumber: number = 0;
 
   dialogRef: MatDialogRef<CustomerDetailComponent>;
   confirmDialogRef: MatDialogRef<ConfirmDialogComponent>;
@@ -39,7 +41,7 @@ export class CustomerListComponent implements OnInit {
     const receivedCustomers = {
       next: (customers: Customer[]) => {
         if (customers.length) {
-          this.customers = customers;
+          this.customers = [...this.customers, ...customers];
         } else {
           this.noCustomerFound = true;
         }
@@ -51,7 +53,7 @@ export class CustomerListComponent implements OnInit {
       }
     }
 
-    await this.customerService.getCustomers()
+    await this.customerService.getCustomers(this.pageNumber)
       .pipe(tap(receivedCustomers))
       .toPromise()
       .then(() => true)
@@ -112,5 +114,10 @@ export class CustomerListComponent implements OnInit {
       .toPromise()
       .then(() => true)
       .catch(() => false);
+  }
+
+  onScroll() {
+      this.pageNumber += 1;
+      this.loadCustomers();   
   }
 }

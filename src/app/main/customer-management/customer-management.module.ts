@@ -6,6 +6,8 @@ import { AngularMaterialModule } from 'src/app/shared/angular-material.module';
 import { CustomerListComponent } from './customer-list/customer-list.component';
 import { CustomerDetailComponent } from './customer-detail/customer-detail.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { NgSlimScrollModule } from 'ngx-slimscroll';
 
 const components = [
   CustomerListComponent,
@@ -19,7 +21,9 @@ const components = [
     ReactiveFormsModule,
     AngularMaterialModule,
     CustomerManagementRoutingModule,
-    SharedComponentsModule
+    SharedComponentsModule,
+    NgSlimScrollModule,
+    InfiniteScrollModule
   ],
   exports: [...components]
 })

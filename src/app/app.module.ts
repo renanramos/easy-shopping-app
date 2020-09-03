@@ -4,6 +4,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { CookieService } from "ngx-cookie-service";
 import localePt from '@angular/common/locales/pt';
+import { NgSlimScrollModule, SLIMSCROLL_DEFAULTS  } from "ngx-slimscroll";
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -24,7 +25,7 @@ import { PipeModule } from './core/shared/pipe/pipe.module';
 import { SecurityUserService } from './core/service/auth/security-user.service';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 
-// const options: Partial<IConfig> | (() => Partial<IConfig>);
+export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
 registerLocaleData(localePt, 'pt-BR');
 
@@ -49,6 +50,7 @@ registerLocaleData(localePt, 'pt-BR');
     MainModule,
     PipeModule,
     RegistrationModule,
+    NgSlimScrollModule,
     NgxMaskModule.forRoot()
   ],
   providers: [
@@ -60,6 +62,20 @@ registerLocaleData(localePt, 'pt-BR');
     },
     {
       provide: LOCALE_ID, useValue: 'pt-BR'
+    },
+    {
+      provide: SLIMSCROLL_DEFAULTS,
+      useValue: {
+        alwaysVisible: true,
+        gridOpacity: '0.2',
+        barOpacity: '0.5',
+        gridBackground: '#c2c2c2',
+        gridWidth: '6',
+        gridMargin: '2px 2px',
+        barBackground: '#515151',
+        barWidth: '6',
+        barMargin: '2px 2px'
+      }
     },
     AsyncPipe,
     CookieService,

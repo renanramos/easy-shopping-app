@@ -16,8 +16,14 @@ export class CustomerService extends ApiService<Customer> {
     return this.post(`${this.url}/register`, customer);
   }
 
-  getCustomers(): Observable<Customer | Customer[]> {
-    return this.get(this.url);
+  getCustomers(pageNumber?: number, pageSize?: number): Observable<Customer | Customer[]> {
+    let query = '';
+
+    if (pageNumber) {
+      query += `?pageNumber=${pageNumber}`
+    }
+
+    return this.get(`${this.url}${query}`);
   }
 
   getCustomerById(customerId: number): Observable<Customer | Customer[]> {

@@ -3,11 +3,13 @@
   Clientes
 </div>
 <div class="container-list">
-  <div *ngIf="isLoadingCustomers" class="loading">
-    <mat-spinner diameter="50"></mat-spinner>
-  </div>
-  <ul class="content-list" *ngIf="!isLoadingCustomers" >
-    <p *ngIf="noCustomerFound">
+  <ul class="content-list" 
+  infiniteScroll
+  [infiniteScrollDistance]="1"
+  [infiniteScrollUpDistance]="2"
+  [infiniteScrollThrottle]="300"
+  (scrolled)="onScroll();" >
+    <p *ngIf="noCustomerFound && !customers.length">
       Não há clientes cadastrados.
     </p>
     <li *ngFor="let customer of customers" class="card-items">
@@ -37,4 +39,7 @@
       </mat-card>
     </li>
   </ul>
+  <div *ngIf="isLoadingCustomers" class="loading">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
 </div>
