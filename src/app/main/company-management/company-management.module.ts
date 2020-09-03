@@ -7,9 +7,11 @@ import { SharedComponentsModule } from 'src/app/core/shared/components/shared-co
 import { CompanyManagementRoutingModule } from './company-management-routing.module';
 import { CompanyListComponent } from './company-list/company-list.component';
 import { PipeModule } from 'src/app/core/shared/pipe/pipe.module';
+import { CompanyDetailComponent } from './company-detail/company-detail.component';
 
 const components = [
-  CompanyListComponent
+  CompanyListComponent,
+  CompanyDetailComponent
 ]
 
 @NgModule({
