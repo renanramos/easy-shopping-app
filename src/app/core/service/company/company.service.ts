@@ -19,4 +19,12 @@ export class CompanyService extends ApiService<Company>{
   getCompanies(companyId?: number): Observable<Company | Company[]> {
     return this.get(`${this.url}/${companyId ? companyId : ''}`);
   }
+
+  updateCompany(company: Company): Observable<Company> {
+    return this.patch(`${this.url}/${company['id']}`, company);
+  }
+
+  removeCompany(companyId: number): Observable<any> {
+    return this.delete(`${this.url}/${companyId}`);
+  }
 }
