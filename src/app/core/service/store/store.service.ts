@@ -12,6 +12,10 @@ export class StoreService extends ApiService<Store>{
     super(injector);
   }
 
+  saveStore(store: Store): Observable<Store>{
+    return this.post(this.url, store);
+  }
+
   getStores(companyId?: number): Observable<Store | Store[]> {
 
     let filter = '';
@@ -22,7 +26,7 @@ export class StoreService extends ApiService<Store>{
     return this.get(`${this.url}${filter}`);
   }
   
-  getCompanyOwnStores(): Observable<Store | Store[]> {
-    return this.get(`${this.url}/company-stores`);
+  getCompanyOwnStores(companyId: number): Observable<Store | Store[]> {
+    return this.get(`${this.url}/company-stores?companyIdRequestParam=${companyId}`);
   }
 }
