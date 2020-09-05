@@ -27,7 +27,7 @@
       <input matInput formControlName="phone" id="phone" mask="(00) 00000-0000">
       <mat-error *ngIf="phone.hasError('required')">Campo obrigatório</mat-error>
       <mat-error *ngIf="phone.hasError('pattern') && !phone.hasError('required')">
-        Telefone deve seguir o padrão DDD 00000-0000  
+        Telefone deve seguir o padrão (00) 00000-0000  
       </mat-error>
     </mat-form-field>
     <div class="actions-container">
