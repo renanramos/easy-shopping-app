@@ -6,23 +6,25 @@ import { AuthGuard } from '../core/guard/auth.guard';
 const routes: Routes = [
   {
     path: '',
-    component: MainComponent
-  },
-  {
-    path: 'customer-management',
-    loadChildren: () => import('./customer-management/customer-management.module').then(m => m.CustomerManagementModule),
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'company-management',
-    loadChildren: () => import('./company-management/company-management.module').then(m => m.CompanyManagementModule),
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'store-management',
-    loadChildren: () => import('./store-management/store-management.module').then(m => m.StoreManagementModule),
-    canActivate: [AuthGuard]
-  }
+    component: MainComponent,
+    children: [
+      {
+        path: 'customer-management',
+        loadChildren: () => import('./customer-management/customer-management.module').then(m => m.CustomerManagementModule),
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'company-management',
+        loadChildren: () => import('./company-management/company-management.module').then(m => m.CompanyManagementModule),
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'store-management',
+        loadChildren: () => import('./store-management/store-management.module').then(m => m.StoreManagementModule),
+        canActivate: [AuthGuard]
+      }
+    ]
+  }  
 ]
 
 @NgModule({
