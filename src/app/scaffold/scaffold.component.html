@@ -14,6 +14,11 @@
           </li>
         </ul>
       </li>
+      <li class="category-item">
+        <div *ngIf="isLoadingCategories" class="loading">
+          <mat-spinner diameter="50"></mat-spinner>
+        </div>
+      </li>
     </ul>
   </mat-drawer>
   <mat-drawer-content>
