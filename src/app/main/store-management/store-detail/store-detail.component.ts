@@ -18,6 +18,7 @@ export class StoreDetailComponent implements OnInit {
 
   storeForm: FormGroup;
   companies: Company[] = [];
+  isWaitingResponse: boolean = false;
   isLoadingCompanies: boolean = false;
 
   constructor(private storeService: StoreService, 
@@ -83,6 +84,6 @@ export class StoreDetailComponent implements OnInit {
   }
 
   submitStore() {
-    console.log('store')
+    console.log(this.storeForm.getRawValue());
   }
 }

@@ -35,8 +35,8 @@ export class CompanyDetailComponent implements OnInit {
     this.companyForm = this.formBuilder.group({
       name: [this.company['name'], [Validators.required]],
       email: [this.company['email'], [Validators.required]],
-      phone: [this.company['phone'], [Validators.required, Validators.pattern(/^(\d{2}|\d{3})[\s](\d{4}|\d{5})[-]\d{4}$/)]],
-      registeredNumber: [this.company['registeredNumber'], [Validators.required, Validators.pattern(/^\d{2}[\.]\d{3}[\.]\d{3}[\/\']\d{4}[-]\d{2}$/)]]
+      phone: [this.company['phone'], [Validators.required]],
+      registeredNumber: [this.company['registeredNumber'], [Validators.required]]
     });
   }
 

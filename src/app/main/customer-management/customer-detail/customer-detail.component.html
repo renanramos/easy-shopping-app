@@ -12,7 +12,7 @@
       <mat-label>CPF</mat-label>
       <input matInput formControlName="cpf" id="cpf" mask="000.000.000-00">
       <mat-error *ngIf="cpf.hasError('required')">Campo obrigatório</mat-error>
-      <mat-error *ngIf="cpf.hasError('pattern') && !cpf.hasError('required')">CPF deve seguir o padrão: 000.000.000-00</mat-error>
+      <mat-error *ngIf="cpf.hasError('mask')">CPF está fora do padrão permitido.</mat-error>
     </mat-form-field>
     <mat-form-field class="input-full-width">
       <mat-label>Email</mat-label>

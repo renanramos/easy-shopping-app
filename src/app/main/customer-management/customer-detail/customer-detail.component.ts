@@ -36,7 +36,7 @@ export class CustomerDetailComponent implements OnInit {
   createForm() {
     this.customerForm = this.formBuilder.group({
       name: [this.customer['name'], [Validators.required]],
-      cpf: [this.customer['cpf'], [Validators.required, Validators.pattern(/^\d{3}[\.]\d{3}[\.]\d{3}[\-]\d{2}$/)]],
+      cpf: [this.customer['cpf'], [Validators.required]],
       email: [this.customer['email'], [Validators.email, Validators.required]],
     });
   }

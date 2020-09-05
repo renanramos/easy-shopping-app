@@ -8,6 +8,9 @@ import { CustomerDetailComponent } from './customer-detail/customer-detail.compo
 import { ReactiveFormsModule } from '@angular/forms';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgSlimScrollModule } from 'ngx-slimscroll';
+import { IConfig, NgxMaskModule } from 'ngx-mask';
+
+export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
 const components = [
   CustomerListComponent,
@@ -23,7 +26,8 @@ const components = [
     CustomerManagementRoutingModule,
     SharedComponentsModule,
     NgSlimScrollModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    NgxMaskModule.forRoot()
   ],
   exports: [...components]
 })

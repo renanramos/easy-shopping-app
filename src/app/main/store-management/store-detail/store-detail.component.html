@@ -1,1 +1,39 @@
 
+<div mat-dialog-title>
+  Adicionar loja
+</div>
+<div mat-dialog-content *ngIf="storeForm">
+  <form class="container-registration-form" [formGroup]="storeForm">
+    <mat-form-field class="input-full-width">
+      <mat-label>Nome</mat-label>
+      <input type="text" matInput formControlName="name" id="name">
+      <mat-error *ngIf="name.hasError('required')">Campo obrigatório</mat-error>
+    </mat-form-field>
+    <mat-form-field class="input-full-width">
+      <mat-label>Nome fantasia</mat-label>
+      <input type="text" matInput formControlName="corporateName" id="corporateName">
+      <mat-error *ngIf="corporateName.hasError('required')">Campo obrigatório</mat-error>
+    </mat-form-field>
+    <mat-form-field class="input-full-width">
+      <mat-label>CNPJ</mat-label>
+      <input matInput formControlName="registeredNumber" id="registeredNumber" mask="00.000.000/0000-00">
+      <mat-error *ngIf="registeredNumber.hasError('required')">Campo obrigatório</mat-error>
+      <mat-error *ngIf="registeredNumber.hasError('pattern') && !registeredNumber.hasError('required')">CNPJ deve seguir o padrão: 00.000.000/0000-00</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="input-full-width">
+      <mat-label>Empresa</mat-label>
+      <mat-select formControlName="companyId" id="companyId">
+        <mat-option *ngFor="let company of companies" [value]="company.id">{{ company.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions align="right" *ngIf="!isWaitingResponse">
+  <button mat-raised-button mat-dialog-close>FECHAR</button>
+  <button mat-raised-button color="primary" (click)="submitStore();">SALVAR</button>
+</div>
+<div mat-dialog-action align="right" *ngIf="isWaitingResponse">
+  <div class="loading">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+</div>

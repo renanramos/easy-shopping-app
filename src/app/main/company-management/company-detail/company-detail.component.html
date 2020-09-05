@@ -12,10 +12,11 @@
       <mat-label>CNPJ</mat-label>
       <input matInput formControlName="registeredNumber" id="cpf" mask="00.000.000/0000-00">
       <mat-error *ngIf="registeredNumber.hasError('required')">Campo obrigatório</mat-error>
-      <mat-error *ngIf="registeredNumber.hasError('pattern') && !registeredNumber.hasError('required')">
-        CNPJ deve seguir o padrão: 00.000.000/0000-00
+      <mat-error *ngIf="registeredNumber.hasError('mask')">
+        CNPJ está fora do padrão permitido.
       </mat-error>
     </mat-form-field>
+    {{ registeredNumber.errors | json }}
     <mat-form-field class="input-full-width">
       <mat-label>Email</mat-label>
       <input type="text" matInput formControlName="email" id="email">
@@ -26,8 +27,8 @@
       <mat-label>Telefone</mat-label>
       <input matInput formControlName="phone" id="phone" mask="(00) 00000-0000">
       <mat-error *ngIf="phone.hasError('required')">Campo obrigatório</mat-error>
-      <mat-error *ngIf="phone.hasError('pattern') && !phone.hasError('required')">
-        Telefone deve seguir o padrão (00) 00000-0000  
+      <mat-error *ngIf="phone.hasError('mask')">
+        Telefone está fora do padrão permitido.
       </mat-error>
     </mat-form-field>
     <div class="actions-container">

@@ -244,6 +244,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; overflow-x:
   background-color: #50a591;
 }
 
+.cdk-global-scrollblock {
+  overflow-y: hidden !important;
+}
+
 @media screen and (min-width: 250px) and (max-width: 720px) {
 
   .mat-drawer-content {
