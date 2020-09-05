@@ -42,6 +42,10 @@
 
   <mat-menu #products="matMenu">
     <button mat-menu-item *ngIf="userLoggedName">
+      <mat-icon>event_seat</mat-icon>
+      <span>Lista de produtos</span>
+    </button>
+    <button mat-menu-item *ngIf="userLoggedName">
       <mat-icon>category</mat-icon>
       <span>Categorias</span>
     </button>
@@ -56,7 +60,7 @@
       <mat-icon>list</mat-icon>
       <span>Lista de empresas</span>
     </button>
-    <button mat-menu-item *ngIf="userLoggedName">
+    <button mat-menu-item (click)="redirectPage('/store-management');" *ngIf="userLoggedName">
       <mat-icon>store</mat-icon>
       <span>Lojas</span>
     </button>
