@@ -1,0 +1,46 @@
+<es-toolbar [showMenuIcon]="false"></es-toolbar>
+<div class="title">
+  Lojas
+</div>
+<div class="container-list">
+  <ul class="content-list" 
+  infiniteScroll
+  [infiniteScrollDistance]="1"
+  [infiniteScrollUpDistance]="2"
+  [infiniteScrollThrottle]="300"
+  (scrolled)="onScroll();" >
+    <p *ngIf="noStoreFound && !stores.length">
+      Não há lojas cadastradas.
+    </p>
+    <li *ngFor="let store of stores" class="card-items">
+      <mat-card>
+        <mat-icon mat-icon-button [matMenuTriggerFor]="cardOption">more_vert</mat-icon>
+
+        <mat-menu #cardOption="matMenu">
+          <button mat-menu-item (click)="openEditStore(store);">
+            <span>Editar</span>
+          </button>
+          <button mat-menu-item (click)="openRemoveStore(store);">
+            <span>Remover</span>
+          </button>
+        </mat-menu>
+
+        <mat-card-title>{{store.name}}</mat-card-title>
+        <mat-card-content>
+          <!-- <p>
+            <span>CPF:</span>
+            {{customer.cpf}}
+          </p>
+          <p>
+            <span>Email:</span>
+            {{customer.email}}
+          </p> -->
+        </mat-card-content>
+      </mat-card>
+    </li>
+  </ul>
+  <div *ngIf="isLoadingStores" class="loading">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+</div>
+<es-add-button (newClickEvent)="onAddNewStore();"></es-add-button>
