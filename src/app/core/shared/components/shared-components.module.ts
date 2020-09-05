@@ -7,11 +7,13 @@ import { AngularMaterialModule } from '../../../shared/angular-material.module';
 import { RegistrationRoutingModule } from 'src/app/main/registration/registration-routing.module';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { AddButtonComponent } from './add-button/add-button.component';
 
 const components = [
   RegistrationHeaderComponent, 
   ToolbarComponent,
-  ConfirmDialogComponent
+  ConfirmDialogComponent,
+  AddButtonComponent
 ]
 
 @NgModule({
