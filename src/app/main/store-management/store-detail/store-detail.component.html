@@ -18,13 +18,14 @@
       <mat-label>CNPJ</mat-label>
       <input matInput formControlName="registeredNumber" id="registeredNumber" mask="00.000.000/0000-00">
       <mat-error *ngIf="registeredNumber.hasError('required')">Campo obrigatório</mat-error>
-      <mat-error *ngIf="registeredNumber.hasError('pattern') && !registeredNumber.hasError('required')">CNPJ deve seguir o padrão: 00.000.000/0000-00</mat-error>
+      <mat-error *ngIf="registeredNumber.hasError('mask')">CNPJ deve seguir o padrão permitido</mat-error>
     </mat-form-field>
-    <mat-form-field appearance="fill" class="input-full-width">
+    <mat-form-field appearance="outline" class="input-full-width" *ngIf="isAdminUser">
       <mat-label>Empresa</mat-label>
       <mat-select formControlName="companyId" id="companyId">
         <mat-option *ngFor="let company of companies" [value]="company.id">{{ company.name }}</mat-option>
       </mat-select>
+      <mat-error *ngIf="companyId.hasError('required')">Campo obrigatório</mat-error>
     </mat-form-field>
   </form>
 </div>
