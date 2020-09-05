@@ -9,6 +9,9 @@ import { SharedComponentsModule } from 'src/app/core/shared/components/shared-co
 import { StoreListComponent } from './store-list/store-list.component';
 import { StoreDetailComponent } from './store-detail/store-detail.component';
 import { StoreManagementRoutingModule } from './store-management-routing.module';
+import { NgxMaskModule, IConfig } from 'ngx-mask';
+
+export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
 const components = [
   StoreListComponent,
@@ -24,7 +27,8 @@ const components = [
     StoreManagementRoutingModule,
     SharedComponentsModule,
     NgSlimScrollModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    NgxMaskModule.forRoot()
   ],
   exports: [...components]
 })
