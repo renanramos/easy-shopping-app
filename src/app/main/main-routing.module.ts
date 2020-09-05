@@ -17,6 +17,11 @@ const routes: Routes = [
     path: 'company-management',
     loadChildren: () => import('./company-management/company-management.module').then(m => m.CompanyManagementModule),
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'store-management',
+    loadChildren: () => import('./store-management/store-management.module').then(m => m.StoreManagementModule),
+    canActivate: [AuthGuard]
   }
 ]
 
