@@ -16,10 +16,16 @@
   </button>
 
   <mat-menu #menu="matMenu" >
-    <button mat-menu-item *ngIf="userLoggedName" (click)="redirectPage('/customer-management');">
+    <button mat-menu-item 
+      *ngIf="userLoggedName" 
+      (click)="redirectPage('/customer-management');" 
+      esHasPermission="COMPANY, ADMINISTRATOR">
       <span>Clientes</span>
     </button>
-    <button mat-menu-item [matMenuTriggerFor]="companies" *ngIf="userLoggedName">
+    <button mat-menu-item 
+      [matMenuTriggerFor]="companies" 
+      *ngIf="userLoggedName" 
+      esHasPermission="COMPANY, ADMINISTRATOR">
       <span>Empresas</span>
     </button>
     <button mat-menu-item *ngIf="userLoggedName" [matMenuTriggerFor]="products" >
@@ -56,7 +62,10 @@
   </mat-menu>
 
   <mat-menu #companies="matMenu">
-    <button mat-menu-item (click)="redirectPage('/company-management');" *ngIf="userLoggedName">
+    <button mat-menu-item 
+      (click)="redirectPage('/company-management');" 
+      *ngIf="userLoggedName"
+      esHasPermission="ADMINISTRATOR">
       <mat-icon>list</mat-icon>
       <span>Lista de empresas</span>
     </button>
