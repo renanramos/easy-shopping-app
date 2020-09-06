@@ -73,4 +73,8 @@ export class SecurityUserService extends ApiService<UserCredentials> {
     const decodedToken = jwt_decode(token);
     return decodedToken['user_id'];
   }
+
+  get userLoggedRole() {
+    return localStorage.getItem(AuthConstants.USER_ROLE);
+  }
 }
