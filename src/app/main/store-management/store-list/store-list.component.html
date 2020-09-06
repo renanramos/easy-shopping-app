@@ -26,14 +26,17 @@
 
         <mat-card-title>{{store.name}}</mat-card-title>
         <mat-card-content>
-          <!-- <p>
-            <span>CPF:</span>
-            {{customer.cpf}}
+          <p>
+            <span>Nome fantasia:</span>
+            {{store.corporateName}}
           </p>
           <p>
-            <span>Email:</span>
-            {{customer.email}}
-          </p> -->
+            <span>CNPJ:</span>
+            {{store.registeredNumber}}
+          </p>
+          <p *ngIf="isAdminUser">
+            {{ companies.length ? getCompanyNameById(store.companyId) : '' }}
+          </p>
         </mat-card-content>
       </mat-card>
     </li>
