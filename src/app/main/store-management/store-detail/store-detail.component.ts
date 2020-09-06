@@ -63,7 +63,7 @@ export class StoreDetailComponent implements OnInit {
       }
     };
 
-    await this.companyService.getCompanies()
+    await this.companyService.getCompanies(null, true)
       .pipe(tap(receivedCompanies))
       .toPromise()
       .then(() => true)
@@ -72,10 +72,10 @@ export class StoreDetailComponent implements OnInit {
 
   createForm() {
     this.storeForm = this.formBuilder.group({
-      name: ['', [Validators.required]],
-      corporateName: ['', [Validators.required]],
-      registeredNumber: ['', [Validators.required]],
-      companyId: [null, [Validators.required]]
+      name: [this.store.name ? this.store.name : '', [Validators.required]],
+      corporateName: [this.store.corporateName ? this.store.corporateName : '', [Validators.required]],
+      registeredNumber: [this.store.registeredNumber ? this.store.registeredNumber : '', [Validators.required]],
+      companyId: [this.store.companyId ? this.store.companyId : null, [Validators.required]]
     });
   }
 
@@ -102,10 +102,41 @@ export class StoreDetailComponent implements OnInit {
   }
 
   async saveStore() {
+    const store: Store = this.storeForm.getRawValue();    
+
+    this.store['id'] ?
+      await this.updateStore(store) :
+      await this.saveNewStore(store);
+  }
+
+
+  async updateStore(store: Store) {
     this.isWaitingResponse = true;
 
-    const store: Store = this.storeForm.getRawValue();
+    store['id'] = this.store['id'];
 
+    const receivedStore = {
+      next: (storeUpdated: Store) => {
+        if (storeUpdated) {
+          this.dialogRef.close(storeUpdated);
+        }
+        this.isWaitingResponse = false;
+      },
+      error: (response) => {
+        const errorMessage = this.utilsService.handleErrorMessage(response);
+        this.snackBarService.openSnackBar(errorMessage, 'close');
+        this.isWaitingResponse = false;
+      }
+    };
+
+    await this.storeService.udpateStore(store)
+      .pipe(tap(receivedStore))
+      .toPromise()
+      .then(() => true)
+      .catch(() => false);
+  }
+
+  async saveNewStore(store: Store) {
     const receivedStore = {
       next: (storeCreated: Store) => {
         if (storeCreated) {
