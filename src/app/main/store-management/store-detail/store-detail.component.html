@@ -1,6 +1,6 @@
 
 <div mat-dialog-title>
-  Adicionar loja
+  {{ store?.id ? 'Alterar loja' : 'Incluir loja' }}
 </div>
 <div mat-dialog-content *ngIf="storeForm">
   <form class="container-registration-form" [formGroup]="storeForm">
