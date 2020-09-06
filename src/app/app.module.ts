@@ -24,6 +24,7 @@ import { MainModule } from './main/main.module';
 import { PipeModule } from './core/shared/pipe/pipe.module';
 import { SecurityUserService } from './core/service/auth/security-user.service';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
+import { DirectivesModule } from './core/shared/directives/directives.modules';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -49,6 +50,7 @@ registerLocaleData(localePt, 'pt-BR');
     LoginModule,
     MainModule,
     PipeModule,
+    DirectivesModule,
     RegistrationModule,
     NgSlimScrollModule,
     NgxMaskModule.forRoot()
