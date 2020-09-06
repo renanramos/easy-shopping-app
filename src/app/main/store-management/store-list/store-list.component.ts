@@ -9,6 +9,8 @@ import { tap } from 'rxjs/operators';
 import { SecurityUserService } from 'src/app/core/service/auth/security-user.service';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { StoreDetailComponent } from '../store-detail/store-detail.component';
+import { ConstantMessages } from 'src/app/core/shared/constants/constant-messages';
+import { ConfirmDialogComponent } from 'src/app/core/shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'es-store-list',
@@ -24,8 +26,10 @@ export class StoreListComponent implements OnInit {
   stores: Store[] = [];
   companies: Company[] = [];
   userId: number = null;
+  isAdminUser: boolean = false;
 
   dialogRefStoreDetail: MatDialogRef<StoreDetailComponent>;
+  dialogRefConfirm: MatDialogRef<ConfirmDialogComponent>;
 
   constructor(
     private snackBarService: SnackbarService,
@@ -37,10 +41,17 @@ export class StoreListComponent implements OnInit {
 
   async ngOnInit() {
     this.userId = this.securityUserService.idUserLoggedIn;
-    await this.loadStores();
-    this.securityUserService.isAdminUser ?
-      await this.loadCompanies() :
+    this.isAdminUser = this.securityUserService.isAdminUser;
+    await this.initializeProperties();
+  }
+
+  async initializeProperties() {
+   if (this.securityUserService.isAdminUser) {
+      await this.loadStores();
+      await this.loadCompanies();
+   } else {
       await this.loadCompanyOwnStores();
+   }     
   }
 
   async loadStores() {
@@ -74,9 +85,8 @@ export class StoreListComponent implements OnInit {
 
     const receivedStores = {
       next: (stores: Store[]) => {
-        if (stores.length) {
-          this.stores = stores;
-        } else {
+        this.stores = stores;
+        if (!this.stores.length) {
           this.noStoreFound = true;
         }
         this.isLoadingStores = false;
@@ -88,7 +98,7 @@ export class StoreListComponent implements OnInit {
       }
     };
 
-    await this.storeService.getCompanyOwnStores()
+    await this.storeService.getCompanyOwnStores(this.userId)
       .pipe(tap(receivedStores))
       .toPromise()
       .then(() => true)
@@ -108,7 +118,7 @@ export class StoreListComponent implements OnInit {
       }
     };
 
-    await this.companyService.getCompanies()
+    await this.companyService.getCompanies(null, true)
       .pipe(tap(receivedCompanies))
       .toPromise()
       .then(() => true)
@@ -120,10 +130,66 @@ export class StoreListComponent implements OnInit {
   }
 
   openEditStore(store: Store) {
-    
+    this.dialogRefStoreDetail = this.dialog.open(StoreDetailComponent, {
+      data: { store: store },
+      disableClose: true,
+      autoFocus: false,
+      panelClass: 'es-dialog'
+    });
+
+    const receivedStoreUpdated = {
+      next: (storeUpdated) => {
+        if (storeUpdated) {
+          this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_UPDATED, 'close');
+          this.reloadListOfItens();
+        }
+      },
+      error: (response) => {
+        const errorMessage = this.utilsService.handleErrorMessage(response);
+        this.snackBarService.openSnackBar(errorMessage, 'close');
+      }
+    }
+
+    this.dialogRefStoreDetail.afterClosed().subscribe(receivedStoreUpdated);
   }
 
   openRemoveStore(store: Store) {
+    this.dialogRefConfirm = this.dialog.open(ConfirmDialogComponent, {
+      data: store,
+      disableClose: true,
+      autoFocus: false,
+      panelClass: 'es-small-dialog'
+    });
+
+    const closedDialog = {
+      next: (response) => {
+        if (response) {
+         this.removeStore(store.id);
+        }
+      }
+    };
+
+    this.dialogRefConfirm.afterClosed().subscribe(closedDialog);
+  }
+
+  async removeStore(storeId: number) {
+
+    const removedStore = {
+      next: (removedResponse) => {
+        this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_REMOVED, 'close');
+        this.initializeProperties();
+      },
+      error: (response) => {
+        const errorMessage = this.utilsService.handleErrorMessage(response);
+        this.snackBarService.openSnackBar(errorMessage, 'close');
+      }
+    };
+
+    await this.storeService.removeStore(storeId)
+      .pipe(tap(removedStore))
+      .toPromise()
+      .then(() => true)
+      .catch(() => false);
 
   }
 
@@ -132,6 +198,28 @@ export class StoreListComponent implements OnInit {
       data: { store: new Store()},
       disableClose: true,
       autoFocus: false,
+      panelClass: 'es-dialog'
     });
+
+    const storeCreated = {
+      next: (store) => {
+        if (store['id']) {
+          this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_CREATED, 'close');
+          this.reloadListOfItens();
+        }
+      }
+    };
+
+    this.dialogRefStoreDetail.afterClosed()
+    .subscribe(storeCreated);
+  }
+
+  reloadListOfItens() {
+    this.loadCompanies();
+    this.initializeProperties();
+  }
+
+  getCompanyNameById(companyId: number) {
+    return this.companies.find(company => company['id'] == companyId)['name'];
   }
 }
