@@ -8,6 +8,7 @@ import { RegistrationRoutingModule } from 'src/app/main/registration/registratio
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { AddButtonComponent } from './add-button/add-button.component';
+import { DirectivesModule } from '../directives/directives.modules';
 
 const components = [
   RegistrationHeaderComponent, 
@@ -22,7 +23,8 @@ const components = [
     CommonModule,
     SharedModule,
     AngularMaterialModule,
-    RegistrationRoutingModule
+    RegistrationRoutingModule,
+    DirectivesModule
   ],
   exports: [...components]
 })
