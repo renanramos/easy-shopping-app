@@ -25,8 +25,16 @@ export class StoreService extends ApiService<Store>{
     }
     return this.get(`${this.url}${filter}`);
   }
-  
+
+  udpateStore(store: Store): Observable<Store> {
+    return this.patch(`${this.url}/${store.id}`, store);
+  }
+
   getCompanyOwnStores(companyId: number): Observable<Store | Store[]> {
     return this.get(`${this.url}/company-stores?companyIdRequestParam=${companyId}`);
+  }
+
+  removeStore(storeId: number): Observable<any> {
+    return this.delete(`${this.url}/${storeId}`);
   }
 }
