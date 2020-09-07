@@ -30,18 +30,19 @@ export class AddressDetailComponent implements OnInit {
 
   ngOnInit() {
     this.address = this.data['address'] ? this.data['address'] : new Address();
+    console.log(this.address);
     this.customerId = this.data['customerId'];
     this.createForm();
   }
 
   createForm() {
     this.addressForm = this.formBuilder.group({
-      cep: ['', [Validators.required]],
-      city: ['', [Validators.required]],
-      district: ['', [Validators.required]],
-      number: ['', [Validators.required]],
-      state: ['', [Validators.required, Validators.maxLength(2)]],
-      streetName: ['', [Validators.required]]
+      cep: [(this.address['cep'] ? this.address['cep'] : ''), [Validators.required]],
+      city: [(this.address['city'] ? this.address['city'] : ''), [Validators.required]],
+      district: [(this.address['district'] ? this.address['district'] : ''), [Validators.required]],
+      number: [(this.address['number'] ? this.address['number'] : ''), [Validators.required]],
+      state: [(this.address['state'] ? this.address['state'] : ''), [Validators.required, Validators.maxLength(2)]],
+      streetName: [(this.address['streetName'] ? this.address['streetName'] : ''), [Validators.required]]
     });
   }
 
@@ -75,12 +76,12 @@ export class AddressDetailComponent implements OnInit {
       this.saveAddress();
   }
 
-  saveAddress() {
+  async saveAddress() {
     const address: Address = this.addressForm.getRawValue();
     address['customerId'] = this.customerId;
     this.address['id'] ?
-      this.updateAddress(address) :
-      this.saveNewAddress(address);
+      await this.updateAddress(address) :
+      await this.saveNewAddress(address);
   }
 
   async saveNewAddress(address: Address) {
@@ -105,7 +106,27 @@ export class AddressDetailComponent implements OnInit {
 
   }
 
-  updateAddress(address: Address) {
+  async updateAddress(address: Address) {
+    this.isWaitingResponse = true;
+    address['id'] = this.address['id'];
+    address['customerId'] = this.address['customerId'];
 
+    const addressUpdated = {
+      next: (address: Address) => {
+        this.dialogRef.close(address);
+        this.isWaitingResponse = false;
+      },
+      error: (response) => {
+        const errorMessage = this.utilsService.handleErrorMessage(response);
+        this.snackBarService.openSnackBar(errorMessage, 'close');
+        this.isWaitingResponse = false;
+      }
+    };
+
+    await this.addressService.updateAddress(address)
+      .pipe(tap(addressUpdated))
+      .toPromise()
+      .then(() => true)
+      .catch(() => false);
   }
 }
