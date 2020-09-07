@@ -4,4 +4,16 @@ tr.table-stripped:not(.example-expanded-row):hover {
 
 tr.table-stripped:not(.example-expanded-row):active {
   background: #efefef;
+} 
+
+.action-options {
+  justify-content: space-between;
+}
+
+.action-options mat-icon {
+  color: #cecece;
+}
+
+.action-options mat-icon:hover {
+  color: black;
 }
