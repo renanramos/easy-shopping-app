@@ -2,12 +2,12 @@
   margin: 2% 15%;
 }
 
-.address-panel .mat-expansion-panel-header-title,
-.address-panel .mat-expansion-panel-header-description {
+.info-panel .mat-expansion-panel-header-title,
+.info-panel .mat-expansion-panel-header-description {
   flex-basis: 0;
 }
 
-.address-panel .mat-expansion-panel-header-description {
+.info-panel .mat-expansion-panel-header-description {
   justify-content: flex-end;
   color: #3e3838;
   font-size: 26px;
