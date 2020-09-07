@@ -43,7 +43,7 @@ export class UserProfileComponent implements OnInit {
     const receivedUserInfo = {
       next: (customerReceived: Customer) => {
         this.customer = customerReceived;
-        this.addresses = this.customer.address ? this.customer.address : [];
+        // this.addresses = this.customer.address ? this.customer.address : [];
       },
       error: (response) => {
         const errorMessage = this.utilsService.handleErrorMessage(response);

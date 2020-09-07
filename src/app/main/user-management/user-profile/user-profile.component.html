@@ -10,14 +10,21 @@
       <p>
         CPF: {{ customer?.cpf }}
       </p>
+    </mat-card-content>
+  </mat-card>
+  <mat-card>
+    <mat-card-content>
+      <mat-card-title>
+        Endereços
+      </mat-card-title>
       <mat-accordion class="address-panel">
-        <mat-expansion-panel hideToggle>
+        <mat-expansion-panel >
           <mat-expansion-panel-header>
             <mat-panel-title>
-              Endereços
+              Ver endereços
             </mat-panel-title>
             <mat-panel-description>
-              <mat-icon (click)="addNewAddress($event);">add_circle_outline</mat-icon>
+                <mat-icon (click)="addNewAddress($event);">add_circle_outline</mat-icon>
             </mat-panel-description>
           </mat-expansion-panel-header>
           <es-address-list [shouldUpdateList]="updateAddressSubject.asObservable()"></es-address-list>

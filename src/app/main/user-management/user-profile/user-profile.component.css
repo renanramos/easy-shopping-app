@@ -1,5 +1,5 @@
 .profile-container {
-  margin: 1%;
+  margin: 2% 15%;
 }
 
 .address-panel .mat-expansion-panel-header-title,
@@ -11,4 +11,8 @@
   justify-content: flex-end;
   color: #3e3838;
   font-size: 26px;
+}
+
+.mat-card {
+  margin: 1% 0%;
 }
