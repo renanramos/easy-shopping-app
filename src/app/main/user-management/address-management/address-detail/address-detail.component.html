@@ -1,0 +1,54 @@
+
+<div mat-dialog-title>
+  {{ address?.id ? 'Alterar endereço' : 'Incluir endereço' }}
+</div>
+<div mat-dialog-content *ngIf="addressForm">
+  <form class="container-registration-form" [formGroup]="addressForm">
+    <div class="input-full-width">
+      <mat-form-field class="input-half-width">
+        <mat-label>Rua</mat-label>
+        <input type="text" matInput formControlName="streetName" id="streetName">
+        <mat-error *ngIf="streetName.hasError('required')">Campo obrigatório</mat-error>
+      </mat-form-field>
+      <mat-form-field class="input-half-width">
+        <mat-label>Número</mat-label>
+        <input type="text" matInput formControlName="number" id="number" mask="0*">
+        <mat-error *ngIf="number.hasError('required')">Campo obrigatório</mat-error>
+      </mat-form-field>
+    </div>
+    <mat-form-field class="input-full-width">
+      <mat-label>CEP</mat-label>
+      <input matInput formControlName="cep" id="cep" mask="00.000-000">
+      <mat-error *ngIf="cep.hasError('required')">Campo obrigatório</mat-error>
+      <mat-error *ngIf="cep.hasError('mask')">CNPJ deve seguir o padrão permitido</mat-error>
+    </mat-form-field>
+    <mat-form-field class="input-full-width">
+      <mat-label>Bairro</mat-label>
+      <input matInput formControlName="district" id="district">
+      <mat-error *ngIf="district.hasError('required')">Campo obrigatório</mat-error>
+    </mat-form-field>
+    <div class="input-full-width">
+      <mat-form-field class="input-half-width">
+        <mat-label>Cidade</mat-label>
+        <input matInput formControlName="city" id="city">
+        <mat-error *ngIf="city.hasError('required')">Campo obrigatório</mat-error>
+      </mat-form-field>
+      <mat-form-field class="input-half-width">
+        <mat-label>Estado</mat-label>
+        <input matInput formControlName="state" id="state">
+        <mat-hint align="end">Sigla do seu estado</mat-hint>
+        <mat-error *ngIf="state.hasError('required')">Campo obrigatório</mat-error>
+        <mat-error *ngIf="state.hasError('maxlength')">Máximo dois caracteres</mat-error>
+      </mat-form-field>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions align="right" *ngIf="!isWaitingResponse">
+  <button mat-raised-button mat-dialog-close>FECHAR</button>
+  <button mat-raised-button color="primary" (click)="submitAddress();">SALVAR</button>
+</div>
+<div mat-dialog-action align="right" *ngIf="isWaitingResponse">
+  <div class="loading">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+</div>

@@ -1,0 +1,7 @@
+tr.table-stripped:not(.example-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.table-stripped:not(.example-expanded-row):active {
+  background: #efefef;
+}

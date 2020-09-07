@@ -1,0 +1,14 @@
+.profile-container {
+  margin: 1%;
+}
+
+.address-panel .mat-expansion-panel-header-title,
+.address-panel .mat-expansion-panel-header-description {
+  flex-basis: 0;
+}
+
+.address-panel .mat-expansion-panel-header-description {
+  justify-content: flex-end;
+  color: #3e3838;
+  font-size: 26px;
+}
