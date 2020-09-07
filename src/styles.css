@@ -248,6 +248,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; overflow-x:
   overflow-y: hidden !important;
 }
 
+table.mat-table {
+  width: 100%;
+}
+
 @media screen and (min-width: 250px) and (max-width: 720px) {
 
   .mat-drawer-content {
