@@ -1,0 +1,42 @@
+
+<div mat-dialog-title>
+  {{ creditCard?.id ? 'Alterar cartão de crédito' : 'Incluir cartão de crédito' }}
+</div>
+<div mat-dialog-content *ngIf="crediCardForm">
+  <form class="container-registration-form" [formGroup]="crediCardForm">
+    <mat-form-field class="input-full-width">
+      <mat-label>Nome do titular</mat-label>
+      <input type="text" matInput formControlName="ownerName" id="ownerName">
+      <mat-error *ngIf="ownerName.hasError('required')">Campo obrigatório</mat-error>
+    </mat-form-field>
+    <mat-form-field class="input-full-width">
+      <mat-label>Número do cartão</mat-label>
+      <input type="text" matInput 
+        formControlName="creditCardNumber" 
+        id="creditCardNumber" 
+        mask="0000 0000 0000 0000">
+      <mat-error *ngIf="creditCardNumber.hasError('required')">Campo obrigatório</mat-error>
+      <mat-error *ngIf="creditCardNumber.hasError('maks')">Número do cartão está em formato inválido</mat-error>
+    </mat-form-field>
+    <mat-form-field class="input-full-width">
+      <mat-label>Código de segurança</mat-label>
+      <input matInput formControlName="code" id="code" mask="000">
+      <mat-error *ngIf="code.hasError('required')">Campo obrigatório</mat-error>
+      <mat-error *ngIf="code.hasError('mask')">Código deve conter 3 dígitos</mat-error>
+    </mat-form-field>
+    <mat-form-field class="input-full-width">
+      <mat-label>Data de validade</mat-label>
+      <input matInput formControlName="validDate" id="validDate">
+      <mat-error *ngIf="validDate.hasError('required')">Campo obrigatório</mat-error>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions align="right" *ngIf="!isWaitingResponse">
+  <button mat-raised-button mat-dialog-close>FECHAR</button>
+  <button mat-raised-button color="primary" (click)="submitCreditCard();">SALVAR</button>
+</div>
+<div mat-dialog-action align="right" *ngIf="isWaitingResponse">
+  <div class="loading">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+</div>
