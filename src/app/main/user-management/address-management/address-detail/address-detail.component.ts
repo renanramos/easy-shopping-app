@@ -6,6 +6,7 @@ import { UtilsService } from 'src/app/core/shared/utils/utils.service';
 import { AddressService } from 'src/app/core/service/address/address.service';
 import { Address } from 'src/app/core/models/address/address.model';
 import { tap } from 'rxjs/internal/operators/tap';
+import { ConstantMessages } from 'src/app/core/shared/constants/constant-messages';
 
 @Component({
   selector: 'es-address-detail',
@@ -30,7 +31,6 @@ export class AddressDetailComponent implements OnInit {
 
   ngOnInit() {
     this.address = this.data['address'] ? this.data['address'] : new Address();
-    console.log(this.address);
     this.customerId = this.data['customerId'];
     this.createForm();
   }
@@ -89,6 +89,7 @@ export class AddressDetailComponent implements OnInit {
     const addressSaved = {
       next: (address: Address) => {
         this.dialogRef.close(address);
+        this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_CREATED, 'close');
         this.isWaitingResponse = false;
       },
       error: (response) => {
