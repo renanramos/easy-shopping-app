@@ -28,10 +28,20 @@
       esHasPermission="COMPANY, ADMINISTRATOR">
       <span>Empresas</span>
     </button>
-    <button mat-menu-item *ngIf="userLoggedName" [matMenuTriggerFor]="products" >
+    <button mat-menu-item 
+      *ngIf="userLoggedName" 
+      [matMenuTriggerFor]="products" 
+      esHasPermission="COMPANY, ADMINISTRATOR">
       <span>Produtos</span>
     </button>
-    <mat-divider></mat-divider>
+    <button mat-menu-item 
+      *ngIf="userLoggedName"
+      (click)="redirectPage('/user-management');"
+      esHasPermission="CUSTOMER">
+      <mat-icon>perm_contact_calendar</mat-icon>
+      <span>Meus dados</span>
+    </button>
+    <mat-divider *ngIf="userLoggedName"></mat-divider>
     <button mat-menu-item (click)="openLoginDialog();" *ngIf="!userLoggedName">
       <mat-icon>login</mat-icon>
       <span>Entrar</span>
