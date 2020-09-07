@@ -26,7 +26,7 @@ export class AddressListComponent implements OnInit, OnDestroy {
 
   isLoadingAddresses: boolean = false;
   addresses: Address[] = [];
-  displayedColumns: string[] = ["cep", "city", "district", "number", "state", "streetName", "options"]
+  displayedColumns: string[] = ["cep", "city", "district", "number", "state", "streetName", "options"];
 
   constructor(
     private dialog: MatDialog,
@@ -35,8 +35,12 @@ export class AddressListComponent implements OnInit, OnDestroy {
     private addressService: AddressService) { }
 
   async ngOnInit() {
-    this.updateListSubscription = this.shouldUpdateList.subscribe(() => this.loadAddress());
+    this.subscribeToUpdateList();
     await this.loadAddress();
+  }
+
+  subscribeToUpdateList() {
+    this.updateListSubscription = this.shouldUpdateList.subscribe(() => this.loadAddress());
   }
 
   ngOnDestroy() {
