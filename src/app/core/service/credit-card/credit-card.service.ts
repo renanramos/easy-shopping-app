@@ -13,7 +13,7 @@ export class CreditCardService extends ApiService<CreditCard>{
     return this.post(this.url, creditCard);
   }
 
-  getCreditCards(customerId: number): Observable<CreditCard | CreditCard[]> {
+  getCreditCards(customerId?: number): Observable<CreditCard | CreditCard[]> {
 
     let filter = '';
 
