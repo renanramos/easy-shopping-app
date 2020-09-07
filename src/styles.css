@@ -252,6 +252,26 @@ table.mat-table {
   width: 100%;
 }
 
+tr.table-stripped:hover {
+  background: whitesmoke;
+}
+
+tr.table-stripped:active {
+  background: #efefef;
+} 
+
+.action-options {
+  justify-content: space-between;
+}
+
+.action-options mat-icon {
+  color: #cecece;
+}
+
+.action-options mat-icon:hover {
+  color: black;
+}
+
 @media screen and (min-width: 250px) and (max-width: 720px) {
 
   .mat-drawer-content {
