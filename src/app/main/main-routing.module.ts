@@ -22,6 +22,11 @@ const routes: Routes = [
         path: 'store-management',
         loadChildren: () => import('./store-management/store-management.module').then(m => m.StoreManagementModule),
         canActivate: [AuthGuard]
+      },
+      {
+        path: 'user-management',
+        loadChildren: () => import('./user-management/user-management.module').then(m => m.UserManagementModule),
+        canActivate: [AuthGuard]
       }
     ]
   }  
