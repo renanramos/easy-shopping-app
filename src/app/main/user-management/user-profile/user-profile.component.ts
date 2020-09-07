@@ -10,6 +10,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AddressDetailComponent } from '../address-management/address-detail/address-detail.component';
 import { CustomerService } from 'src/app/core/service/customer/customer.service';
 import { Subject } from 'rxjs';
+import { CreditCardDetailComponent } from '../credit-card-management/credit-card-detail/credit-card-detail.component';
 
 @Component({
   selector: 'es-user-profile',
@@ -23,8 +24,10 @@ export class UserProfileComponent implements OnInit {
   customer: Customer;
   addresses: Address[] = [];
   updateAddressSubject: Subject<any> = new Subject<any>();
+  updateCreditCardSubject: Subject<any> = new Subject<any>();
 
   dialogAddressRef: MatDialogRef<AddressDetailComponent>;
+  dialogCreditCardRef: MatDialogRef<CreditCardDetailComponent>;
 
   constructor(
     private dialog: MatDialog,
@@ -75,5 +78,25 @@ export class UserProfileComponent implements OnInit {
     };
 
     this.dialogAddressRef.afterClosed().subscribe(dialogResponse);
+  }
+
+  addNewCreditCard(event: any) {
+    event.stopPropagation();
+    this.dialogCreditCardRef = this.dialog.open(CreditCardDetailComponent, {
+      data: { customerId: this.customer['id'] },
+      disableClose: true,
+      autoFocus: false,
+      panelClass: 'es-dialog'
+    });
+
+    const dialogResponse = {
+      next: (response) => {
+        if (response) {
+          this.updateCreditCardSubject.next();
+        }
+      }
+    };
+
+    this.dialogCreditCardRef.afterClosed().subscribe(dialogResponse);
   }
 }
