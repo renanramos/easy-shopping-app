@@ -9,8 +9,8 @@ import { SharedComponentsModule } from 'src/app/core/shared/components/shared-co
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserManagementRoutingModule } from './user-management-routing.module';
-import { AddressDetailComponent } from './address-management/address-detail/address-detail.component';
 import { AddressManagementModule } from './address-management/address-management.module';
+import { CreditCardManagementModule } from './credit-card-management/credit-card-management.module';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -27,6 +27,7 @@ const components = [
     UserManagementRoutingModule,
     SharedComponentsModule,
     AddressManagementModule,
+    CreditCardManagementModule,
     NgSlimScrollModule,
     InfiniteScrollModule,
     NgxMaskModule.forRoot()
