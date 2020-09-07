@@ -26,4 +26,12 @@ export class AddressService extends ApiService<Address> {
   saveAddress(address: Address): Observable<Address> {
     return this.post(`${this.url}`, address);
   }
+
+  updateAddress(address: Address): Observable<Address> {
+    return this.patch(`${this.url}/${address['id']}`, address);
+  }
+
+  removeAddress(addressId: number): Observable<Address> {
+    return this.delete(`${this.url}/${addressId}`);
+  }
 }
