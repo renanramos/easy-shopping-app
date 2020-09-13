@@ -1,0 +1,21 @@
+<div mat-dialog-title>
+  {{ productCategory?.id ? 'Alterar categoria do produto' : 'Incluir categoria do produto' }}
+</div>
+<div mat-dialog-content *ngIf="productCategoryForm">
+  <form class="container-registration-form" [formGroup]="productCategoryForm">
+    <mat-form-field class="input-full-width">
+      <mat-label>Nome</mat-label>
+      <input type="text" matInput formControlName="name" id="name">
+      <mat-error *ngIf="name.hasError('required')">Campo obrigatório</mat-error>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions align="right" *ngIf="!isWaitingResponse">
+  <button mat-raised-button mat-dialog-close>FECHAR</button>
+  <button mat-raised-button color="primary" (click)="submitProductCategory();">SALVAR</button>
+</div>
+<div mat-dialog-action align="right" *ngIf="isWaitingResponse">
+  <div class="loading">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+</div>
