@@ -15,4 +15,16 @@ export class ProductCategoryService extends ApiService<ProductCategory> {
    getProductCategories(): Observable<ProductCategory | ProductCategory[]> {
     return this.get(`${this.url}`);
    }
+
+   saveNewProductCategory(productCategory: ProductCategory): Observable<ProductCategory> {
+     return this.post(`${this.url}`, productCategory);
+   }
+
+   updateProductCategory(productCategory: ProductCategory): Observable<ProductCategory> {
+     return this.patch(`${this.url}/${productCategory['id']}`, productCategory);
+   }
+
+   removeProductCategory(productCategoryId: number): Observable<ProductCategory> {
+     return this.delete(`${this.url}/${productCategoryId}`);
+   }
 }
