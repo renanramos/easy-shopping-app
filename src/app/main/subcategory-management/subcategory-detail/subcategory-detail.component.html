@@ -1,1 +1,27 @@
-<p>subcategory-detail works!</p>
+<div mat-dialog-title>
+  {{ subcategory?.id ? 'Alterar subcategoria' : 'Incluir subcategoria' }}
+</div>
+<div mat-dialog-content *ngIf="subcategoryForm">
+  <form class="container-registration-form" [formGroup]="subcategoryForm">
+    <mat-form-field appearance="outline" class="input-full-width">
+      <mat-label>Categoria</mat-label>
+      <mat-select formControlName="productCategoryId" id="productCategoryId">
+        <mat-option *ngFor="let productCategory of productCategories" [value]="productCategory.id">{{ productCategory.name }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="productCategoryId.hasError('required')">Campo obrigatório</mat-error>
+    </mat-form-field>
+    <mat-form-field class="input-full-width">
+      <mat-label>Nome</mat-label>
+      <input type="text" matInput formControlName="name" id="name">
+      <mat-error *ngIf="name.hasError('required')">Campo obrigatório</mat-error>
+    </mat-form-field></form>
+</div>
+<div mat-dialog-actions align="right" *ngIf="!isWaitingResponse">
+  <button mat-raised-button mat-dialog-close>FECHAR</button>
+  <button mat-raised-button color="primary" (click)="onSubmitSubcategory();">SALVAR</button>
+</div>
+<div mat-dialog-action align="right" *ngIf="isWaitingResponse">
+  <div class="loading">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+</div>
