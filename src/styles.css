@@ -275,7 +275,7 @@ tr.table-stripped:active {
 @media screen and (min-width: 250px) and (max-width: 720px) {
 
   .mat-drawer-content {
-    padding-left: 15px;
+    padding-left: none;
   }
 
 }
