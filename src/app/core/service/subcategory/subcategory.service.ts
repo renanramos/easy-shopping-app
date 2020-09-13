@@ -11,7 +11,25 @@ export class SubcategoryService  extends ApiService<Subcategory> {
     super(injector);
    }
 
-   getSubcategories(productCategoryId: number): Observable<Subcategory | Subcategory[]> {
-    return this.get(`${this.url}?productCategoryId=${productCategoryId}`);
+   getSubcategories(productCategoryId?: number): Observable<Subcategory | Subcategory[]> {
+     let filterString = '';
+
+     if (productCategoryId) {
+       filterString += `?productCategoryId=${productCategoryId}`;
+     }
+
+    return this.get(`${this.url}${filterString}`);
+   }
+
+   saveNewSubcategory(subcategory: Subcategory): Observable<Subcategory> {
+     return this.post(`${this.url}`, subcategory);
+   }
+
+   updateSubcategory(subcategory: Subcategory): Observable<Subcategory> {
+     return this.patch(`${this.url}/${subcategory['id']}`, subcategory);
+   }
+
+   removeSubcategory(subcategoryId: number): Observable<Subcategory> {
+    return this.delete(`${this.url}/${subcategoryId}`);
    }
 }
