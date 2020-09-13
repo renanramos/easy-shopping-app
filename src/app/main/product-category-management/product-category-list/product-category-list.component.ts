@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { tap } from 'rxjs/operators';
 import { ProductCategory } from 'src/app/core/models/product-category/product-category.model';
 import { SecurityUserService } from 'src/app/core/service/auth/security-user.service';
 import { ProductCategoryService } from 'src/app/core/service/productCategory/product-category.service';
+import { ConfirmDialogComponent } from 'src/app/core/shared/components/confirm-dialog/confirm-dialog.component';
+import { ConstantMessages } from 'src/app/core/shared/constants/constant-messages';
 import { SnackbarService } from 'src/app/core/shared/service/snackbar.service';
 import { UtilsService } from 'src/app/core/shared/utils/utils.service';
+import { ProductCategoryDetailComponent } from '../product-category-detail/product-category-detail.component';
 
 @Component({
   selector: 'es-product-category-list',
@@ -18,7 +22,11 @@ export class ProductCategoryListComponent implements OnInit {
   dataNotFound: boolean = false;
   productCategories: ProductCategory[] = [];
 
+  dialogRef: MatDialogRef<ProductCategoryDetailComponent>;
+  dialogRefConfirm: MatDialogRef<ConfirmDialogComponent>;
+
   constructor(
+    private dialog: MatDialog,
     private snackBarService: SnackbarService,
     private productCategoryService: ProductCategoryService) { }
 
@@ -56,14 +64,81 @@ export class ProductCategoryListComponent implements OnInit {
   }
 
   openEditCategory(productCategory: ProductCategory) {
-    console.log('onEdit');
+    this.dialogRef = this.dialog.open(ProductCategoryDetailComponent, {
+      data: { productCategory: productCategory },
+      autoFocus: false,
+      disableClose: true,
+      panelClass: 'es-small-dialog'
+    });
+
+    const afterDialogClosed = {
+      next: (productCategoryReceived) => {
+        if (productCategoryReceived) {
+          this.loadProductCategories();
+          this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_UPDATED, 'close');
+        }
+      }
+    };
+
+    this.dialogRef.afterClosed().subscribe(afterDialogClosed);
   }
 
   openRemoveCategory(productCategory: ProductCategory) {
-    console.log('onRemove');
+    this.dialogRefConfirm = this.dialog.open(ConfirmDialogComponent, {
+      data: { name: productCategory['name'] },
+      disableClose: true,
+      autoFocus: false,
+      panelClass: 'es-small-dialog'
+    });
+
+    const afterDialogClosed = {
+      next: (response) => {
+        console.log(response);
+        if (response) {
+          this.removeProductCategory(productCategory['id']);
+        }
+      }
+    }
+
+    this.dialogRefConfirm.afterClosed().subscribe(afterDialogClosed);
   }
 
   onAddNewProductCategory() {
-    console.log('new ProductCategory');
+    this.dialogRef = this.dialog.open(ProductCategoryDetailComponent, {
+      data: { productCategory: new ProductCategory()},
+      autoFocus: false,
+      disableClose: true,
+      panelClass: 'es-small-dialog'
+    });
+
+    const afterDialogClosed = {
+      next: (productCategoryReceived) => {
+        if (productCategoryReceived) {
+          this.loadProductCategories();
+          this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_CREATED, 'close');
+        }
+      }
+    };
+
+    this.dialogRef.afterClosed().subscribe(afterDialogClosed);
+  }
+
+  async removeProductCategory(productCategoryId: number) {
+
+    const productCategoryRemoved = {
+      next: (response) => {
+        this.loadProductCategories();
+        this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_REMOVED, 'close');
+      },
+      error: (response) => {
+        this.snackBarService.openSnackBar(response.error.message, 'close');
+      }
+    }
+
+    await this.productCategoryService.removeProductCategory(productCategoryId)
+      .pipe(tap(productCategoryRemoved))
+      .toPromise()
+      .then(() => true)
+      .catch(() => false);
   }
 }
