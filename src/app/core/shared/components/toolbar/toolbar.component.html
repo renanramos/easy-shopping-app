@@ -61,7 +61,9 @@
       <mat-icon>event_seat</mat-icon>
       <span>Lista de produtos</span>
     </button>
-    <button mat-menu-item *ngIf="userLoggedName">
+    <button mat-menu-item *ngIf="userLoggedName"
+        (click)="redirectPage('/product-category-management');"
+        esHasPermission="ADMINISTRATOR">
       <mat-icon>category</mat-icon>
       <span>Categorias</span>
     </button>
