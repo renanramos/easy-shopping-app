@@ -32,6 +32,11 @@ const routes: Routes = [
         path: 'product-category-management',
         loadChildren: () => import('./product-category-management/product-category-management.module').then(m => m.ProductCategoryManagementModule),
         canActivate: [AuthGuard]
+      },
+      {
+        path: 'product-subcategory-management',
+        loadChildren: () => import('./subcategory-management/subcategory-management.module').then(m => m.SubcategoryManagementModule),
+        canActivate: [AuthGuard]
       }
     ]
   }  
