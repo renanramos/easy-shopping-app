@@ -1,1 +1,40 @@
-<p>subcategory-list works!</p>
+<div class="title">
+  Subcategorias
+</div>
+<div class="container-list">
+  <ul class="content-list" 
+  infiniteScroll
+  [infiniteScrollDistance]="1"
+  [infiniteScrollUpDistance]="2"
+  [infiniteScrollThrottle]="300"
+  (scrolled)="onScroll();" >
+    <p *ngIf="noSubcategoriesFound && !subcategories.length">
+      Não há subcategorias cadastradas.
+    </p>
+    <li *ngFor="let subcategory of subcategories" class="card-items">
+      <mat-card>
+        <mat-icon mat-icon-button [matMenuTriggerFor]="cardOption">more_vert</mat-icon>
+
+        <mat-menu #cardOption="matMenu">
+          <button mat-menu-item (click)="openEditSubcategory(subcategory);">
+            <span>Editar</span>
+          </button>
+          <button mat-menu-item (click)="openRemoveSubcategory(subcategory);">
+            <span>Remover</span>
+          </button>
+        </mat-menu>
+
+        <mat-card-title>{{subcategory.name}}</mat-card-title>
+        <mat-card-content>
+          <p>
+            {{ subcategories.length ? getCategoryNameById(subcategory.productCategoryId) : '' }}
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </li>
+  </ul>
+  <div *ngIf="isLoadingSubcategories" class="loading">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+</div>
+<es-add-button (newClickEvent)="onAddNewSubcategory();"></es-add-button>
