@@ -67,7 +67,10 @@
       <mat-icon>category</mat-icon>
       <span>Categorias</span>
     </button>
-    <button mat-menu-item *ngIf="userLoggedName">
+    <button mat-menu-item 
+      *ngIf="userLoggedName"
+      (click)="redirectPage('/product-subcategory-management')"
+      esHasPermission="ADMINISTRATOR">
       <mat-icon>category</mat-icon>
       <span>Subcategorias</span>
     </button>
