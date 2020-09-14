@@ -68,6 +68,7 @@ export class ScaffoldComponent implements OnInit {
 
   async getSubcategory(productCategory: ProductCategory) {
     this.changeArrowIcon = !this.changeArrowIcon;
+    this.subcategories = [];
     await this.loadSubcategory(productCategory);
   }
 
