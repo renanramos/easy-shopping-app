@@ -21,7 +21,6 @@ import { ConfirmDialogComponent } from 'src/app/core/shared/components/confirm-d
 })
 export class StoreListComponent implements OnInit {
 
-  isLoadingStores: boolean = false;
   noStoreFound: boolean = false;
   stores: Store[] = [];
   companies: Company[] = [];
@@ -55,8 +54,6 @@ export class StoreListComponent implements OnInit {
   }
 
   async loadStores() {
-    this.isLoadingStores = true;
-
     const receivedStores = {
       next: (stores: Store[]) => {
         if (stores.length) {
@@ -64,12 +61,10 @@ export class StoreListComponent implements OnInit {
         } else {
           this.noStoreFound = true;
         }
-        this.isLoadingStores = false;
       },
       error: (response) => {
         const errorMessage = this.utilsService.handleErrorMessage(response);
         this.snackBarService.openSnackBar(errorMessage, 'close');
-        this.isLoadingStores = false;
       }
     };
 
@@ -81,20 +76,16 @@ export class StoreListComponent implements OnInit {
   }
 
   async loadCompanyOwnStores() {
-    this.isLoadingStores = true;
-
     const receivedStores = {
       next: (stores: Store[]) => {
         this.stores = stores;
         if (!this.stores.length) {
           this.noStoreFound = true;
         }
-        this.isLoadingStores = false;
       },
       error: (response) => {
         const errorMessage = this.utilsService.handleErrorMessage(response);
         this.snackBarService.openSnackBar(errorMessage, 'close');
-        this.isLoadingStores = false;
       }
     };
 

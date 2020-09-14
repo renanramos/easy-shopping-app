@@ -22,7 +22,6 @@ export class ScaffoldComponent implements OnInit {
   productsCategories: ProductCategory[] = [];
   subcategories: Subcategory[] = [];
   changeArrowIcon = true;
-  isLoadingCategories: boolean = false;
 
   @ViewChild('drawer', { static: true}) drawer: MatDrawer;
 
@@ -39,18 +38,15 @@ export class ScaffoldComponent implements OnInit {
   }
 
   async loadProductsCategories() {
-    this.isLoadingCategories = true;
     const receivedProductsCategories = {
       next: (productsCategories: ProductCategory[]) => {
         if (productsCategories.length) {
           this.productsCategories = productsCategories;
           this.disableProductCategoryToShow();
         }
-        this.isLoadingCategories = false;
       },
       error: () => {
         this.snackBar.open(ConstantMessages.CANT_GET_PRODUCT_CATEGORIES);
-        this.isLoadingCategories = true;
       }
     };
 

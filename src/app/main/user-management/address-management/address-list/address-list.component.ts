@@ -24,7 +24,6 @@ export class AddressListComponent implements OnInit, OnDestroy {
   dialogAddressDetailRef: MatDialogRef<AddressDetailComponent>;
   dialogConfirmDialogRef: MatDialogRef<ConfirmDialogComponent>;
 
-  isLoadingAddresses: boolean = false;
   addresses: Address[] = [];
   displayedColumns: string[] = ["cep", "city", "district", "number", "state", "streetName", "options"];
 
@@ -49,16 +48,13 @@ export class AddressListComponent implements OnInit, OnDestroy {
   }
 
   async loadAddress() {
-    this.isLoadingAddresses = true;
     const receivedAddresses = {
       next: (addresses: Address[]) => {
         this.addresses = addresses;
-        this.isLoadingAddresses = false;
       },
       error: (response) => {
         const errorMessage = this.utilsService.handleErrorMessage(response);
         this.snackBarService.openSnackBar(errorMessage, 'close');
-        this.isLoadingAddresses = false;
       }
     };
 

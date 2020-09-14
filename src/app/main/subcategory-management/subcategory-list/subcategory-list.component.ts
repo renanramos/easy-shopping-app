@@ -19,8 +19,6 @@ import { SubcategoryDetailComponent } from '../subcategory-detail/subcategory-de
 })
 export class SubcategoryListComponent implements OnInit {
 
-  isLoadingSubcategories: boolean = false;
-  isLoadingProductCategories: boolean = false;
   noSubcategoriesFound: boolean = false;
   subcategories: Subcategory[] = [];
   productCategories: ProductCategory[] = [];
@@ -45,7 +43,6 @@ export class SubcategoryListComponent implements OnInit {
   }
 
   async loadSubcategories() {
-    this.isLoadingSubcategories = true;
     this.noSubcategoriesFound = true;
 
     const receivedSubcategories = {
@@ -55,12 +52,10 @@ export class SubcategoryListComponent implements OnInit {
         } else {
           this.noSubcategoriesFound = true;
         }
-        this.isLoadingSubcategories = false;
       },
       error: (response) => {
         const errorMessage = this.utilsService.handleErrorMessage(response);
         this.snackBarService.openSnackBar(errorMessage, 'close');
-        this.isLoadingSubcategories = false;
         this.noSubcategoriesFound = true;
       }
     };
@@ -73,19 +68,16 @@ export class SubcategoryListComponent implements OnInit {
   }
 
   async loadProductCategories() {
-    this.isLoadingProductCategories = true;
 
     const receivedProductCategories = {
       next: (productCategories: ProductCategory[]) => {
         if (productCategories.length) {
           this.productCategories = productCategories;
         }
-        this.isLoadingProductCategories = false;
       },
       error: (response) => {
         const errorMessage = this.utilsService.handleErrorMessage(response);
         this.snackBarService.openSnackBar(errorMessage, 'close');
-        this.isLoadingProductCategories = false;
       }
     };
 

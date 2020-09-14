@@ -18,7 +18,6 @@ import { ProductCategoryDetailComponent } from '../product-category-detail/produ
 })
 export class ProductCategoryListComponent implements OnInit {
 
-  isLoadingProductCategories: boolean = false;
   dataNotFound: boolean = false;
   productCategories: ProductCategory[] = [];
 
@@ -35,7 +34,6 @@ export class ProductCategoryListComponent implements OnInit {
   }
 
   async loadProductCategories() {
-    this.isLoadingProductCategories = true;
     this.dataNotFound = true;
 
     const productCategoriesReceived = {
@@ -44,10 +42,8 @@ export class ProductCategoryListComponent implements OnInit {
           this.productCategories = productCategories;
           this.dataNotFound = false;
         }
-        this.isLoadingProductCategories = false;
       },
       error: (response) => {
-        this.isLoadingProductCategories = false;
         this.snackBarService.openSnackBar(response.error.message, 'close');
       }
     };
@@ -126,7 +122,7 @@ export class ProductCategoryListComponent implements OnInit {
   async removeProductCategory(productCategoryId: number) {
 
     const productCategoryRemoved = {
-      next: (response) => {
+      next: () => {
         this.loadProductCategories();
         this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_REMOVED, 'close');
       },

@@ -18,7 +18,6 @@ import { ConstantMessages } from 'src/app/core/shared/constants/constant-message
 })
 export class CompanyListComponent implements OnInit {
 
-  isLoadingCompanies: boolean = false;
   noCompanyFound: boolean = false;
   companies: Company[] = [];
   
@@ -36,8 +35,6 @@ export class CompanyListComponent implements OnInit {
 
   async loadCompanies() {
 
-    this.isLoadingCompanies = true;
-
     const receivedCompanies = {
       next: (companies: Company[]) => {
         if (companies.length) {
@@ -45,10 +42,9 @@ export class CompanyListComponent implements OnInit {
         } else {
           this.noCompanyFound = true;
         }
-        this.isLoadingCompanies = false;
       },
       error: (response) => {
-        this.isLoadingCompanies = false;
+        this.noCompanyFound = true;
         const errorMessage = this.utilsService.handleErrorMessage(response);
         this.snackBarService.openSnackBar(errorMessage, 'close');
       }

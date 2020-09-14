@@ -24,7 +24,6 @@ export class CreditCardListComponent implements OnInit, OnDestroy {
   dialogCreditCardDetailRef: MatDialogRef<CreditCardDetailComponent>;
   dialogConfirmDialogRef: MatDialogRef<ConfirmDialogComponent>;
 
-  isLoadingCreditCard: boolean = false;
   creditCards: CreditCard[] = [];
   displayedColumns: string[] = ["code", "creditCardNumber", "ownerName", "validDate", "options"];
 
@@ -109,17 +108,14 @@ export class CreditCardListComponent implements OnInit, OnDestroy {
   }
 
   async loadCreditCards() {
-    this.isLoadingCreditCard = true;
 
     const receivedCreditCards = {
       next: (creditCards: CreditCard[]) => {
         this.creditCards = creditCards;
-        this.isLoadingCreditCard = false;
       },
       error: (response) => {
         const errorMessage = this.utilsService.handleErrorMessage(response);
         this.snackBarService.openSnackBar(errorMessage, 'close');
-        this.isLoadingCreditCard = false;
       }
     }
 

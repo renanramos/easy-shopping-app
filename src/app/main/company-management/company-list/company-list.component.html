@@ -2,10 +2,7 @@
   Empresas
 </div>
 <div class="container-list">
-  <div *ngIf="isLoadingCompanies" class="loading">
-    <mat-spinner diameter="50"></mat-spinner>
-  </div>
-  <ul class="content-list" *ngIf="!isLoadingCompanies" >
+  <ul class="content-list">
     <p *ngIf="noCompanyFound">
       Não há empresas cadastrados.
     </p>

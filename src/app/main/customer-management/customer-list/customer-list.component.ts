@@ -19,7 +19,6 @@ import { UtilsService } from 'src/app/core/shared/utils/utils.service';
 export class CustomerListComponent implements OnInit {
 
   selector: string = '.main-container';
-  isLoadingCustomers: boolean = false;
   noCustomerFound: boolean = false;
   customers: Customer[] = [];
   pageNumber: number = 0;
@@ -37,7 +36,6 @@ export class CustomerListComponent implements OnInit {
   }
 
   async loadCustomers() {
-    this.isLoadingCustomers = true;
     const receivedCustomers = {
       next: (customers: Customer[]) => {
         if (customers.length) {
@@ -45,11 +43,11 @@ export class CustomerListComponent implements OnInit {
         } else {
           this.noCustomerFound = true;
         }
-        this.isLoadingCustomers = false;
       },
       error: (error) => {
-        this.isLoadingCustomers = false;
         this.noCustomerFound = true;
+        const errorMessage = this.utilsService.handleErrorMessage(error);
+        this.snackBarService.openSnackBar(errorMessage, 'close');
       }
     }
 
