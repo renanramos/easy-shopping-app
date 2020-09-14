@@ -25,6 +25,9 @@ import { PipeModule } from './core/shared/pipe/pipe.module';
 import { SecurityUserService } from './core/service/auth/security-user.service';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { DirectivesModule } from './core/shared/directives/directives.modules';
+import { GlobalLoaderService } from './core/shared/service/global-loader.service';
+import { LoaderInterceptor } from './core/interceptors/loader-interceptor.service';
+import { LoaderComponent } from './core/shared/components/loader/loader.component';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -32,7 +35,8 @@ registerLocaleData(localePt, 'pt-BR');
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -56,6 +60,11 @@ registerLocaleData(localePt, 'pt-BR');
     NgxMaskModule.forRoot()
   ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoaderInterceptor,
+      multi: true
+    },
     SecurityUserService,
     {
       provide: HTTP_INTERCEPTORS,
@@ -84,7 +93,8 @@ registerLocaleData(localePt, 'pt-BR');
     CurrencyPipe,
     DatePipe,
     DecimalPipe,
-    PercentPipe
+    PercentPipe,
+    GlobalLoaderService
   ],
   bootstrap: [AppComponent]
 })
