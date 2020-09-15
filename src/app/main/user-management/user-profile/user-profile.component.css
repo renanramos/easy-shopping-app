@@ -16,3 +16,9 @@
 .mat-card {
   margin: 1% 0%;
 }
+
+@media screen and (max-width: 1366px) and (min-width: 571px) {
+  .card-items {
+    width: auto;
+  }
+}
