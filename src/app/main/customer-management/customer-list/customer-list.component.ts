@@ -39,7 +39,7 @@ export class CustomerListComponent implements OnInit {
     const receivedCustomers = {
       next: (customers: Customer[]) => {
         if (customers.length) {
-          this.customers = [...this.customers, ...customers];
+          this.customers = customers;
         } else {
           this.noCustomerFound = true;
         }
