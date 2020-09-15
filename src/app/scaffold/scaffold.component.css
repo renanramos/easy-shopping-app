@@ -1,7 +1,6 @@
 .logo-image {
   width: calc(100% - 10px);
   height: calc(30% - 10px);
-  /* margin-bottom: 15%; */
   cursor: pointer;
   max-height: 150px;
   max-width: 250px;
