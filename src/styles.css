@@ -248,8 +248,17 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; overflow-x:
   overflow-y: hidden !important;
 }
 
+.table-container {
+  overflow: auto;
+  max-width: 100%;
+}
+
 table.mat-table {
   width: 100%;
+}
+
+th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
+  padding: 1% 2% !important;
 }
 
 tr.table-stripped:hover {
