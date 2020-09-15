@@ -14,7 +14,6 @@ import { SnackbarService } from 'src/app/core/shared/service/snackbar.service';
 })
 export class LoginFormComponent implements OnInit {
 
-  isValidatingLogin: boolean = false;
   loginForm: FormGroup = null;
 
   passwordVisibility: boolean = false;
@@ -51,14 +50,11 @@ export class LoginFormComponent implements OnInit {
   }
 
   async authenticateUser(login: Login) {
-    this.isValidatingLogin = true;
     const receiveUserCredentials = {
       next: (userCredentials) => {
-        this.isValidatingLogin = false;
         this.dialogRef.close(userCredentials);
       },
       error: (response) => {
-        this.isValidatingLogin = false;
         this.loginForm.markAllAsTouched();
         this.snackBarService.openSnackBar(response.error.message);
       }

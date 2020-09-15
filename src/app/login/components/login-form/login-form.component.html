@@ -17,13 +17,8 @@
   </form>
 </div>
 <div mat-dialog-actions align="center">
-  <div class="login-buttons" *ngIf="!isValidatingLogin; else showLoadingSpinner">
+  <div class="login-buttons">
     <button mat-raised-button (click)="onCloseDialog();">CANCELAR</button>
     <button mat-raised-button color="primary" (click)="onSubmitLogin();">ACESSAR</button>
   </div>
-  <ng-template #showLoadingSpinner>
-    <div class="loading">
-      <mat-spinner diameter="50"></mat-spinner>
-    </div>
-  </ng-template>
 </div>
