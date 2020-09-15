@@ -7,13 +7,14 @@ import { Observable } from 'rxjs/internal/Observable';
 import { tap } from 'rxjs/operators';
 import { SnackbarService } from '../shared/service/snackbar.service';
 import { SecurityUserService } from '../service/auth/security-user.service';
+import { UtilsService } from '../shared/utils/utils.service';
 
 @Injectable()
 export class HttpIntercept implements HttpInterceptor {
 
   constructor(
     private securityUserService: SecurityUserService,
-    private router: Router,
+    private utilsService: UtilsService,
     private snackBar: SnackbarService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -35,8 +36,12 @@ export class HttpIntercept implements HttpInterceptor {
       error: (error: any) => {
         if (error instanceof HttpErrorResponse) {
           if (error.status === 401) {
-            this.router.navigate(['/']);
-            this.snackBar.openSnackBar('Usuário não autenticado. Favor realizar login para acessar esta página', 'close');
+            this.securityUserService.deleteCookieAndRedirect();
+            const errorMessage = this.utilsService.handleErrorMessage(error);
+            this.snackBar.openSnackBar(errorMessage, 'close');
+          }
+          if (error.status === 0) {
+            this.securityUserService.deleteCookieAndRedirect();
           }
         }
       }
