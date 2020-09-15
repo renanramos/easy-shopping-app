@@ -50,6 +50,7 @@ export class ToolbarComponent implements OnInit {
         this.securityUserService.setUsername(userCredentials.username);
         this.securityUserService.setToken(userCredentials.token);
         this.userLoggedName = this.securityUserService.getLoggedUsername();
+        this.homePage();
       }
     });
   }
