@@ -17,7 +17,6 @@ import { tap } from 'rxjs/operators';
 })
 export class CompanyFormComponent implements OnInit {
 
-  isWaitingResponse: boolean = false;
   companyForm: FormGroup;
 
   passwordVisibility: boolean = false;
@@ -49,7 +48,6 @@ export class CompanyFormComponent implements OnInit {
   }
 
  async onSubmitCompany() {
-    this.isWaitingResponse = true;
     this.companyForm.invalid ?
       this.companyForm.markAllAsTouched() :
       await this.saveCompany();
@@ -64,13 +62,11 @@ export class CompanyFormComponent implements OnInit {
           this.snackBar.openSnackBar('Empresa criada com sucesso!') :
           this.snackBar.openSnackBar('A requisição foi efetuada, mas não obtivemos resposta');
 
-        this.isWaitingResponse = false;
         this.router.navigate(['/']);
       },
       error: (response) => {
         const errorMessage = this.utilsService.handleErrorMessage(response);
         this.snackBar.openSnackBar(errorMessage);
-        this.isWaitingResponse = false;
       }
     }
 

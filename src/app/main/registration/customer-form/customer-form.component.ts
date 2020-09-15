@@ -17,7 +17,6 @@ import { passwordMatcher } from 'src/app/core/shared/validators/password-matcher
 })
 export class CustomerFormComponent implements OnInit {
 
-  isWaitingResponse: boolean = false;
   customerForm: FormGroup;
 
   passwordVisibility: boolean = false;
@@ -52,7 +51,6 @@ export class CustomerFormComponent implements OnInit {
   }
 
   async saveCustomer() {
-    this.isWaitingResponse = true;
     const customer: Customer = this.customerForm.getRawValue();
 
     const customerReceived = {
@@ -61,12 +59,10 @@ export class CustomerFormComponent implements OnInit {
           this.snackBar.openSnackBar('Usuário criado com sucesso!') :
           this.snackBar.openSnackBar('A requisição foi efetuada, mas não obtivemos resposta');
         this.route.navigate(['/']);
-        this.isWaitingResponse = false;
       },
       error: (response) => {
        const errorMessage = this.utilsService.handleErrorMessage(response);
        this.snackBar.openSnackBar(errorMessage);
-       this.isWaitingResponse = false;
       }
     };
 
