@@ -1,14 +1,15 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
-import { ProductCategoryService } from '../core/service/productCategory/product-category.service';
-import { ProductCategory } from '../core/models/product-category/product-category.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
+
+import { ProductCategoryService } from '../core/service/productCategory/product-category.service';
+import { ProductCategory } from '../core/models/product-category/product-category.model';
 import { SubcategoryService } from '../core/service/subcategory/subcategory.service';
 import { Subcategory } from '../core/models/subcategory/subcategory.model';
 import { MenuService } from '../core/shared/service/menu-service.service';
-import { Router } from '@angular/router';
-import { ConstantMessages } from '../core/shared/constants/constant-messages';
+import { UtilsService } from '../core/shared/utils/utils.service';
 
 @Component({
   selector: 'es-scaffold',
@@ -25,7 +26,9 @@ export class ScaffoldComponent implements OnInit {
 
   @ViewChild('drawer', { static: true}) drawer: MatDrawer;
 
-  constructor(private productCategoryService: ProductCategoryService,
+  constructor(
+    private utilsService: UtilsService,
+    private productCategoryService: ProductCategoryService,
     private subcategoryService: SubcategoryService,
     private menuService: MenuService,
     private snackBar: MatSnackBar,
@@ -45,8 +48,9 @@ export class ScaffoldComponent implements OnInit {
           this.disableProductCategoryToShow();
         }
       },
-      error: () => {
-        this.snackBar.open(ConstantMessages.CANT_GET_PRODUCT_CATEGORIES);
+      error: (response) => {
+        const errorMessage = this.utilsService.handleErrorMessage(response);
+        this.snackBar.open(errorMessage,'close');
       }
     };
 
@@ -81,7 +85,10 @@ export class ScaffoldComponent implements OnInit {
       next: (subcategories: Subcategory[]) => {
         this.subcategories = subcategories;
       },
-      error: () => this.snackBar.open(ConstantMessages.CANT_GET_PRODUCT_CATEGORIES)
+      error: (response) => {
+        const errorMessage = this.utilsService.handleErrorMessage(response);
+        this.snackBar.open(errorMessage,'close');
+      }
     };
 
     await this.subcategoryService.getSubcategories(productCategory.id)
