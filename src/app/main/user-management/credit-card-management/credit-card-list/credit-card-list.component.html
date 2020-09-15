@@ -1,33 +1,35 @@
-<table mat-table [dataSource]="creditCards">
-  <ng-container matColumnDef="ownerName">
-    <th mat-header-cell *matHeaderCellDef>Nome do titular</th>
-    <td mat-cell *matCellDef="let creditCard">{{ creditCard.ownerName }}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="creditCardNumber">
-    <th mat-header-cell *matHeaderCellDef>Nº</th>
-    <td mat-cell *matCellDef="let creditCard">{{ creditCard.creditCardNumber | mask: '0000 0000 0000 0000' }}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="code">
-    <th mat-header-cell *matHeaderCellDef>Código de segurança</th>
-    <td mat-cell *matCellDef="let creditCard">{{ creditCard.code }}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="validDate">
-    <th mat-header-cell *matHeaderCellDef>Data</th>
-    <td mat-cell *matCellDef="let creditCard">{{ creditCard.validDate | date: 'shortDate' }}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="options">
-    <th mat-header-cell *matHeaderCellDef></th>
-    <td mat-cell *matCellDef="let creditCard" class="action-options">
-      <button mat-icon-button (click)="editCreditCard(creditCard);" matTooltip="Editar cartão de crédito"><mat-icon>edit</mat-icon></button>
-      <button mat-icon-button (click)="removeCreditCard(creditCard);" matTooltip="Remover cartão de crédito"><mat-icon>delete</mat-icon></button>
-    </td>
-  </ng-container>
-
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row class="table-stripped" *matRowDef="let row; columns: displayedColumns"></tr>
-</table>
+<div class="table-container">
+  <table mat-table [dataSource]="creditCards">
+    <ng-container matColumnDef="ownerName">
+      <th mat-header-cell *matHeaderCellDef>Nome do titular</th>
+      <td mat-cell *matCellDef="let creditCard">{{ creditCard.ownerName }}</td>
+    </ng-container>
+  
+    <ng-container matColumnDef="creditCardNumber">
+      <th mat-header-cell *matHeaderCellDef>Nº</th>
+      <td mat-cell *matCellDef="let creditCard">{{ creditCard.creditCardNumber | mask: '0000 0000 0000 0000' }}</td>
+    </ng-container>
+  
+    <ng-container matColumnDef="code">
+      <th mat-header-cell *matHeaderCellDef>Código de segurança</th>
+      <td mat-cell *matCellDef="let creditCard">{{ creditCard.code }}</td>
+    </ng-container>
+  
+    <ng-container matColumnDef="validDate">
+      <th mat-header-cell *matHeaderCellDef>Data</th>
+      <td mat-cell *matCellDef="let creditCard">{{ creditCard.validDate | date: 'shortDate' }}</td>
+    </ng-container>
+  
+    <ng-container matColumnDef="options">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let creditCard" class="action-options">
+        <button mat-icon-button (click)="editCreditCard(creditCard);" matTooltip="Editar cartão de crédito"><mat-icon>edit</mat-icon></button>
+        <button mat-icon-button (click)="removeCreditCard(creditCard);" matTooltip="Remover cartão de crédito"><mat-icon>delete</mat-icon></button>
+      </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row class="table-stripped" *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>
 <div *ngIf="!creditCards.length">Nenhum cartão de crédito cadastrado.</div>
