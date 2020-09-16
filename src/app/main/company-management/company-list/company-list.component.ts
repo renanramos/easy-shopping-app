@@ -18,6 +18,7 @@ import { ConstantMessages } from 'src/app/core/shared/constants/constant-message
 })
 export class CompanyListComponent implements OnInit {
 
+  pageNumber: number = 0;
   noCompanyFound: boolean = false;
   companies: Company[] = [];
   
@@ -38,7 +39,7 @@ export class CompanyListComponent implements OnInit {
     const receivedCompanies = {
       next: (companies: Company[]) => {
         if (companies.length) {
-          this.companies = companies;
+          this.companies = [...this.companies, ...companies];
         } else {
           this.noCompanyFound = true;
         }
@@ -50,7 +51,7 @@ export class CompanyListComponent implements OnInit {
       }
     }
 
-    await this.companyService.getCompanies()
+    await this.companyService.getCompanies(null, this.pageNumber)
       .pipe(tap(receivedCompanies))
       .toPromise()
       .then(() => true)
@@ -111,5 +112,10 @@ export class CompanyListComponent implements OnInit {
       .toPromise()
       .then(() => true)
       .catch(() => false);
+  }
+
+  onScroll() {
+    this.pageNumber += 1;
+    this.loadCompanies();
   }
 }
