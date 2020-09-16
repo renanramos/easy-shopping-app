@@ -71,6 +71,7 @@ export class ScaffoldComponent implements OnInit {
   }
 
   async getSubcategory(productCategory: ProductCategory) {
+    console.log(this.changeArrowIcon, productCategory);
     this.changeArrowIcon = !this.changeArrowIcon;
     this.subcategories = [];
     await this.loadSubcategory(productCategory);
@@ -81,21 +82,23 @@ export class ScaffoldComponent implements OnInit {
     this.disableProductCategoryToShow(productCategory);
     productCategory.enabled = !productCategory.enabled;
 
-    const receiveSubcategories = {
-      next: (subcategories: Subcategory[]) => {
-        this.subcategories = subcategories;
-      },
-      error: (response) => {
-        const errorMessage = this.utilsService.handleErrorMessage(response);
-        this.snackBar.open(errorMessage,'close');
-      }
-    };
-
-    await this.subcategoryService.getSubcategories(productCategory.id)
-    .pipe(tap(receiveSubcategories))
-    .toPromise()
-    .then()
-    .catch();
+    if (productCategory.enabled) {
+      const receiveSubcategories = {
+        next: (subcategories: Subcategory[]) => {
+          this.subcategories = subcategories;
+        },
+        error: (response) => {
+          const errorMessage = this.utilsService.handleErrorMessage(response);
+          this.snackBar.open(errorMessage,'close');
+        }
+      };
+  
+      await this.subcategoryService.getSubcategories(productCategory.id)
+      .pipe(tap(receiveSubcategories))
+      .toPromise()
+      .then()
+      .catch();
+    }    
   }
 
   subcategorySelected(sub: Subcategory) {
