@@ -3,8 +3,7 @@
   <form class="container-form" [formGroup]="loginForm" >
     <mat-form-field class="input-full-width">
       <mat-label>Email</mat-label>
-      <input matInput formControlName="email" id="email"
-             placeholder="mail@example.com">
+      <input matInput formControlName="email" id="email">
       <mat-error *ngIf="emailControl.hasError('required')">Campo obrigatório.</mat-error>
       <mat-error *ngIf="emailControl.hasError('email')">Formato do email é inválido.</mat-error>
     </mat-form-field>
