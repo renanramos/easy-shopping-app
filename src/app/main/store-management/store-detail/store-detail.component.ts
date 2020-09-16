@@ -9,6 +9,7 @@ import { SnackbarService } from 'src/app/core/shared/service/snackbar.service';
 import { tap } from 'rxjs/operators';
 import { Store } from 'src/app/core/models/store/store.model';
 import { SecurityUserService } from 'src/app/core/service/auth/security-user.service';
+import { ScrollValues } from 'src/app/core/shared/constants/scroll-values';
 
 @Component({
   selector: 'es-store-detail',
@@ -63,7 +64,7 @@ export class StoreDetailComponent implements OnInit {
       }
     };
 
-    await this.companyService.getCompanies(null, true)
+    await this.companyService.getCompanies(null, ScrollValues.NO_PAGE_LIMIT, true)
       .pipe(tap(receivedCompanies))
       .toPromise()
       .then(() => true)
