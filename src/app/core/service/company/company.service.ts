@@ -16,11 +16,16 @@ export class CompanyService extends ApiService<Company>{
     return this.post(`${this.url}/register`, company);
   }
 
-  getCompanies(companyId?: number, noLimitSize?: boolean): Observable<Company | Company[]> {
+  getCompanies(companyId?: number, pageNumber?: number, noLimitSize?: boolean): Observable<Company | Company[]> {
 
     let filterString = '';
 
+    if (pageNumber) {
+      filterString += `?pageNumber=${pageNumber}`;
+    }
+
     if (noLimitSize) {
+      filterString = '';
       filterString += `?pageSize=-1`;
     }
 
