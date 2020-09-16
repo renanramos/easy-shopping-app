@@ -11,6 +11,7 @@ import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { StoreDetailComponent } from '../store-detail/store-detail.component';
 import { ConstantMessages } from 'src/app/core/shared/constants/constant-messages';
 import { ConfirmDialogComponent } from 'src/app/core/shared/components/confirm-dialog/confirm-dialog.component';
+import { ScrollValues } from 'src/app/core/shared/constants/scroll-values';
 
 @Component({
   selector: 'es-store-list',
@@ -21,6 +22,7 @@ import { ConfirmDialogComponent } from 'src/app/core/shared/components/confirm-d
 })
 export class StoreListComponent implements OnInit {
 
+  pageNumber: number = ScrollValues.DEFAULT_PAGE_NUMBER;
   noStoreFound: boolean = false;
   stores: Store[] = [];
   companies: Company[] = [];
@@ -57,7 +59,7 @@ export class StoreListComponent implements OnInit {
     const receivedStores = {
       next: (stores: Store[]) => {
         if (stores.length) {
-          this.stores = stores;
+          this.stores = [...this.stores, ...stores];
         } else {
           this.noStoreFound = true;
         }
@@ -68,7 +70,7 @@ export class StoreListComponent implements OnInit {
       }
     };
 
-    await this.storeService.getStores()
+    await this.storeService.getStores(null, this.pageNumber)
       .pipe(tap(receivedStores))
       .toPromise()
       .then(() => true)
@@ -109,7 +111,7 @@ export class StoreListComponent implements OnInit {
       }
     };
 
-    await this.companyService.getCompanies(null, true)
+    await this.companyService.getCompanies(null, null, true)
       .pipe(tap(receivedCompanies))
       .toPromise()
       .then(() => true)
@@ -117,7 +119,8 @@ export class StoreListComponent implements OnInit {
   }
 
   onScroll() {
-    console.log('scrolled');
+    this.pageNumber += 1;
+    this.loadStores();
   }
 
   openEditStore(store: Store) {
