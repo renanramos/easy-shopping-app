@@ -23,7 +23,7 @@
         <mat-card-content>
           <p>
             <span>CNPJ:</span>
-            {{company.registeredNumber}}
+            {{company.registeredNumber | mask: '00.000.000/0000-00'}}
           </p>
           <p>
             <span>Email:</span>

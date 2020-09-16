@@ -32,9 +32,10 @@
           </p>
           <p>
             <span>CNPJ:</span>
-            {{store.registeredNumber}}
+            {{store.registeredNumber  | mask: '00.000.000/0000-00'}}
           </p>
           <p *ngIf="isAdminUser">
+            <span>Empresa: </span>
             {{ companies.length ? getCompanyNameById(store.companyId) : '' }}
           </p>
         </mat-card-content>
