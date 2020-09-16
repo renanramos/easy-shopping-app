@@ -230,7 +230,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; overflow-x:
 
 .fab-button {
   bottom: 0;
-  position: absolute;
+  position: fixed;
   right: 0;
   margin-right: 2%;
   margin-bottom: 2%;
