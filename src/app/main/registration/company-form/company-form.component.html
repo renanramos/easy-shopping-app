@@ -20,7 +20,7 @@
         </mat-form-field>
         <mat-form-field class="input-half-width">
           <mat-label>Telefone</mat-label>
-          <input type="text" matInput formControlName="phone" id="phone" mask="(000) 00000-0000||(000) 0000-0000">
+          <input type="text" matInput formControlName="phone" id="phone" mask="(00) 00000-0000||(00) 0000-0000">
           <mat-error *ngIf="phone.hasError('required')">Campo obrigatório</mat-error>
           <mat-error *ngIf="phone.hasError('mask')">Telefone com formato inválido</mat-error>
         </mat-form-field>
