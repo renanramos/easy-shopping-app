@@ -11,11 +11,15 @@ export class SubcategoryService  extends ApiService<Subcategory> {
     super(injector);
    }
 
-   getSubcategories(productCategoryId?: number): Observable<Subcategory | Subcategory[]> {
+   getSubcategories(productCategoryId?: number, noLimitSize?: boolean): Observable<Subcategory | Subcategory[]> {
      let filterString = '';
 
      if (productCategoryId) {
        filterString += `?productCategoryId=${productCategoryId}`;
+     }
+
+     if (noLimitSize) {
+      filterString = filterString ? `&pageSize=-1` : '?pageSize=-1';
      }
 
     return this.get(`${this.url}${filterString}`);
