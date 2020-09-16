@@ -9,6 +9,7 @@ import { SnackbarService } from 'src/app/core/shared/service/snackbar.service';
 import { ConstantMessages } from 'src/app/core/shared/constants/constant-messages';
 import { ConfirmDialogComponent } from 'src/app/core/shared/components/confirm-dialog/confirm-dialog.component';
 import { UtilsService } from 'src/app/core/shared/utils/utils.service';
+import { ScrollValues } from 'src/app/core/shared/constants/scroll-values';
 
 @Component({
   selector: 'es-customer-list',
@@ -21,7 +22,7 @@ export class CustomerListComponent implements OnInit {
   selector: string = '.main-container';
   noCustomerFound: boolean = false;
   customers: Customer[] = [];
-  pageNumber: number = 0;
+  pageNumber: number = ScrollValues.DEFAULT_PAGE_NUMBER;
 
   dialogRef: MatDialogRef<CustomerDetailComponent>;
   confirmDialogRef: MatDialogRef<ConfirmDialogComponent>;
@@ -39,7 +40,7 @@ export class CustomerListComponent implements OnInit {
     const receivedCustomers = {
       next: (customers: Customer[]) => {
         if (customers.length) {
-          this.customers = customers;
+          this.customers = [...this.customers, ...customers];
         } else {
           this.noCustomerFound = true;
         }
