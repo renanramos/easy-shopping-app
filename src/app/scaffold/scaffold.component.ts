@@ -36,7 +36,6 @@ export class ScaffoldComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.drawer.open();
     await this.loadProductsCategories();
   }
 
