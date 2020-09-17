@@ -1,7 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; overflow-x: hidden;}
+body { width: 100vw; margin: 0 auto; font-family: Roboto, "Helvetica Neue", sans-serif; overflow-x: hidden;}
+
+body  mat-toolbar > mat-form-field > div > div.mat-form-field-flex {
+  height: 0;
+}
+
+body mat-toolbar > mat-form-field > div {
+  font-size: 70%;
+  font-weight: 300;
+}
 
 .mat-toolbar {
   background-color: #50a591;
@@ -178,7 +187,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; overflow-x:
   justify-content: flex-start;
   width: 100%;
   height: 100%;
-  overflow-y: scroll !important;
+  /* overflow-y: scroll !important; */
   overflow-x: hidden !important;
 }
 
