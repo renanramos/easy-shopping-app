@@ -135,6 +135,7 @@ export class StoreListComponent implements OnInit {
       next: (storeUpdated) => {
         if (storeUpdated) {
           this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_UPDATED, 'close');
+          this.stores = [];
           this.reloadListOfItens();
         }
       },
@@ -171,6 +172,7 @@ export class StoreListComponent implements OnInit {
     const removedStore = {
       next: (removedResponse) => {
         this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_REMOVED, 'close');
+        this.stores = [];
         this.initializeProperties();
       },
       error: (response) => {
@@ -199,6 +201,7 @@ export class StoreListComponent implements OnInit {
       next: (store) => {
         if (store['id']) {
           this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_CREATED, 'close');
+          this.stores = [];
           this.reloadListOfItens();
         }
       }

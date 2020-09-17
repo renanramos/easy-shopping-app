@@ -38,6 +38,7 @@ export class SubcategoryListComponent implements OnInit {
   }
 
   async loadComponentProperties() {
+    this.subcategories = [];
     await this.loadProductCategories();
     await this.loadSubcategories()
   }

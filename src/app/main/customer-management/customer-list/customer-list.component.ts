@@ -65,6 +65,7 @@ export class CustomerListComponent implements OnInit {
       next: (customerUpdated) => {
         if(customerUpdated) {
           this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_UPDATED);
+          this.customers = [];
           this.loadCustomers();
         }
       }
@@ -100,6 +101,7 @@ export class CustomerListComponent implements OnInit {
     const removedCustomerResponse = {
       next: () => {
         this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_REMOVED, 'close');
+        this.customers = [];
         this.loadCustomers();
       },
       error: (error) => {

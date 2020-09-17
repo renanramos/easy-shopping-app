@@ -64,6 +64,7 @@ export class CompanyListComponent implements OnInit {
       next: (companyUpdated) => {
         if(companyUpdated) {
           this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_UPDATED);
+          this.companies = [];
           this.loadCompanies();
         }
       }
@@ -99,6 +100,7 @@ export class CompanyListComponent implements OnInit {
     const removedCustomerResponse = {
       next: () => {
         this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_REMOVED, 'close');
+        this.companies = [];
         this.loadCompanies();
       },
       error: (error) => {
