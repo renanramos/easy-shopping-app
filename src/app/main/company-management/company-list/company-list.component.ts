@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { CompanyService } from '../../../core/service/company/company.service';
 import { Company } from '../../../core/models/registration/company.model';
@@ -19,7 +19,7 @@ import { ScrollValues } from 'src/app/core/shared/constants/scroll-values';
   styleUrls: ['./company-list.component.css'],
   providers: [CompanyService]
 })
-export class CompanyListComponent implements OnInit {
+export class CompanyListComponent implements OnInit, OnDestroy {
 
   pageNumber: number = ScrollValues.DEFAULT_PAGE_NUMBER;
   noCompanyFound: boolean = false;
@@ -40,6 +40,11 @@ export class CompanyListComponent implements OnInit {
   async ngOnInit() {
     await this.loadCompanies();
     this.subscribeToSearchService();
+  }
+
+  ngOnDestroy(): void {
+    this.searchSubscription &&
+      this.searchSubscription.unsubscribe();
   }
 
   subscribeToSearchService() {
