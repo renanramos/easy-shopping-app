@@ -18,7 +18,7 @@ export class ToolbarComponent implements OnInit {
 
   @Output() menuEvent = new EventEmitter<any>();
   @Input() showMenuIcon: boolean = true;
-  @Input() searchName: string = '';
+  @Input() showSearchInput: boolean = true;
   userLoggedName: string = '';
 
   searchFilter: Subscription;
