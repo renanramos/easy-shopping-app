@@ -4,11 +4,14 @@ import { CompanyService } from '../../../core/service/company/company.service';
 import { Company } from '../../../core/models/registration/company.model';
 import { SnackbarService } from '../../../core/shared/service/snackbar.service';
 import { UtilsService } from '../../../core/shared/utils/utils.service';
-import { tap } from 'rxjs/operators';
+import { debounceTime, tap } from 'rxjs/operators';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { CompanyDetailComponent } from '../company-detail/company-detail.component';
 import { ConfirmDialogComponent } from 'src/app/core/shared/components/confirm-dialog/confirm-dialog.component';
 import { ConstantMessages } from 'src/app/core/shared/constants/constant-messages';
+import { Subscription } from 'rxjs';
+import { SearchService } from 'src/app/core/shared/service/search-service';
+import { ScrollValues } from 'src/app/core/shared/constants/scroll-values';
 
 @Component({
   selector: 'es-company-list',
@@ -18,20 +21,36 @@ import { ConstantMessages } from 'src/app/core/shared/constants/constant-message
 })
 export class CompanyListComponent implements OnInit {
 
-  pageNumber: number = 0;
+  pageNumber: number = ScrollValues.DEFAULT_PAGE_NUMBER;
   noCompanyFound: boolean = false;
   companies: Company[] = [];
   
   dialogRef: MatDialogRef<CompanyDetailComponent>;
   confirmDialogRef: MatDialogRef<ConfirmDialogComponent>;
 
+  searchSubscription: Subscription;
+  filterName: string = '';
+
   constructor(private companyService: CompanyService,
     private utilsService: UtilsService,
     private dialog: MatDialog,
+    private searchService: SearchService,
     private snackBarService: SnackbarService) { }
 
   async ngOnInit() {
     await this.loadCompanies();
+    this.subscribeToSearchService();
+  }
+
+  subscribeToSearchService() {
+    this.searchSubscription = this.searchService.searchSubject$
+    .pipe(debounceTime(300))
+    .subscribe((value) => {
+      this.pageNumber = ScrollValues.DEFAULT_PAGE_NUMBER;
+      this.filterName = value;
+      this.companies = [];
+      this.loadCompanies();
+    })
   }
 
   async loadCompanies() {
@@ -51,7 +70,7 @@ export class CompanyListComponent implements OnInit {
       }
     }
 
-    await this.companyService.getCompanies(null, this.pageNumber)
+    await this.companyService.getCompanies(null, this.pageNumber, this.filterName)
       .pipe(tap(receivedCompanies))
       .toPromise()
       .then(() => true)
