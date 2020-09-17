@@ -1,12 +1,13 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Router } from '@angular/router';
+import { Event, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { CookieService } from 'ngx-cookie-service';
 import { LoginFormComponent } from 'src/app/login/components/login-form/login-form.component';
 import { UserCredentials } from 'src/app/core/models/user/user-credentials.model';
 import { SecurityUserService } from 'src/app/core/service/auth/security-user.service';
 import { UserAuthService } from 'src/app/core/service/auth/user-auth-service.service';
 import { tap } from 'rxjs/operators';
+import { SearchService } from '../../service/search-service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'es-toolbar',
@@ -17,12 +18,16 @@ export class ToolbarComponent implements OnInit {
 
   @Output() menuEvent = new EventEmitter<any>();
   @Input() showMenuIcon: boolean = true;
-  userLoggedName: string = "";
+  @Input() searchName: string = '';
+  userLoggedName: string = '';
+
+  searchFilter: Subscription;
 
   constructor(private router: Router,
     public dialog: MatDialog,
     private authService: UserAuthService,
-    private securityUserService: SecurityUserService) { }
+    private securityUserService: SecurityUserService,
+    private searchService: SearchService) { }
 
   ngOnInit(): void {
     this.userLoggedName = this.securityUserService.getLoggedUsername();
@@ -58,9 +63,9 @@ export class ToolbarComponent implements OnInit {
   async logout() {
 
     const receivedLogout = {
-      next: (response) => {
+      next: () => {
         this.securityUserService.deleteCookieAndRedirect();
-        this.userLoggedName = "";
+        this.userLoggedName = '';
         this.router.navigate(['/']);
       }
     }
@@ -77,5 +82,9 @@ export class ToolbarComponent implements OnInit {
 
   clearCookieValues() {
     this.securityUserService.deleteCookieFromStorage();
+  }
+
+  onSearchFilter(event: any) {
+    this.searchService.searchFilterContent(event.target.value);
   }
 }
