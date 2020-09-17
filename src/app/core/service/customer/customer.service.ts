@@ -16,11 +16,15 @@ export class CustomerService extends ApiService<Customer> {
     return this.post(`${this.url}/register`, customer);
   }
 
-  getCustomers(pageNumber?: number, pageSize?: number): Observable<Customer | Customer[]> {
+  getCustomers(pageNumber?: number, pageSize?: number, filterByName?: string): Observable<Customer | Customer[]> {
     let query = '';
 
     if (pageNumber) {
-      query += `?pageNumber=${pageNumber}`
+      query = `?pageNumber=${pageNumber}`
+    }
+
+    if (filterByName) {
+      query +=  query ? `&name=${filterByName}` : `?name=${filterByName}`;
     }
 
     return this.get(`${this.url}${query}`);
