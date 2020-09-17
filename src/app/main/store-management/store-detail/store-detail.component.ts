@@ -64,7 +64,7 @@ export class StoreDetailComponent implements OnInit {
       }
     };
 
-    await this.companyService.getCompanies(null, ScrollValues.NO_PAGE_LIMIT, true)
+    await this.companyService.getCompanies(null, ScrollValues.NO_PAGE_LIMIT, null, true)
       .pipe(tap(receivedCompanies))
       .toPromise()
       .then(() => true)

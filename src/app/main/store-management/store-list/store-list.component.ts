@@ -111,7 +111,7 @@ export class StoreListComponent implements OnInit {
       }
     };
 
-    await this.companyService.getCompanies(null, null, true)
+    await this.companyService.getCompanies(null, null, null, true)
       .pipe(tap(receivedCompanies))
       .toPromise()
       .then(() => true)
