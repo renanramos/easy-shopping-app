@@ -22,6 +22,7 @@ export class ToolbarComponent implements OnInit {
   userLoggedName: string = '';
 
   searchFilter: Subscription;
+  isUserLoggedIn: boolean = false;
 
   constructor(private router: Router,
     public dialog: MatDialog,
@@ -31,6 +32,7 @@ export class ToolbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.userLoggedName = this.securityUserService.getLoggedUsername();
+    this.isUserLoggedIn = this.securityUserService.idUserLoggedIn;
   }
 
   eventMenuHandler($event) {
@@ -55,6 +57,7 @@ export class ToolbarComponent implements OnInit {
         this.securityUserService.setUsername(userCredentials.username);
         this.securityUserService.setToken(userCredentials.token);
         this.userLoggedName = this.securityUserService.getLoggedUsername();
+        this.isUserLoggedIn = this.securityUserService.idUserLoggedIn;
         this.homePage();
       }
     });
@@ -66,6 +69,7 @@ export class ToolbarComponent implements OnInit {
       next: () => {
         this.securityUserService.deleteCookieAndRedirect();
         this.userLoggedName = '';
+        this.isUserLoggedIn = false;
         this.router.navigate(['/']);
       }
     }

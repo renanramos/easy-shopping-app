@@ -1,5 +1,7 @@
-.user-logged-details {
+.user-logged-details.mat-menu-item:first-child {
   font-size: 1.3rem;
+  cursor: none;
+  pointer-events: none;
 }
 
 span.icon-loggin > mat-icon {
@@ -9,4 +11,20 @@ span.icon-loggin > mat-icon {
 
 .scaffold-spacer {
   flex: 1 1 auto;
+}
+
+.input-half-width {
+  height: 1.7em;
+  background-color: whitesmoke;
+  color: #4d5552;
+  border-radius: 3px;
+  padding-bottom: 5px;
+  padding-right: .2em;
+  padding-left: .2em;
+}
+
+.account-icon {
+  border-left-width: thin;
+  border-left-style: solid;
+  padding: 0% 2%;
 }
