@@ -20,36 +20,34 @@
   </div>
 
   <mat-menu #menu="matMenu" >
-    <div *ngIf="isUserLoggedIn" class="user-logged-details" mat-menu-item>
-      Olá {{ userLoggedName }}
+    <div *ngIf="isUserLoggedIn">
+      <div class="user-logged-details" mat-menu-item>
+        Olá {{ userLoggedName }}
+      </div>
+      <mat-divider *ngIf="isUserLoggedIn"></mat-divider>
+      <button mat-menu-item 
+        (click)="redirectPage('/customer-management');" 
+        esHasPermission="COMPANY, ADMINISTRATOR">
+        <span>Clientes</span>
+      </button>
+      <button mat-menu-item 
+        [matMenuTriggerFor]="companies" 
+        esHasPermission="COMPANY, ADMINISTRATOR">
+        <span>Empresas</span>
+      </button>
+      <button mat-menu-item 
+        [matMenuTriggerFor]="products" 
+        esHasPermission="COMPANY, ADMINISTRATOR">
+        <span>Produtos</span>
+      </button>
+      <button mat-menu-item 
+        (click)="redirectPage('/user-management');"
+        esHasPermission="CUSTOMER">
+        <mat-icon>perm_contact_calendar</mat-icon>
+        <span>Meus dados</span>
+      </button>
+      <mat-divider *ngIf="isUserLoggedIn"></mat-divider>
     </div>
-    <mat-divider *ngIf="isUserLoggedIn"></mat-divider>
-    <button mat-menu-item 
-      *ngIf="isUserLoggedIn" 
-      (click)="redirectPage('/customer-management');" 
-      esHasPermission="COMPANY, ADMINISTRATOR">
-      <span>Clientes</span>
-    </button>
-    <button mat-menu-item 
-      [matMenuTriggerFor]="companies" 
-      *ngIf="isUserLoggedIn" 
-      esHasPermission="COMPANY, ADMINISTRATOR">
-      <span>Empresas</span>
-    </button>
-    <button mat-menu-item 
-      *ngIf="isUserLoggedIn" 
-      [matMenuTriggerFor]="products" 
-      esHasPermission="COMPANY, ADMINISTRATOR">
-      <span>Produtos</span>
-    </button>
-    <button mat-menu-item 
-      *ngIf="isUserLoggedIn"
-      (click)="redirectPage('/user-management');"
-      esHasPermission="CUSTOMER">
-      <mat-icon>perm_contact_calendar</mat-icon>
-      <span>Meus dados</span>
-    </button>
-    <mat-divider *ngIf="isUserLoggedIn"></mat-divider>
     <button mat-menu-item (click)="openLoginDialog();" *ngIf="!isUserLoggedIn">
       <mat-icon>login</mat-icon>
       <span>Entrar</span>
