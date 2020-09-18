@@ -1,11 +1,13 @@
 <mat-drawer-container class="scaffold-container" autosize>
   <mat-drawer #drawer class="scaffold-sidenav" mode="side">
-    <img  (click)="router.navigate(['/'])" src="../../assets/logo.png" alt="Easy Shopping" class="logo-image">
+    <div class="sidenav-logo-container">
+      <img (click)="router.navigate(['/'])" src="../../assets/logo.png" alt="Easy Shopping" class="logo-image">
+    </div>
     <mat-divider></mat-divider>
     <ul class="categories-list">
       <li class="category-item"  *ngIf="!productsCategories.length">Não há categorias cadastradas</li>
       <li class="category-item" *ngFor="let productCategory of productsCategories">
-        <div class="item-option" (click)="getSubcategory(productCategory)">
+        <div class="item-option" [ngStyle]="{'font-weight':  productCategory.enabled ? '600' : 'normal'}" (click)="getSubcategory(productCategory)">
           <span>{{ productCategory.name }}</span><mat-icon>{{ (changeArrowIcon && !productCategory.enabled ) ? 'keyboard_arrow_right' : 'keyboard_arrow_down' }}</mat-icon>
         </div>
         <ul class="categories-list" *ngIf="subcategories.length && productCategory.enabled">
