@@ -17,7 +17,7 @@
   
     <ng-container matColumnDef="validDate">
       <th mat-header-cell *matHeaderCellDef>Data</th>
-      <td mat-cell *matCellDef="let creditCard">{{ creditCard.validDate | date: 'shortDate' }}</td>
+      <td mat-cell *matCellDef="let creditCard">{{ creditCard.validDate | date: 'MM/yyyy' }}</td>
     </ng-container>
   
     <ng-container matColumnDef="options">
