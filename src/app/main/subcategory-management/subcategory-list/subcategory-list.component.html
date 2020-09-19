@@ -9,7 +9,7 @@
   [infiniteScrollThrottle]="300"
   (scrolled)="onScroll();" >
     <p *ngIf="noSubcategoriesFound && !subcategories.length">
-      Não há subcategorias cadastradas.
+      Não há subcategorias para mostrar.
     </p>
     <li *ngFor="let subcategory of subcategories" class="card-items">
       <mat-card>
