@@ -25,18 +25,18 @@
       <mat-error *ngIf="code.hasError('mask')">Código deve conter 3 dígitos</mat-error>
     </mat-form-field>
     <mat-form-field class="input-full-width">
-      <mat-label>Data de validade</mat-label>
-      <input matInput formControlName="validDate" id="validDate">
-      <mat-error *ngIf="validDate.hasError('required')">Campo obrigatório</mat-error>
+      <mat-label>Month and Year</mat-label>
+      <input matInput [matDatepicker]="dp" [formControl]="validDate">
+      <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+      <mat-datepicker touchUi #dp
+                      startView="multi-year"
+                      (yearSelected)="chosenYearHandler($event)"
+                      (monthSelected)="chosenMonthHandler($event, dp)">
+      </mat-datepicker>
     </mat-form-field>
   </form>
 </div>
-<div mat-dialog-actions align="right" *ngIf="!isWaitingResponse">
+<div mat-dialog-actions align="right">
   <button mat-raised-button mat-dialog-close>FECHAR</button>
   <button mat-raised-button color="primary" (click)="submitCreditCard();">SALVAR</button>
-</div>
-<div mat-dialog-action align="right" *ngIf="isWaitingResponse">
-  <div class="loading">
-    <mat-spinner diameter="50"></mat-spinner>
-  </div>
 </div>

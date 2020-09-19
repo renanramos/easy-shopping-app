@@ -1,6 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
+import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import {MatDatepicker} from '@angular/material/datepicker';
 import { SnackbarService } from 'src/app/core/shared/service/snackbar.service';
 import { UtilsService } from 'src/app/core/shared/utils/utils.service';
 import { CreditCardService } from 'src/app/core/service/credit-card/credit-card.service';
@@ -9,12 +12,33 @@ import { SecurityUserService } from 'src/app/core/service/auth/security-user.ser
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { tap } from 'rxjs/operators';
 import { ConstantMessages } from 'src/app/core/shared/constants/constant-messages';
+import * as _moment from 'moment';
+import { Moment } from 'moment';
+
+const moment = _moment;
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'MM/YYYY',
+  },
+  display: {
+    dateInput: 'MM/YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 
 @Component({
   selector: 'es-credit-card-detail',
   templateUrl: './credit-card-detail.component.html',
   styleUrls: ['./credit-card-detail.component.css'],
-  providers: [CreditCardService]
+  providers: [CreditCardService,
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS}]
 })
 export class CreditCardDetailComponent implements OnInit {
 
@@ -42,8 +66,12 @@ export class CreditCardDetailComponent implements OnInit {
       ownerName: [(this.creditCard['ownerName'] ? this.creditCard['ownerName'] : ''), [Validators.required]],
       creditCardNumber: [(this.creditCard['creditCardNumber'] ? this.creditCard['creditCardNumber'] : ''), [Validators.required]],
       code: [(this.creditCard['code'] ? this.creditCard['code'] : ''), [Validators.required]],
-      validDate: [(this.creditCard['validDate'] ? this.creditCard['validDate'] : ''), [Validators.required]]
+      validDate: [(this.creditCard['validDate'] ? this.formatCreditCardValidDate() : moment()), [Validators.required]]
     });
+  }
+
+  formatCreditCardValidDate() {
+    return moment(moment(this.creditCard['validDate'])).subtract(1, 'month').format('YYYY-MM-DD');
   }
 
   submitCreditCard() {
@@ -55,7 +83,7 @@ export class CreditCardDetailComponent implements OnInit {
   async saveCreditCard() {
     const creditCard: CreditCard = this.crediCardForm.getRawValue();
     creditCard['customerId'] = this.customerId;
-
+    creditCard['validDate'] = moment(this.validDate.value).format('YYYY-MM-DD');
     this.creditCard['id'] ?
       await this.updateCreditCard(creditCard) :
       await this.saveNewCreditCard(creditCard);
@@ -107,6 +135,19 @@ export class CreditCardDetailComponent implements OnInit {
       .toPromise()
       .then(() => true)
       .catch(() => false);
+  }
+
+  chosenYearHandler(normalizedYear: Moment) {
+    const ctrlValue = moment(this.validDate.value);
+    ctrlValue.year(normalizedYear.year());
+    this.validDate.setValue(ctrlValue);
+  }
+
+  chosenMonthHandler(normalizedMonth: Moment, datepicker: MatDatepicker<Moment>) {
+    const ctrlValue = moment(this.validDate.value);
+    ctrlValue.month(normalizedMonth.month());
+    this.validDate.setValue(ctrlValue);
+    datepicker.close();
   }
 
   get code() {
