@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
@@ -8,6 +8,7 @@ import { CustomerService } from 'src/app/core/service/customer/customer.service'
 import { Customer } from 'src/app/core/models/registration/customer.model';
 import { UtilsService } from 'src/app/core/shared/utils/utils.service';
 import { passwordMatcher } from 'src/app/core/shared/validators/password-matcher';
+import { SearchService } from 'src/app/core/shared/service/search-service';
 
 @Component({
   selector: 'es-customer-form',
@@ -15,7 +16,7 @@ import { passwordMatcher } from 'src/app/core/shared/validators/password-matcher
   styleUrls: ['./customer-form.component.css'],
   providers: [CustomerService]
 })
-export class CustomerFormComponent implements OnInit {
+export class CustomerFormComponent implements OnInit, OnDestroy {
 
   customerForm: FormGroup;
 
@@ -26,10 +27,20 @@ export class CustomerFormComponent implements OnInit {
     private customerService: CustomerService,
     private snackBar: SnackbarService,
     private utilsService: UtilsService,
+    private searchService: SearchService,
     private route: Router) { }
 
   ngOnInit() {
     this.createForm();
+    this.hideSearchFiled();
+  }
+
+  ngOnDestroy() {
+    this.searchService.hideSearchFieldOption(false);
+  }
+
+  hideSearchFiled() {
+    this.searchService.hideSearchFieldOption(true);
   }
 
   createForm() {

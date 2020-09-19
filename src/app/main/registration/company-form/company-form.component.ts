@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { passwordMatcher } from '../../../core/shared/validators/password-matcher';
@@ -8,6 +8,7 @@ import { UtilsService } from '../../../core/shared/utils/utils.service';
 import { Company } from '../../../core/models/registration/company.model';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
+import { SearchService } from 'src/app/core/shared/service/search-service';
 
 @Component({
   selector: 'es-company-form',
@@ -15,7 +16,7 @@ import { tap } from 'rxjs/operators';
   styleUrls: ['./company-form.component.css'],
   providers: [CompanyService]
 })
-export class CompanyFormComponent implements OnInit {
+export class CompanyFormComponent implements OnInit, OnDestroy {
 
   companyForm: FormGroup;
 
@@ -27,10 +28,20 @@ export class CompanyFormComponent implements OnInit {
     private snackBar: SnackbarService,
     private utilsService: UtilsService,
     private formBuilder: FormBuilder,
+    private searchService: SearchService,
     private router: Router) { }
 
   ngOnInit() {
     this.createForm();
+    this.hideSearchFiled();
+  }
+
+  ngOnDestroy() {
+    this.searchService.hideSearchFieldOption(false);
+  }
+
+  hideSearchFiled() {
+    this.searchService.hideSearchFieldOption(true);
   }
 
   createForm() {
