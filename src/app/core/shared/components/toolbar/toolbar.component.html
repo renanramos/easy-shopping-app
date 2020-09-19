@@ -8,7 +8,7 @@
     </button>
   </ng-template>
   <span class="scaffold-spacer"></span>
-  <mat-form-field class="input-half-width" *ngIf="showSearchInput">
+  <mat-form-field class="input-half-width" *ngIf="!hideSearchInput">
     <input matInput (keyup)="onSearchFilter($event);">
     <mat-icon matSuffix>search</mat-icon>
   </mat-form-field>

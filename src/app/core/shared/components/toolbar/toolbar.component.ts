@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Event, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { LoginFormComponent } from 'src/app/login/components/login-form/login-form.component';
@@ -14,11 +14,11 @@ import { Subscription } from 'rxjs';
   templateUrl: './toolbar.component.html',
   styleUrls: ['./toolbar.component.css']
 })
-export class ToolbarComponent implements OnInit {
+export class ToolbarComponent implements OnInit, OnDestroy {
 
   @Output() menuEvent = new EventEmitter<any>();
   @Input() showMenuIcon: boolean = true;
-  @Input() showSearchInput: boolean = true;
+  hideSearchInput: boolean = false;
   userLoggedName: string = '';
 
   searchFilter: Subscription;
@@ -30,9 +30,15 @@ export class ToolbarComponent implements OnInit {
     private securityUserService: SecurityUserService,
     private searchService: SearchService) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.userLoggedName = this.securityUserService.getLoggedUsername();
     this.isUserLoggedIn = this.securityUserService.idUserLoggedIn;
+    this.subscribeToSearchService();
+  }
+
+  ngOnDestroy() {
+    this.searchFilter
+      && this.searchFilter.unsubscribe();
   }
 
   eventMenuHandler($event) {
@@ -91,4 +97,9 @@ export class ToolbarComponent implements OnInit {
   onSearchFilter(event: any) {
     this.searchService.searchFilterContent(event.target.value);
   }
+
+  subscribeToSearchService() {
+    this.searchFilter = this.searchService.hideSearchField$.subscribe((value) => this.hideSearchInput = value);
+  }
+  
 }
