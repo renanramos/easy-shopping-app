@@ -9,7 +9,7 @@
   [infiniteScrollThrottle]="300"
   (scrolled)="onScroll();">
     <p *ngIf="noCompanyFound && !companies.length">
-      Não há empresas cadastradas.
+      Não há empresas para mostrar.
     </p>
     <li *ngFor="let company of companies" class="card-items">
       <mat-card>

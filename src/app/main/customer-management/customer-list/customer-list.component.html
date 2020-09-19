@@ -9,7 +9,7 @@
   [infiniteScrollThrottle]="300"
   (scrolled)="onScroll();" >
     <p *ngIf="noCustomerFound && !customers.length">
-      Não há clientes cadastrados.
+      Não há clientes para mostrar.
     </p>
     <li *ngFor="let customer of customers" class="card-items">
       <mat-card>
