@@ -16,7 +16,7 @@ export class StoreService extends ApiService<Store>{
     return this.post(this.url, store);
   }
 
-  getStores(companyId?: number, pageNumber?: number): Observable<Store | Store[]> {
+  getStores(companyId?: number, pageNumber?: number, filterName?: string): Observable<Store | Store[]> {
 
     let filter = '';
 
@@ -25,7 +25,11 @@ export class StoreService extends ApiService<Store>{
     }
 
     if (pageNumber) {
-      filter = filter ? `&pageNumber=${pageNumber}` : `?pageNumber=${pageNumber}`;
+      filter += filter ? `&pageNumber=${pageNumber}` : `?pageNumber=${pageNumber}`;
+    }
+
+    if (filterName) {
+      filter += filter ? `&name=${filterName}` : `?name=${filterName}`;
     }
 
     return this.get(`${this.url}${filter}`);
@@ -35,17 +39,18 @@ export class StoreService extends ApiService<Store>{
     return this.patch(`${this.url}/${store.id}`, store);
   }
 
-  getCompanyOwnStores(companyId: number, pageNumber?: number): Observable<Store | Store[]> {
+  getCompanyOwnStores(pageNumber?: number, filterName?: string): Observable<Store | Store[]> {
     let filter = '';
 
-    if (companyId) {
-      filter += `?companyIdRequestParam=${companyId}`;
+    if (pageNumber) {
+      filter += filter ? `&pageNumber=${pageNumber}` : `?pageNumber=${pageNumber}`;
     }
 
-    if (pageNumber) {
-      filter = filter ? `&pageNumber=${pageNumber}` : `?pageNumber=${pageNumber}`;
+    if (filterName) {
+      filter += filter ? `&name=${filterName}` : `?name=${filterName}`;
     }
-    return this.get(`${this.url}/company-stores?companyIdRequestParam=${companyId}`);
+
+    return this.get(`${this.url}/company-stores${filter}`);
   }
 
   removeStore(storeId: number): Observable<any> {
