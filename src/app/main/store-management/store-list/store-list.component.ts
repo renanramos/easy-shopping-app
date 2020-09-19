@@ -5,13 +5,15 @@ import { Store } from 'src/app/core/models/store/store.model';
 import { Company } from 'src/app/core/models/registration/company.model';
 import { SnackbarService } from 'src/app/core/shared/service/snackbar.service';
 import { UtilsService } from 'src/app/core/shared/utils/utils.service';
-import { tap } from 'rxjs/operators';
+import { debounceTime, tap } from 'rxjs/operators';
 import { SecurityUserService } from 'src/app/core/service/auth/security-user.service';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { StoreDetailComponent } from '../store-detail/store-detail.component';
 import { ConstantMessages } from 'src/app/core/shared/constants/constant-messages';
 import { ConfirmDialogComponent } from 'src/app/core/shared/components/confirm-dialog/confirm-dialog.component';
 import { ScrollValues } from 'src/app/core/shared/constants/scroll-values';
+import { SearchService } from 'src/app/core/shared/service/search-service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'es-store-list',
@@ -25,31 +27,46 @@ export class StoreListComponent implements OnInit {
   pageNumber: number = ScrollValues.DEFAULT_PAGE_NUMBER;
   noStoreFound: boolean = false;
   stores: Store[] = [];
-  companies: Company[] = [];
   userId: number = null;
   isAdminUser: boolean = false;
 
   dialogRefStoreDetail: MatDialogRef<StoreDetailComponent>;
   dialogRefConfirm: MatDialogRef<ConfirmDialogComponent>;
 
+  searchSubscription: Subscription;
+  filterName: string = '';
+
   constructor(
     private snackBarService: SnackbarService,
     private utilsService: UtilsService,
     private securityUserService: SecurityUserService,
     private storeService: StoreService,
-    private companyService: CompanyService,
+    private searchService: SearchService,
     private dialog: MatDialog) { }
 
   async ngOnInit() {
     this.userId = this.securityUserService.idUserLoggedIn;
     this.isAdminUser = this.securityUserService.isAdminUser;
+    this.subscribeToSearchService();
     await this.initializeProperties();
+  }
+
+  subscribeToSearchService() {
+    this.searchSubscription = this.searchService.searchSubject$
+    .pipe(debounceTime(300))
+    .subscribe((value) => {
+      this.pageNumber = ScrollValues.DEFAULT_PAGE_NUMBER;
+      this.filterName = value;
+      this.stores = [];
+      this.securityUserService.isAdminUser ?
+        this.loadStores() :
+        this.loadCompanyOwnStores();
+    });
   }
 
   async initializeProperties() {
    if (this.securityUserService.isAdminUser) {
       await this.loadStores();
-      await this.loadCompanies();
    } else {
       await this.loadCompanyOwnStores();
    }     
@@ -70,7 +87,7 @@ export class StoreListComponent implements OnInit {
       }
     };
 
-    await this.storeService.getStores(null, this.pageNumber)
+    await this.storeService.getStores(null, this.pageNumber, this.filterName)
       .pipe(tap(receivedStores))
       .toPromise()
       .then(() => true)
@@ -80,7 +97,7 @@ export class StoreListComponent implements OnInit {
   async loadCompanyOwnStores() {
     const receivedStores = {
       next: (stores: Store[]) => {
-        this.stores = stores;
+        this.stores = [...this.stores, ...stores];
         if (!this.stores.length) {
           this.noStoreFound = true;
         }
@@ -91,28 +108,8 @@ export class StoreListComponent implements OnInit {
       }
     };
 
-    await this.storeService.getCompanyOwnStores(this.userId)
+    await this.storeService.getCompanyOwnStores(this.pageNumber, this.filterName)
       .pipe(tap(receivedStores))
-      .toPromise()
-      .then(() => true)
-      .catch(() => false);
-  }
-
-  async loadCompanies() {
-    const receivedCompanies = {
-      next: (companies: Company[]) => {
-        if (companies.length) {
-          this.companies = companies;
-        }
-      },
-      error: (response) => {
-        const errorMessage = this.utilsService.handleErrorMessage(response);
-        this.snackBarService.openSnackBar(errorMessage, 'close');
-      }
-    };
-
-    await this.companyService.getCompanies(null, null, null, true)
-      .pipe(tap(receivedCompanies))
       .toPromise()
       .then(() => true)
       .catch(() => false);
@@ -212,11 +209,6 @@ export class StoreListComponent implements OnInit {
   }
 
   reloadListOfItens() {
-    this.loadCompanies();
     this.initializeProperties();
-  }
-
-  getCompanyNameById(companyId: number) {
-    return this.companies.find(company => company['id'] == companyId)['name'];
   }
 }

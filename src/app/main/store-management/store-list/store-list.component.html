@@ -9,7 +9,7 @@
   [infiniteScrollThrottle]="300"
   (scrolled)="onScroll();" >
     <p *ngIf="noStoreFound && !stores.length">
-      Não há lojas cadastradas.
+      Não há lojas para mostrar.
     </p>
     <li *ngFor="let store of stores" class="card-items">
       <mat-card>
@@ -36,7 +36,7 @@
           </p>
           <p *ngIf="isAdminUser">
             <span>Empresa: </span>
-            {{ companies.length ? getCompanyNameById(store.companyId) : '' }}
+            {{ store.companyName }}
           </p>
         </mat-card-content>
       </mat-card>
