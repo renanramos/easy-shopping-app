@@ -9,6 +9,8 @@ import { Company } from '../../../core/models/registration/company.model';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
 import { SearchService } from 'src/app/core/shared/service/search-service';
+import { AlertDialogComponent } from 'src/app/core/shared/components/alert-dialog/alert-dialog.component';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'es-company-form',
@@ -23,12 +25,15 @@ export class CompanyFormComponent implements OnInit, OnDestroy {
   passwordVisibility: boolean = false;
   passwordInputType: string = 'password';
 
+  alertDialogRef: MatDialogRef<AlertDialogComponent>;
+
   constructor(
     private companyService: CompanyService,
     private snackBar: SnackbarService,
     private utilsService: UtilsService,
     private formBuilder: FormBuilder,
     private searchService: SearchService,
+    private dialog: MatDialog,
     private router: Router) { }
 
   ngOnInit() {
@@ -69,11 +74,8 @@ export class CompanyFormComponent implements OnInit, OnDestroy {
 
     const receivedCompany = {
       next: (newCompany: Company) => {
-        newCompany ?
-          this.snackBar.openSnackBar('Empresa criada com sucesso!') :
-          this.snackBar.openSnackBar('A requisição foi efetuada, mas não obtivemos resposta');
-
         this.router.navigate(['/']);
+        this.openAlertDialog();
       },
       error: (response) => {
         const errorMessage = this.utilsService.handleErrorMessage(response);
@@ -86,6 +88,19 @@ export class CompanyFormComponent implements OnInit, OnDestroy {
       .toPromise()
       .then(() => true)
       .catch(() => false);
+  }
+
+  openAlertDialog() {
+    this.router.navigate(['/']);
+    
+    this.alertDialogRef = this.dialog.open(AlertDialogComponent, {
+      data: {},
+      disableClose: true,
+      autoFocus: false,
+      panelClass: 'es-small-dialog'
+    });
+
+    this.alertDialogRef.afterClosed().subscribe();
   }
 
   changeInputPasswordVisibility() {
