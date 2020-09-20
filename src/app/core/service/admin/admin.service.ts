@@ -6,9 +6,17 @@ import { ApiService } from '../api.service';
 @Injectable()
 export class AdminService extends ApiService<Admin> {
 
-  private url: string = '/addresses';
+  private url: string = '/admin';
 
   getAdmins(): Observable<Admin | Admin[]> {
     return this.get(this.url);
+  }
+
+  updateAdmin(administrator: Admin): Observable<Admin> {
+    return this.patch(`${this.url}/${administrator['id']}`, administrator);
+  }
+
+  removeAdmin(administratorId: number): Observable<Admin> {
+    return this.delete(`${this.url}/${administratorId}`);
   }
 }
