@@ -75,7 +75,7 @@ body mat-toolbar > mat-form-field > div {
   margin-top: 1vw;
   margin-bottom: auto;
   font-weight: 100;
-  font-size: 38px;
+  font-size: 1.9rem;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
@@ -84,7 +84,7 @@ body mat-toolbar > mat-form-field > div {
   margin-top: 1vw;
   margin-bottom: 1vw;
   font-weight: 100;
-  font-size: 25px;
+  font-size: 1.5rem;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
@@ -94,7 +94,7 @@ body mat-toolbar > mat-form-field > div {
   text-align: right;
   margin-right: 3vw;
   margin-top: 1.5vw;
-  font-size: 20px;
+  font-size: 1.5rem;
   font-weight: 100;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
@@ -301,6 +301,45 @@ tr.table-stripped:active {
 
   .mat-drawer-content {
     padding-left: none;
+  }
+
+  .registration-header {
+    flex-wrap: wrap;
+  }
+
+  .registration-title {
+    width: 100%;
+  }
+
+  .registration-option {
+    width: 100%;
+    font-size: 1rem;
+    text-align: left;
+    padding-left: 1%;
+  }
+
+  .registration-subtitle {
+    width: 100%;
+    font-size: 1rem;
+  }
+
+  .page-form-content {
+    font-size: 1rem;
+    padding-left: 1%;
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  .container-registration-form {
+    padding: 0;
+  }
+
+  .input-half-width {
+    width: 100%;
+  }
+
+  .submit-user-container > button {
+    width: auto !important;
   }
 }
 
