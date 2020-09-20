@@ -33,6 +33,9 @@
           <p>
             <span>Email:</span>
             {{company.email}}
+            <span [ngStyle]="{'color': company.active ? '#039e03' : '#d20808'}">
+              {{ company.active ? '(verificado)' : '(não verificado)'}}
+            </span>
           </p>
           <p>
             <span>Telefone:</span>
