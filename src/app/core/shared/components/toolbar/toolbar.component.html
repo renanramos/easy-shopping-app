@@ -26,6 +26,11 @@
       </div>
       <mat-divider *ngIf="isUserLoggedIn"></mat-divider>
       <button mat-menu-item 
+        (click)="redirectPage('/admin-management');" 
+        esHasPermission="ADMINISTRATOR">
+        <span>Administradores</span>
+      </button>
+      <button mat-menu-item 
         (click)="redirectPage('/customer-management');" 
         esHasPermission="COMPANY, ADMINISTRATOR">
         <span>Clientes</span>
