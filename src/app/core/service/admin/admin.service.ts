@@ -12,6 +12,10 @@ export class AdminService extends ApiService<Admin> {
     return this.get(this.url);
   }
 
+  saveAdmin(administrator: Admin): Observable<Admin> {
+    return this.post(`${this.url}/register`, administrator);
+  }
+
   updateAdmin(administrator: Admin): Observable<Admin> {
     return this.patch(`${this.url}/${administrator['id']}`, administrator);
   }
