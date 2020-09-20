@@ -60,7 +60,6 @@ export class AdminListComponent implements OnInit, OnDestroy {
   async loadAdmins() {
     const receivedAdmins = {
       next: (administrators: Admin[]) => {
-        console.log(administrators);
         if (administrators.length) {
           this.administrators = [...this.administrators, ...administrators];
         } else {
@@ -99,7 +98,7 @@ export class AdminListComponent implements OnInit, OnDestroy {
     };
 
     this.dialogRef = this.dialog.open(AdminDetailComponent, {
-      data: { admin: admin },
+      data: { admin: admin, isCreatingAdmin: false },
       disableClose: true,
       autoFocus: false,
       panelClass: 'es-dialog'
@@ -145,7 +144,7 @@ export class AdminListComponent implements OnInit, OnDestroy {
 
   onAddNewStore() {
     this.dialogRef = this.dialog.open(AdminDetailComponent, {
-      data: { admin: new Admin()},
+      data: { admin: new Admin(), isCreatingAdmin: true},
       disableClose: true,
       autoFocus: false,
       panelClass: 'es-dialog'
