@@ -28,6 +28,7 @@ import { DirectivesModule } from './core/shared/directives/directives.modules';
 import { GlobalLoaderService } from './core/shared/service/global-loader.service';
 import { LoaderInterceptor } from './core/interceptors/loader-interceptor.service';
 import { LoaderComponent } from './core/shared/components/loader/loader.component';
+import { AlertDialogComponent } from './core/shared/components/alert-dialog/alert-dialog.component';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -36,7 +37,8 @@ registerLocaleData(localePt, 'pt-BR');
 @NgModule({
   declarations: [
     AppComponent,
-    LoaderComponent
+    LoaderComponent,
+    AlertDialogComponent
   ],
   imports: [
     BrowserAnimationsModule,
