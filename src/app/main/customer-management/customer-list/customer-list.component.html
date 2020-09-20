@@ -27,6 +27,12 @@
         <mat-card-title>{{customer.name}}</mat-card-title>
         <mat-card-content>
           <p>
+            Usuário está 
+            <span [ngStyle]="{ 'color': customer.active ? '#039e03' : '#d20808' }">
+              {{ customer.active ? 'habilitado' : 'desabilitado' }}
+            </span>
+          </p>
+          <p>
             <span>CPF:</span>
             {{customer.cpf}}
           </p>
