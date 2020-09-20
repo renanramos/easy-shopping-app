@@ -9,6 +9,8 @@ import { Customer } from 'src/app/core/models/registration/customer.model';
 import { UtilsService } from 'src/app/core/shared/utils/utils.service';
 import { passwordMatcher } from 'src/app/core/shared/validators/password-matcher';
 import { SearchService } from 'src/app/core/shared/service/search-service';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { AlertDialogComponent } from 'src/app/core/shared/components/alert-dialog/alert-dialog.component';
 
 @Component({
   selector: 'es-customer-form',
@@ -23,11 +25,14 @@ export class CustomerFormComponent implements OnInit, OnDestroy {
   passwordVisibility: boolean = false;
   passwordInputType: string = 'password';
 
+  alertDialogRef: MatDialogRef<AlertDialogComponent>;
+
   constructor(private formBuider: FormBuilder,
     private customerService: CustomerService,
     private snackBar: SnackbarService,
     private utilsService: UtilsService,
     private searchService: SearchService,
+    private dialog: MatDialog,
     private route: Router) { }
 
   ngOnInit() {
@@ -66,10 +71,7 @@ export class CustomerFormComponent implements OnInit, OnDestroy {
 
     const customerReceived = {
       next: (newCustomer) => {
-        newCustomer ?
-          this.snackBar.openSnackBar('Usuário criado com sucesso!') :
-          this.snackBar.openSnackBar('A requisição foi efetuada, mas não obtivemos resposta');
-        this.route.navigate(['/']);
+        this.openAlertDialog(newCustomer);
       },
       error: (response) => {
        const errorMessage = this.utilsService.handleErrorMessage(response);
@@ -82,6 +84,19 @@ export class CustomerFormComponent implements OnInit, OnDestroy {
     .toPromise()
     .then(() => true)
     .catch(() => false);
+  }
+
+  openAlertDialog(customer: Customer) {
+    this.route.navigate(['/']);
+    
+    this.alertDialogRef = this.dialog.open(AlertDialogComponent, {
+      data: {},
+      disableClose: true,
+      autoFocus: false,
+      panelClass: 'es-small-dialog'
+    });
+
+    this.alertDialogRef.afterClosed().subscribe();
   }
 
   changeInputPasswordVisibility() {
