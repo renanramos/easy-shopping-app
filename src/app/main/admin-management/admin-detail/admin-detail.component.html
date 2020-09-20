@@ -1,1 +1,35 @@
-<p>admin-detail works!</p>
+<div mat-dialog-title>
+  {{ administrator?.id ? 'Alterar' : 'Incluir' }}
+</div>
+<div mat-dialog-content *ngIf="adminForm">
+  <form class="container-registration-form" [formGroup]="adminForm">
+    <mat-form-field class="input-full-width">
+      <mat-label>Nome</mat-label>
+      <input type="text" matInput formControlName="name" id="name">
+      <mat-error *ngIf="name.hasError('required')">Campo obrigatório</mat-error>
+    </mat-form-field>
+    <mat-form-field class="input-full-width">
+      <mat-label>Email</mat-label>
+      <input type="text" matInput formControlName="email" id="email">
+      <mat-error *ngIf="email.hasError('required')">Campo obrigatório</mat-error>
+    </mat-form-field>
+    <div *ngIf="isCreatingAdmin">
+      <mat-form-field class="input-full-width" >
+        <mat-label>Senha</mat-label>
+        <input [type]="passwordInputType" matInput formControlName="password" id="password">
+        <mat-icon matSuffix (click)="changeInputPasswordVisibility();"> {{ passwordVisibility ? 'visibility' : 'visibility_off' }} </mat-icon>
+        <mat-error *ngIf="password.hasError('required')">Campo obrigatório</mat-error>
+      </mat-form-field>
+      <mat-form-field class="input-full-width">
+        <mat-label>Confirmar senha</mat-label>
+        <input type="password" matInput formControlName="confirmPassword" id="confirmPassword">
+        <mat-error *ngIf="confirmPassword.hasError('required')">Campo obrigatório</mat-error>
+        <mat-error *ngIf="confirmPassword.hasError('notMatch')">Campo senha e confirmar senha não são iguais</mat-error>
+      </mat-form-field>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions align="right">
+  <button mat-raised-button mat-dialog-close>FECHAR</button>
+  <button mat-raised-button color="primary" (click)="onSubmitAdministrator();">SALVAR</button>
+</div>
