@@ -1,0 +1,7 @@
+mat-card-content p {
+  font-size: 1rem;
+}
+
+mat-card-content span {
+  font-weight: 400;
+}
