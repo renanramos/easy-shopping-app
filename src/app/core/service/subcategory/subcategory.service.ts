@@ -11,7 +11,7 @@ export class SubcategoryService  extends ApiService<Subcategory> {
     super(injector);
    }
 
-   getSubcategories(productCategoryId?: number, noLimitSize?: boolean): Observable<Subcategory | Subcategory[]> {
+   getSubcategories(productCategoryId?: number, filter?: string, noLimitSize?: boolean): Observable<Subcategory | Subcategory[]> {
      let filterString = '';
 
      if (productCategoryId) {
@@ -19,9 +19,13 @@ export class SubcategoryService  extends ApiService<Subcategory> {
      }
 
      if (noLimitSize) {
-      filterString = filterString ? `&pageSize=-1` : '?pageSize=-1';
+      filterString = '';
+      filterString = `?pageSize=-1`;
      }
 
+     if (filter) {
+      filterString += filterString ? `&name=${filter}` : `?name=${filter}`;
+     }
     return this.get(`${this.url}${filterString}`);
    }
 

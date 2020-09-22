@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { tap } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { debounceTime, tap } from 'rxjs/operators';
 import { ProductCategory } from 'src/app/core/models/product-category/product-category.model';
 import { Subcategory } from 'src/app/core/models/subcategory/subcategory.model';
 import { ProductCategoryService } from 'src/app/core/service/productCategory/product-category.service';
 import { SubcategoryService } from 'src/app/core/service/subcategory/subcategory.service';
 import { ConfirmDialogComponent } from 'src/app/core/shared/components/confirm-dialog/confirm-dialog.component';
 import { ConstantMessages } from 'src/app/core/shared/constants/constant-messages';
+import { ScrollValues } from 'src/app/core/shared/constants/scroll-values';
+import { SearchService } from 'src/app/core/shared/service/search-service';
 import { SnackbarService } from 'src/app/core/shared/service/snackbar.service';
 import { UtilsService } from 'src/app/core/shared/utils/utils.service';
 import { SubcategoryDetailComponent } from '../subcategory-detail/subcategory-detail.component';
@@ -26,20 +29,35 @@ export class SubcategoryListComponent implements OnInit {
   dialogRef: MatDialogRef<SubcategoryDetailComponent>;
   dialogRefConfirm: MatDialogRef<ConfirmDialogComponent>;
 
+  searchSubsctiption: Subscription;
+  filterName: string = '';
+  pageNumber: number = ScrollValues.DEFAULT_PAGE_NUMBER;
+
   constructor(
     private dialog: MatDialog,
     private utilsService: UtilsService,
     private snackBarService: SnackbarService,
-    private productCategoryService: ProductCategoryService,
-    private subcategoryService: SubcategoryService) { }
+    private subcategoryService: SubcategoryService,
+    private searchService: SearchService) { }
 
   async ngOnInit() {
     await this.loadComponentProperties();
+    this.subscribeToSearchService();
+  }
+
+  subscribeToSearchService() {
+    this.searchSubsctiption = this.searchService.searchSubject$
+    .pipe(debounceTime(300))
+    .subscribe((value) => {
+      this.pageNumber = ScrollValues.DEFAULT_PAGE_NUMBER;
+      this.filterName = value;
+      this.subcategories = [];
+      this.loadSubcategories();
+    });
   }
 
   async loadComponentProperties() {
     this.subcategories = [];
-    // await this.loadProductCategories();
     await this.loadSubcategories()
   }
 
@@ -61,33 +79,12 @@ export class SubcategoryListComponent implements OnInit {
       }
     };
 
-    await this.subcategoryService.getSubcategories()
+    await this.subcategoryService.getSubcategories(null, this.filterName, false)
       .pipe(tap(receivedSubcategories))
       .toPromise()
       .then(() => true)
       .catch(() => false);
   }
-
-  // async loadProductCategories() {
-
-  //   const receivedProductCategories = {
-  //     next: (productCategories: ProductCategory[]) => {
-  //       if (productCategories.length) {
-  //         this.productCategories = productCategories;
-  //       }
-  //     },
-  //     error: (response) => {
-  //       const errorMessage = this.utilsService.handleErrorMessage(response);
-  //       this.snackBarService.openSnackBar(errorMessage, 'close');
-  //     }
-  //   };
-
-  //   await this.productCategoryService.getProductCategories()
-  //     .pipe(tap(receivedProductCategories))
-  //     .toPromise()
-  //     .then(() => true)
-  //     .catch(() => false);
-  // }
 
   onAddNewSubcategory() {
     this.dialogRef = this.dialog.open(SubcategoryDetailComponent, {
@@ -169,10 +166,7 @@ export class SubcategoryListComponent implements OnInit {
   }
 
   onScroll() {
-    console.log('scrolled')
+    this.pageNumber += 1;
+    this.loadComponentProperties();
   }
-
-  // getCategoryNameById(categoryId: number) {
-  //   return this.productCategories.find(productCategory => productCategory.id === categoryId)['name'];
-  // }
 }
