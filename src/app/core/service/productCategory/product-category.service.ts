@@ -12,12 +12,22 @@ export class ProductCategoryService extends ApiService<ProductCategory> {
     super(injector);
   }
 
-   getProductCategories(noLimitSize?: boolean): Observable<ProductCategory | ProductCategory[]> {
+   getProductCategories(pageNumber: number, filterParameter?: string, noLimitSize?: boolean): Observable<ProductCategory | ProductCategory[]> {
     let filterString = '';
 
+    if (pageNumber) {
+      filterString += `?pageNumber=${pageNumber}`;
+    }
+
     if (noLimitSize) {
+      filterString = '';
       filterString += `?pageSize=-1`;
     }
+
+    if (filterParameter) {
+      filterString += filterString ? `&name=${filterParameter}` : `?name=${filterParameter}`;
+    }
+
     return this.get(`${this.url}${filterString}`);
    }
 
