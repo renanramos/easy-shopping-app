@@ -53,7 +53,7 @@ export class ScaffoldComponent implements OnInit {
       }
     };
 
-    await this.productCategoryService.getProductCategories()
+    await this.productCategoryService.getProductCategories(null, null, true)
       .pipe(tap(receivedProductsCategories))
       .toPromise()
       .then()
