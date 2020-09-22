@@ -29,8 +29,13 @@
           <p>
             <span>Email:</span>
             {{admin.email}}
-            <span [ngStyle]="{'color': admin.active ? '#039e03' : '#d20808'}">
-              {{ admin.active ? '(verificado)' : '(não verificado)'}}
+          </p>
+          <p>
+            <span>
+              {{ admin.active ? 'Email verificado' : 'Email não verificado' }}
+              <mat-icon [ngStyle]="{ 'color': admin.active ? '#039e03' : '#d20808' }">
+                {{ admin.active ? 'done' : 'clear' }}
+              </mat-icon>
             </span>
           </p>
         </mat-card-content>
