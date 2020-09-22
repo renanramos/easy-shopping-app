@@ -6,6 +6,7 @@ import { SecurityUserService } from 'src/app/core/service/auth/security-user.ser
 import { ProductCategoryService } from 'src/app/core/service/productCategory/product-category.service';
 import { ConfirmDialogComponent } from 'src/app/core/shared/components/confirm-dialog/confirm-dialog.component';
 import { ConstantMessages } from 'src/app/core/shared/constants/constant-messages';
+import { ScrollValues } from 'src/app/core/shared/constants/scroll-values';
 import { SnackbarService } from 'src/app/core/shared/service/snackbar.service';
 import { UtilsService } from 'src/app/core/shared/utils/utils.service';
 import { ProductCategoryDetailComponent } from '../product-category-detail/product-category-detail.component';
@@ -18,6 +19,7 @@ import { ProductCategoryDetailComponent } from '../product-category-detail/produ
 })
 export class ProductCategoryListComponent implements OnInit {
 
+  pageNumber: number = ScrollValues.DEFAULT_PAGE_NUMBER;
   dataNotFound: boolean = false;
   productCategories: ProductCategory[] = [];
 
@@ -48,7 +50,7 @@ export class ProductCategoryListComponent implements OnInit {
       }
     };
 
-    await this.productCategoryService.getProductCategories()
+    await this.productCategoryService.getProductCategories(this.pageNumber, null, false)
       .pipe(tap(productCategoriesReceived))
       .toPromise()
       .then(() => true)
@@ -70,7 +72,7 @@ export class ProductCategoryListComponent implements OnInit {
     const afterDialogClosed = {
       next: (productCategoryReceived) => {
         if (productCategoryReceived) {
-          this.loadProductCategories();
+          this.reloadListOfItens();
           this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_UPDATED, 'close');
         }
       }
@@ -89,7 +91,6 @@ export class ProductCategoryListComponent implements OnInit {
 
     const afterDialogClosed = {
       next: (response) => {
-        console.log(response);
         if (response) {
           this.removeProductCategory(productCategory['id']);
         }
@@ -110,7 +111,7 @@ export class ProductCategoryListComponent implements OnInit {
     const afterDialogClosed = {
       next: (productCategoryReceived) => {
         if (productCategoryReceived) {
-          this.loadProductCategories();
+          this.reloadListOfItens();
           this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_CREATED, 'close');
         }
       }
@@ -136,5 +137,10 @@ export class ProductCategoryListComponent implements OnInit {
       .toPromise()
       .then(() => true)
       .catch(() => false);
+  }
+
+  reloadListOfItens() {
+    this.pageNumber = ScrollValues.DEFAULT_PAGE_NUMBER;
+    this.loadProductCategories();
   }
 }
