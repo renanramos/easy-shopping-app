@@ -9,6 +9,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgSlimScrollModule } from 'ngx-slimscroll';
 import { IConfig, NgxMaskModule } from 'ngx-mask';
+import { DirectivesModule } from '../../core/shared/directives/directives.modules';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -25,6 +26,7 @@ const components = [
     AngularMaterialModule,
     CustomerManagementRoutingModule,
     SharedComponentsModule,
+    DirectivesModule,
     NgSlimScrollModule,
     InfiniteScrollModule,
     NgxMaskModule.forRoot()
