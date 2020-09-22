@@ -49,7 +49,6 @@ export class CompanyListComponent implements OnInit, OnDestroy {
 
   subscribeToSearchService() {
     this.searchSubscription = this.searchService.searchSubject$
-    .pipe(debounceTime(300))
     .subscribe((value) => {
       this.pageNumber = ScrollValues.DEFAULT_PAGE_NUMBER;
       this.filterName = value;

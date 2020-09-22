@@ -50,7 +50,6 @@ export class CustomerListComponent implements OnInit, OnDestroy {
 
   subscribeToSearchService() {
     this.searchServiceSubscription = this.searchService.searchSubject$
-    .pipe(debounceTime(300))
     .subscribe((value) => {
         this.pageNumber = ScrollValues.DEFAULT_PAGE_NUMBER;
         this.filterName = value;
