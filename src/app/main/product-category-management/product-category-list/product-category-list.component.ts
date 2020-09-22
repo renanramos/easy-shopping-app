@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { tap } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { debounceTime, tap } from 'rxjs/operators';
 import { ProductCategory } from 'src/app/core/models/product-category/product-category.model';
 import { SecurityUserService } from 'src/app/core/service/auth/security-user.service';
 import { ProductCategoryService } from 'src/app/core/service/productCategory/product-category.service';
 import { ConfirmDialogComponent } from 'src/app/core/shared/components/confirm-dialog/confirm-dialog.component';
 import { ConstantMessages } from 'src/app/core/shared/constants/constant-messages';
 import { ScrollValues } from 'src/app/core/shared/constants/scroll-values';
+import { SearchService } from 'src/app/core/shared/service/search-service';
 import { SnackbarService } from 'src/app/core/shared/service/snackbar.service';
 import { UtilsService } from 'src/app/core/shared/utils/utils.service';
 import { ProductCategoryDetailComponent } from '../product-category-detail/product-category-detail.component';
@@ -26,13 +28,29 @@ export class ProductCategoryListComponent implements OnInit {
   dialogRef: MatDialogRef<ProductCategoryDetailComponent>;
   dialogRefConfirm: MatDialogRef<ConfirmDialogComponent>;
 
+  searchSubscription: Subscription;
+  filterParameter: string = '';
+
   constructor(
+    private searchService: SearchService,
     private dialog: MatDialog,
     private snackBarService: SnackbarService,
     private productCategoryService: ProductCategoryService) { }
 
   async ngOnInit() {
     await this.loadProductCategories();
+    this.subscribeToSearchService();
+  }
+
+  subscribeToSearchService() {
+    this.searchSubscription = this.searchService.searchSubject$
+    .pipe(debounceTime(300))
+    .subscribe((value) => {
+      this.pageNumber = ScrollValues.DEFAULT_PAGE_NUMBER;
+      this.filterParameter = value;
+      this.productCategories = [];
+      this.loadProductCategories();
+    });
   }
 
   async loadProductCategories() {
@@ -50,7 +68,7 @@ export class ProductCategoryListComponent implements OnInit {
       }
     };
 
-    await this.productCategoryService.getProductCategories(this.pageNumber, null, false)
+    await this.productCategoryService.getProductCategories(this.pageNumber, this.filterParameter, false)
       .pipe(tap(productCategoriesReceived))
       .toPromise()
       .then(() => true)
