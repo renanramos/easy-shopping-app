@@ -67,7 +67,7 @@ export class SubcategoryDetailComponent implements OnInit {
       }
     };
 
-    await this.productCategoryService.getProductCategories()
+    await this.productCategoryService.getProductCategories(null, null, true)
       .pipe(tap(receivedProductCategories))
       .toPromise()
       .then(() => true)
