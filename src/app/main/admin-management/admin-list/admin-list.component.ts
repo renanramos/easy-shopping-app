@@ -73,7 +73,7 @@ export class AdminListComponent implements OnInit, OnDestroy {
       }
     };
 
-    await this.adminService.getAdmins()
+    await this.adminService.getAdmins(this.pageNumber, this.filterName)
       .pipe(tap(receivedAdmins))
       .toPromise()
       .then(() => true)

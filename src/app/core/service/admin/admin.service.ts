@@ -8,8 +8,17 @@ export class AdminService extends ApiService<Admin> {
 
   private url: string = '/admin';
 
-  getAdmins(): Observable<Admin | Admin[]> {
-    return this.get(this.url);
+  getAdmins(pageNumber?: number, filterParameter?: string): Observable<Admin | Admin[]> {
+    let filterString = '';
+
+    if (pageNumber) {
+      filterString = `?pageNumber=${pageNumber}`;
+    }
+
+    if (filterParameter) {
+      filterString += filterString ? `&name=${filterParameter}` : `?name=${filterParameter}`;
+    }
+    return this.get(`${this.url}${filterString}`);
   }
 
   saveAdmin(administrator: Admin): Observable<Admin> {
