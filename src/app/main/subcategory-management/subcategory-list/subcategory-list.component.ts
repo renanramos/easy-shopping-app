@@ -39,7 +39,7 @@ export class SubcategoryListComponent implements OnInit {
 
   async loadComponentProperties() {
     this.subcategories = [];
-    await this.loadProductCategories();
+    // await this.loadProductCategories();
     await this.loadSubcategories()
   }
 
@@ -68,26 +68,26 @@ export class SubcategoryListComponent implements OnInit {
       .catch(() => false);
   }
 
-  async loadProductCategories() {
+  // async loadProductCategories() {
 
-    const receivedProductCategories = {
-      next: (productCategories: ProductCategory[]) => {
-        if (productCategories.length) {
-          this.productCategories = productCategories;
-        }
-      },
-      error: (response) => {
-        const errorMessage = this.utilsService.handleErrorMessage(response);
-        this.snackBarService.openSnackBar(errorMessage, 'close');
-      }
-    };
+  //   const receivedProductCategories = {
+  //     next: (productCategories: ProductCategory[]) => {
+  //       if (productCategories.length) {
+  //         this.productCategories = productCategories;
+  //       }
+  //     },
+  //     error: (response) => {
+  //       const errorMessage = this.utilsService.handleErrorMessage(response);
+  //       this.snackBarService.openSnackBar(errorMessage, 'close');
+  //     }
+  //   };
 
-    await this.productCategoryService.getProductCategories()
-      .pipe(tap(receivedProductCategories))
-      .toPromise()
-      .then(() => true)
-      .catch(() => false);
-  }
+  //   await this.productCategoryService.getProductCategories()
+  //     .pipe(tap(receivedProductCategories))
+  //     .toPromise()
+  //     .then(() => true)
+  //     .catch(() => false);
+  // }
 
   onAddNewSubcategory() {
     this.dialogRef = this.dialog.open(SubcategoryDetailComponent, {
@@ -172,7 +172,7 @@ export class SubcategoryListComponent implements OnInit {
     console.log('scrolled')
   }
 
-  getCategoryNameById(categoryId: number) {
-    return this.productCategories.find(productCategory => productCategory.id === categoryId)['name'];
-  }
+  // getCategoryNameById(categoryId: number) {
+  //   return this.productCategories.find(productCategory => productCategory.id === categoryId)['name'];
+  // }
 }
