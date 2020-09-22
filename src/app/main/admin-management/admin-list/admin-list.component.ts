@@ -92,7 +92,7 @@ export class AdminListComponent implements OnInit, OnDestroy {
         if (adminUpdated) {
           this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_UPDATED, 'close');
           this.administrators = [];
-          this.loadAdmins();
+          this.reloadListOfItens();
         }
       }
     };
@@ -127,7 +127,7 @@ export class AdminListComponent implements OnInit, OnDestroy {
       next: () => {
         this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_REMOVED, 'close');
         this.administrators = [];
-        this.loadAdmins();
+        this.reloadListOfItens();
       },
       error: (error) => {
         const message = this.utilsService.handleErrorMessage(error);
@@ -155,11 +155,16 @@ export class AdminListComponent implements OnInit, OnDestroy {
         if (admin['id']) {
           this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_CREATED);
           this.administrators = [];
-          this.loadAdmins();
+          this.reloadListOfItens();
         }
       }
     };
 
     this.dialogRef.afterClosed().subscribe(adminCreated);
+  }
+
+  reloadListOfItens() {
+    this.pageNumber = ScrollValues.DEFAULT_PAGE_NUMBER;
+    this.loadAdmins();
   }
 }

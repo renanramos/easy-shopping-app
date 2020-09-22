@@ -89,7 +89,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
         if(customerUpdated) {
           this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_UPDATED);
           this.customers = [];
-          this.loadCustomers();
+          this.reloadListOfItens();
         }
       }
     }
@@ -125,7 +125,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       next: () => {
         this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_REMOVED, 'close');
         this.customers = [];
-        this.loadCustomers();
+        this.reloadListOfItens();
       },
       error: (error) => {
         const message = this.utilsService.handleErrorMessage(error);
@@ -143,5 +143,10 @@ export class CustomerListComponent implements OnInit, OnDestroy {
   onScroll() {
       this.pageNumber += 1;
       this.loadCustomers();   
+  }
+
+  reloadListOfItens() {
+    this.pageNumber = ScrollValues.DEFAULT_PAGE_NUMBER;
+    this.loadCustomers();
   }
 }

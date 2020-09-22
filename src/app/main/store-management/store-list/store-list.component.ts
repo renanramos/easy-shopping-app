@@ -209,6 +209,7 @@ export class StoreListComponent implements OnInit {
   }
 
   reloadListOfItens() {
+    this.pageNumber = ScrollValues.DEFAULT_PAGE_NUMBER;
     this.initializeProperties();
   }
 }

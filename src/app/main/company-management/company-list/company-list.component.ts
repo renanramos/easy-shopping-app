@@ -89,7 +89,7 @@ export class CompanyListComponent implements OnInit, OnDestroy {
         if(companyUpdated) {
           this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_UPDATED);
           this.companies = [];
-          this.loadCompanies();
+          this.reloadListOfItens();
         }
       }
     }
@@ -125,7 +125,7 @@ export class CompanyListComponent implements OnInit, OnDestroy {
       next: () => {
         this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_REMOVED, 'close');
         this.companies = [];
-        this.loadCompanies();
+        this.reloadListOfItens();
       },
       error: (error) => {
         const message = this.utilsService.handleErrorMessage(error);
@@ -142,6 +142,11 @@ export class CompanyListComponent implements OnInit, OnDestroy {
 
   onScroll() {
     this.pageNumber += 1;
+    this.loadCompanies();
+  }
+
+  reloadListOfItens() {
+    this.pageNumber = ScrollValues.DEFAULT_PAGE_NUMBER;
     this.loadCompanies();
   }
 }
