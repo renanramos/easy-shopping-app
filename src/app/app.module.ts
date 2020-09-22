@@ -29,6 +29,8 @@ import { GlobalLoaderService } from './core/shared/service/global-loader.service
 import { LoaderInterceptor } from './core/interceptors/loader-interceptor.service';
 import { LoaderComponent } from './core/shared/components/loader/loader.component';
 import { AlertDialogComponent } from './core/shared/components/alert-dialog/alert-dialog.component';
+import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
+import { NoopScrollStrategy } from '@angular/cdk/overlay';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -88,6 +90,12 @@ registerLocaleData(localePt, 'pt-BR');
         barBackground: '#515151',
         barWidth: '6',
         barMargin: '2px 2px'
+      },
+    },
+    {
+      provide: MAT_DIALOG_DEFAULT_OPTIONS,
+      useValue: {
+        scrollStrategy: new NoopScrollStrategy()
       }
     },
     AsyncPipe,
