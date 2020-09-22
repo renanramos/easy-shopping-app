@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, OnInit } from '@angular/core';
+import { Directive, ElementRef, Input, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 import { SecurityUserService } from '../../service/auth/security-user.service';
 
 @Directive({
@@ -7,23 +7,41 @@ import { SecurityUserService } from '../../service/auth/security-user.service';
 export class EsHasPermissionDirective implements OnInit {
 
   permission: string;
-
-  @Input() set esHasPermission(permission: string) {
-    this.permission = permission;
-  }
-
-  constructor(private elementRef: ElementRef,
-    private securityUserService: SecurityUserService) {
+  
+  constructor(private telementRef: TemplateRef<any>,
+    private securityUserService: SecurityUserService,
+    private viewContainer: ViewContainerRef) {
    }
 
-  ngOnInit() {
-    const permissions: string[] = this.permission.split(',');
-    const userRole = this.securityUserService.userLoggedRole;
+  @Input() set esHasPermission(permissions: string | string[]) {
     
-    let hasPermission = permissions.some(permission => permission.trim() == userRole);
+    let userLoggedPermission = false;
     
-    if (!hasPermission) {
-      this.elementRef.nativeElement.style.display = 'none';
+    if (Array.isArray(permissions)) {
+      const hasPermission = (permission) => {
+        return this.securityUserService.userLoggedRole === permission;
+      }
+
+      userLoggedPermission = permissions.some(hasPermission);
+    } else {
+      userLoggedPermission = this.securityUserService.userLoggedRole === permissions;
     }
+
+    if (userLoggedPermission) {
+      this.viewContainer.createEmbeddedView(this.telementRef);
+    } else {
+      this.viewContainer.clear();
+    }
+  }
+
+  async ngOnInit() {
+    // const permissions: string[] = this.permission.split(',');
+    // const userRole = await this.securityUserService.userLoggedRole;
+    
+    // let hasPermission = permissions.some(permission => permission.trim() == userRole);
+    
+    // if (!hasPermission) {
+    //   this.elementRef.nativeElement.style.display = 'none';
+    // }
   }
 }
