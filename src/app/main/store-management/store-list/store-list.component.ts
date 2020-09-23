@@ -116,7 +116,9 @@ export class StoreListComponent implements OnInit {
 
   onScroll() {
     this.pageNumber += 1;
-    this.loadStores();
+    this.securityUserService.isAdminUser ?
+      this.loadStores() :
+      this.loadCompanyOwnStores();
   }
 
   openEditStore(store: Store) {
