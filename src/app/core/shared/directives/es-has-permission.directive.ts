@@ -34,14 +34,5 @@ export class EsHasPermissionDirective implements OnInit {
     }
   }
 
-  async ngOnInit() {
-    // const permissions: string[] = this.permission.split(',');
-    // const userRole = await this.securityUserService.userLoggedRole;
-    
-    // let hasPermission = permissions.some(permission => permission.trim() == userRole);
-    
-    // if (!hasPermission) {
-    //   this.elementRef.nativeElement.style.display = 'none';
-    // }
-  }
+  ngOnInit() { }
 }
