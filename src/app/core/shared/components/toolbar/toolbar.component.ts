@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { Event, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { LoginFormComponent } from 'src/app/login/components/login-form/login-form.component';
@@ -16,12 +16,14 @@ import { Subscription } from 'rxjs';
 })
 export class ToolbarComponent implements OnInit, OnDestroy {
 
+  @ViewChild('inputSearchField') inputSearchField: ElementRef<HTMLInputElement>;
   @Output() menuEvent = new EventEmitter<any>();
   @Input() showMenuIcon: boolean = true;
   hideSearchInput: boolean = false;
   userLoggedName: string = '';
 
   searchFilter: Subscription;
+  clearSearchFilter: Subscription;
   isUserLoggedIn: boolean = false;
 
   constructor(private router: Router,
@@ -87,6 +89,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   }
 
   redirectPage(routeName: string) {
+    this.inputSearchField.nativeElement.value = "";
     this.router.navigate([routeName]);
   }
 
