@@ -66,6 +66,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         this.securityUserService.setToken(userCredentials.token);
         this.userLoggedName = this.securityUserService.getLoggedUsername();
         this.isUserLoggedIn = this.securityUserService.idUserLoggedIn;
+        window.location.reload();
         this.homePage();
       }
     });
@@ -78,7 +79,8 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         this.securityUserService.deleteCookieAndRedirect();
         this.userLoggedName = '';
         this.isUserLoggedIn = false;
-        this.router.navigate(['/']);
+        this.router.navigateByUrl('/');
+        window.location.reload();
       }
     }
 

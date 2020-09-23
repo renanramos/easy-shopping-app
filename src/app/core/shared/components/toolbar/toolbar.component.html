@@ -93,7 +93,8 @@
       <mat-icon>list</mat-icon>
       <span>Lista de empresas</span>
     </button>
-    <button mat-menu-item (click)="redirectPage('/store-management');" *ngIf="isUserLoggedIn">
+    <button mat-menu-item (click)="redirectPage('/store-management');"
+    *esHasPermission="['COMPANY','ADMINISTRATOR']">
       <mat-icon>store</mat-icon>
       <span>Lojas</span>
     </button>
