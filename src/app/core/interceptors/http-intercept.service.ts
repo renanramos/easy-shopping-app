@@ -1,10 +1,8 @@
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 
 import { Injectable } from '@angular/core';
-import { CookieService } from 'ngx-cookie-service';
-import { Router } from '@angular/router';
 import { Observable } from 'rxjs/internal/Observable';
-import { tap } from 'rxjs/operators';
+import { share, tap } from 'rxjs/operators';
 import { SnackbarService } from '../shared/service/snackbar.service';
 import { SecurityUserService } from '../service/auth/security-user.service';
 import { UtilsService } from '../shared/utils/utils.service';
@@ -20,9 +18,9 @@ export class HttpIntercept implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let headers = new HttpHeaders();
 
-    if (req.url.indexOf('/assests/') < 0) {
+    if (req.url.indexOf('/assets/') < 0) {
       if (!!this.securityUserService.isUserLogged()) {
-        const token = !!this.securityUserService.isUserLogged() ? this.securityUserService.getUserLoggedToken() : null;
+        const token = this.securityUserService.getUserLoggedToken();
         headers = headers.set('Authorization', `Bearer ${token}`);
       }
     }
