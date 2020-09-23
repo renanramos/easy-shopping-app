@@ -14,12 +14,12 @@
   </mat-form-field>
   <span class="scaffold-spacer"></span>
   <div class="account-icon">
-    <button mat-icon-button [matMenuTriggerFor]="menu">
+    <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger" (mouseenter)="menuTrigger.openMenu()">
       <mat-icon>account_circle</mat-icon>
     </button>
   </div>
 
-  <mat-menu #menu="matMenu" >
+  <mat-menu #menu="matMenu" [overlapTrigger]="false">
     <div *ngIf="isUserLoggedIn">
       <div class="user-logged-details" mat-menu-item>
         Olá {{ userLoggedName }}
@@ -68,9 +68,11 @@
   </mat-menu>
 
   <mat-menu #products="matMenu">
-    <button mat-menu-item *ngIf="isUserLoggedIn">
+    <button mat-menu-item 
+      (click)="redirectPage('/product-management');"
+      *esHasPermission="['COMPANY', 'ADMINISTRATOR']">
       <mat-icon>event_seat</mat-icon>
-      <span>Lista de produtos</span>
+      <span>Gerenciamento de produtos</span>
     </button>
     <button mat-menu-item 
         (click)="redirectPage('/product-category-management');"
