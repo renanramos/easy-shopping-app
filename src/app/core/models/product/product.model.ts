@@ -1,9 +1,9 @@
 export class Product {
-  private id: number;
-  private name: string;
-  private description: string;
-  private price: number;
-  private productCategoryId: number;
-  private productCategoryName: string;
-  private storeId: number;
+  public id: number;
+  public name: string;
+  public description: string;
+  public price: number;
+  public productCategoryId: number;
+  public productCategoryName: string;
+  public storeId: number;
 }
