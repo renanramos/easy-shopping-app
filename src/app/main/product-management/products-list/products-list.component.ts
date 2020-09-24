@@ -6,6 +6,8 @@ import { ProductService } from '../../../core/service/product/product.service';
 import { Product } from 'src/app/core/models/product/product.model';
 import { MenuService } from 'src/app/core/shared/service/menu-service.service';
 import { Subcategory } from 'src/app/core/models/subcategory/subcategory.model';
+import { ProductDeteailComponent } from '../product-deteail/product-deteail.component';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'es-products-list',
@@ -21,7 +23,11 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   noProductsFound: boolean = false;
   subscription: Subscription;
 
-  constructor(private productService: ProductService,
+  dialogRef: MatDialogRef<ProductDeteailComponent>;
+
+  constructor(
+    private dialog: MatDialog,
+    private productService: ProductService,
     private menuService: MenuService) { }
 
   async ngOnInit() {
@@ -67,5 +73,22 @@ export class ProductsListComponent implements OnInit, OnDestroy {
     this.isListFiltererd = false;
     this.categoryFiltered = "";
     await this.loadProducts();
+  }
+
+  onAddNewProduct() {
+    this.dialogRef = this.dialog.open(ProductDeteailComponent, {
+      data: new Product(),
+      disableClose: true,
+      autoFocus: false,
+      panelClass: 'es-dialog'
+    });
+
+    const afterDialogClose = {
+      next: (response) => {
+        console.log(response);
+      }
+    }
+
+    this.dialogRef.afterClosed().subscribe(afterDialogClose);
   }
 }
