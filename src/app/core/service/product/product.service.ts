@@ -13,11 +13,12 @@ export class ProductService extends ApiService<Product>{
    }
 
    getProducts(subcategoryId?:number): Observable<Product | Product[]> {
-    let url = `${this.url}`;
+    let filterString = ``;
 
     if (subcategoryId) {
-      url += `/subcategory?subcategoryId=${subcategoryId}`;
+      filterString += `/subcategory?subcategoryId=${subcategoryId}`;
     }
-    return this.get(url);
+
+    return this.get(`${this.url}`);
    }
 }
