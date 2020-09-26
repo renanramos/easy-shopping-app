@@ -1,1 +1,47 @@
-<p>product-deteail works!</p>
+<div mat-dialog-title>
+  {{ product?.id ? 'Alterar produto' : 'Incluir produto' }}
+</div>
+<div mat-dialog-content *ngIf="productForm">
+  <form class="container-registration-form" [formGroup]="productForm">
+    <mat-form-field class="input-full-width">
+      <mat-label>Nome</mat-label>
+      <input type="text" matInput formControlName="name" id="name">
+      <mat-error *ngIf="name.hasError('required')">Campo obrigatório</mat-error>
+    </mat-form-field>
+    <mat-form-field class="input-full-width">
+      <mat-label>Descrição</mat-label>
+      <input type="text" matInput formControlName="description" id="description">
+      <mat-error *ngIf="description.hasError('required')">Campo obrigatório</mat-error>
+    </mat-form-field>
+    <mat-form-field class="input-full-width">
+      <mat-label>Preço</mat-label>
+      <input matInput formControlName="price" id="price" mask="separator.2" thousandSeparator="." >
+      <mat-error *ngIf="price.hasError('required')">Campo obrigatório</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="input-full-width">
+      <mat-label>Categoria</mat-label>
+      <mat-select formControlName="productSubcategoryId" id="productSubcategoryId">
+        <mat-option *ngFor="let subcategory of subcategories" [value]="subcategory.id">{{ subcategory.name }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="productSubcategoryId.hasError('required')">Campo obrigatório</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="input-full-width">
+      <mat-label>Empresa</mat-label>
+      <mat-select formControlName="companyId" id="companyId">
+        <mat-option *ngFor="let company of companies" [value]="company.id">{{ company.name }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="companyId.hasError('required')">Campo obrigatório</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="input-full-width">
+      <mat-label>Loja</mat-label>
+      <mat-select formControlName="storeId" id="storeId">
+        <mat-option *ngFor="let store of stores" [value]="store.id">{{ store.name }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="storeId.hasError('required')">Campo obrigatório</mat-error>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions align="right">
+  <button mat-raised-button mat-dialog-close>FECHAR</button>
+  <button mat-raised-button color="primary" (click)="submitProduct();">SALVAR</button>
+</div>
