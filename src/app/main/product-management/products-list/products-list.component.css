@@ -38,3 +38,54 @@ mat-chip {
   overflow: hidden;
   white-space: nowrap;
 }
+
+.mat-card-header {
+  padding-bottom: 1rem !important;
+}
+
+@media screen and (min-width: 280px) and (max-width: 570px) {
+  .card-items {
+    width: calc(100% - 15px);
+    margin: 10px 13px 10px 2px !important;
+  }
+
+  .mat-card-title {
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 480px) and (max-width: 768px) {
+  .card-items {
+    width: calc(50% - 25px);
+  }
+}
+
+@media screen and (min-width: 480px) and (max-width: 768px) and (orientation: landscape) {
+  .card-items {
+    width: calc(50% - 25px);
+  }
+}
+
+@media screen and (min-width: 769px) and (max-width: 1366px) {
+  .card-items {
+    width: calc(25% - 25px);
+  }
+}
+
+@media screen and (min-width: 1367px) and (max-width: 1920px) {
+  .card-items {
+    width: calc(24.7% - 25px);
+  }
+}
+
+@media screen and (min-width: 1921px) and (max-width: 2160px) {
+  .card-items {
+    width: calc(50% - 25px);
+  }
+}
+
+@media screen and (min-width: 2161px) {
+  .card-items {
+    width: calc(20% - 25px);
+  }
+}
