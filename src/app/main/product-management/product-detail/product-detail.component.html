@@ -25,7 +25,7 @@
       </mat-select>
       <mat-error *ngIf="productSubcategoryId.hasError('required')">Campo obrigatório</mat-error>
     </mat-form-field>
-    <mat-form-field appearance="outline" class="input-full-width">
+    <mat-form-field appearance="outline" class="input-full-width" *ngIf="isAdminUser">
       <mat-label>Empresa</mat-label>
       <mat-select formControlName="companyId" id="companyId">
         <mat-option *ngFor="let company of companies" [value]="company.id">{{ company.name }}</mat-option>

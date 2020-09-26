@@ -56,6 +56,7 @@ export class ProductDetailComponent implements OnInit {
   initializeComponentsProperties() {
     this.product = this.data['product'] ? this.data['product'] : new Product();
     this.isAdminUser = this.securityUserService.isAdminUser;
+    this.userCompanyId = this.securityUserService.idUserLoggedIn;
   }
 
   createForm() {
@@ -63,8 +64,8 @@ export class ProductDetailComponent implements OnInit {
       name: [this.product.name, [Validators.required]],
       description: [this.product.description, [Validators.required]],
       price: [this.product.price, [Validators.required]],
-      productSubcategoryId: [this.product.productCategoryId, [Validators.required]],
-      companyId: [this.product.companyId, [Validators.required]],
+      productSubcategoryId: [this.product['subcategoryId'], [Validators.required]],
+      companyId: [ this.isAdminUser ? this.product.companyId : this.userCompanyId, [Validators.required]],
       storeId: [this.product.storeId, [Validators.required]]
     })
   }
@@ -155,8 +156,25 @@ export class ProductDetailComponent implements OnInit {
       .catch(() => false);
   }
 
-  updateProduct() {
-    
+  async updateProduct() {
+    let product = this.productForm.getRawValue();
+    product['price'] = Number(product['price']);
+    product['id'] = this.product.id;
+    const receivedUpdatedProduct = {
+      next: (productUpdated: Product) => {
+        this.dialogRef.close(productUpdated);
+      },
+      error: (response) => {
+        const errorMessage = this.utilsService.handleErrorMessage(response);
+        this.snackBarService.openSnackBar(errorMessage, 'close');
+      }
+    };
+
+    await this.productService.updateProduct(product)
+      .pipe(tap(receivedUpdatedProduct))
+      .toPromise()
+      .then(() => true)
+      .catch(() => false);
   }
 
   get name() {
