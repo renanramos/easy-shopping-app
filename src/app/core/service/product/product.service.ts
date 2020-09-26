@@ -25,4 +25,12 @@ export class ProductService extends ApiService<Product>{
    saveProduct(product: Product): Observable<Product> {
      return this.post(`${this.url}`, product);
    }
+
+   updateProduct(product: Product): Observable<Product> {
+     return this.patch(`${this.url}/${product['id']}`, product);
+   }
+
+   removeProduct(productId: number): Observable<Product> {
+     return this.delete(`${this.url}/${productId}`);
+   }
 }
