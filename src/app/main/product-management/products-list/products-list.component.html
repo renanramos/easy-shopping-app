@@ -19,6 +19,19 @@
     </p>
     <li *ngFor="let product of products" class="card-items">
         <mat-card >
+          <mat-icon mat-icon-button [matMenuTriggerFor]="cardOption" *esHasPermission="['COMPANY']">more_vert</mat-icon>
+
+          <mat-menu #cardOption="matMenu" >
+            <button mat-menu-item (click)="openEditProduct(product);">
+              <span>Editar</span>
+            </button>
+            <button mat-menu-item (click)="openRemoveProduct(product);">
+              <span>Remover</span>
+            </button>
+            <button mat-menu-item (click)="openUploadProductImage(product);">
+              <span>Adicionar foto</span>
+            </button>
+          </mat-menu>
           <mat-card-header>
             <div mat-card-avatar class="products-header-image"></div>
             <mat-card-title>{{ product.name }}</mat-card-title>
@@ -27,7 +40,7 @@
           <mat-card-content>
             <img *ngIf="product.productImages[0]?.picture; else showPlaceholderImage" mat-card-image src="{{'data:image/png;base64,' + product.productImages[0]?.picture}}" alt="{{ product.name }}">
             <ng-template #showPlaceholderImage>
-                <img mat-card-image src="../../../../assets/product-image-placeholder.png" alt="{{ product.name }}">
+              <img mat-card-image src="../../../../assets/product-image-placeholder.png" alt="{{ product.name }}">
             </ng-template>
             <p class="product-price-info">
              Preço: {{ product.price | currency : 'BRL'}}
