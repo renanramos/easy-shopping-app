@@ -8,6 +8,9 @@ import { MenuService } from 'src/app/core/shared/service/menu-service.service';
 import { Subcategory } from 'src/app/core/models/subcategory/subcategory.model';
 import { ProductDetailComponent } from '../product-detail/product-detail.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { SnackbarService } from 'src/app/core/shared/service/snackbar.service';
+import { ConstantMessages } from 'src/app/core/shared/constants/constant-messages';
+import { ConfirmDialogComponent } from 'src/app/core/shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'es-products-list',
@@ -24,11 +27,13 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   subscription: Subscription;
 
   dialogRef: MatDialogRef<ProductDetailComponent>;
+  confirmDialogRef: MatDialogRef<ConfirmDialogComponent>;
 
   constructor(
     private dialog: MatDialog,
     private productService: ProductService,
-    private menuService: MenuService) { }
+    private menuService: MenuService,
+    private snackBarService: SnackbarService) { }
 
   async ngOnInit() {
     await this.loadProducts();
@@ -85,10 +90,59 @@ export class ProductsListComponent implements OnInit, OnDestroy {
 
     const afterDialogClose = {
       next: (response) => {
-        this.loadProducts();
+        if (response) {
+          this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_CREATED, 'close');
+          this.loadProducts();
+        }
       }
     }
 
     this.dialogRef.afterClosed().subscribe(afterDialogClose);
   }
+
+  openEditProduct(product: Product) {
+    this.dialogRef = this.dialog.open(ProductDetailComponent, {
+      data: { product: product },
+      disableClose: true,
+      autoFocus: false,
+      panelClass: 'es-dialog'
+    });
+
+    this.dialogRef.afterClosed().subscribe((response) => {
+      response && this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_UPDATED);
+      this.loadProducts();
+    });
+  }
+
+  openRemoveProduct(product: Product) {
+    this.confirmDialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: { name: product['name'] },
+      disableClose: true,
+      autoFocus: false,
+      panelClass: 'es-small-dialog'
+    });
+
+    this.confirmDialogRef.afterClosed().subscribe((response) => response && this.removeProduct(product));
+  }
+
+  async removeProduct(product: Product) {
+
+    const receivedRemoveResponse = {
+      next: (response) => {
+        this.loadProducts();
+        this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_REMOVED, 'close');
+      }
+    };
+
+    await this.productService.removeProduct(product.id)
+      .pipe(tap(receivedRemoveResponse))
+      .toPromise()
+      .then(() => true)
+      .catch(() => false);
+  }
+
+  openUploadProductImage(product: Product) {
+
+  }
+
 }
