@@ -16,7 +16,7 @@ export class StoreService extends ApiService<Store>{
     return this.post(this.url, store);
   }
 
-  getStores(companyId?: number, pageNumber?: number, filterName?: string): Observable<Store | Store[]> {
+  getStores(companyId?: number, pageNumber?: number, filterName?: string, noLimit?: boolean): Observable<Store | Store[]> {
 
     let filter = '';
 
@@ -24,12 +24,16 @@ export class StoreService extends ApiService<Store>{
       filter += `?companyId=${companyId}`
     }
 
-    if (pageNumber) {
+    if (filterName) {
+      filter += filter ? `&name=${filterName}` : `?name=${filterName}`;
+    }
+
+    if (pageNumber && !noLimit) {
       filter += filter ? `&pageNumber=${pageNumber}` : `?pageNumber=${pageNumber}`;
     }
 
-    if (filterName) {
-      filter += filter ? `&name=${filterName}` : `?name=${filterName}`;
+    if (noLimit) {
+      filter += filter ? `&pageSize=-1` : ``;
     }
 
     return this.get(`${this.url}${filter}`);
