@@ -238,6 +238,8 @@ body mat-toolbar > mat-form-field > div {
 
 .mat-drawer-content {
   height: 100vh !important;
+  overflow-y: auto;
+  overflow-x: hidden !important;
 }
 
 .fab-button {
