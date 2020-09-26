@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { tap } from 'rxjs/operators';
@@ -33,6 +33,7 @@ export class ProductDetailComponent implements OnInit {
 
   userCompanyId: number = null;
   isAdminUser: boolean = false;
+  productPrice: string = '';
 
   constructor(private formBuilder: FormBuilder,
         private storeService: StoreService,
@@ -46,28 +47,36 @@ export class ProductDetailComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   async ngOnInit() {
-    this.initializeComponentsProperties();
-    this.createForm();
+    await this.initializeComponentsProperties();
+    await this.createForm();
     await this.loadSubcategories();
     await this.loadCompanies();
     await this.loadStores();
   }
 
-  initializeComponentsProperties() {
+  async initializeComponentsProperties() {
     this.product = this.data['product'] ? this.data['product'] : new Product();
+    this.formatPriceValue();
     this.isAdminUser = this.securityUserService.isAdminUser;
     this.userCompanyId = this.securityUserService.idUserLoggedIn;
   }
 
-  createForm() {
-    this.productForm = this.formBuilder.group({
+  async createForm() {
+    this.productForm = await this.formBuilder.group({
       name: [this.product.name, [Validators.required]],
       description: [this.product.description, [Validators.required]],
-      price: [this.product.price, [Validators.required]],
+      price: [this.productPrice, [Validators.required]],
       productSubcategoryId: [this.product['subcategoryId'], [Validators.required]],
       companyId: [ this.isAdminUser ? this.product.companyId : this.userCompanyId, [Validators.required]],
       storeId: [this.product.storeId, [Validators.required]]
     })
+  }
+
+  formatPriceValue() {
+    if (this.product['price']) {
+      this.productPrice = this.product['price'].toString();
+      this.productPrice = this.productPrice.replace('.', ',');
+    }
   }
 
   async loadSubcategories() {
@@ -132,7 +141,7 @@ export class ProductDetailComponent implements OnInit {
 
   async saveProduct() {
     this.product['id'] ?
-      this.updateProduct() :
+      await this.updateProduct() :
       await this.createProduct();
   }
 
@@ -160,6 +169,7 @@ export class ProductDetailComponent implements OnInit {
     let product = this.productForm.getRawValue();
     product['price'] = Number(product['price']);
     product['id'] = this.product.id;
+
     const receivedUpdatedProduct = {
       next: (productUpdated: Product) => {
         this.dialogRef.close(productUpdated);
