@@ -6,7 +6,7 @@ import { ProductService } from '../../../core/service/product/product.service';
 import { Product } from 'src/app/core/models/product/product.model';
 import { MenuService } from 'src/app/core/shared/service/menu-service.service';
 import { Subcategory } from 'src/app/core/models/subcategory/subcategory.model';
-import { ProductDeteailComponent } from '../product-deteail/product-deteail.component';
+import { ProductDetailComponent } from '../product-detail/product-detail.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
@@ -23,7 +23,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   noProductsFound: boolean = false;
   subscription: Subscription;
 
-  dialogRef: MatDialogRef<ProductDeteailComponent>;
+  dialogRef: MatDialogRef<ProductDetailComponent>;
 
   constructor(
     private dialog: MatDialog,
@@ -76,7 +76,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   }
 
   onAddNewProduct() {
-    this.dialogRef = this.dialog.open(ProductDeteailComponent, {
+    this.dialogRef = this.dialog.open(ProductDetailComponent, {
       data: new Product(),
       disableClose: true,
       autoFocus: false,

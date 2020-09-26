@@ -17,12 +17,12 @@ import { SnackbarService } from 'src/app/core/shared/service/snackbar.service';
 import { UtilsService } from 'src/app/core/shared/utils/utils.service';
 
 @Component({
-  selector: 'es-product-deteail',
-  templateUrl: './product-deteail.component.html',
-  styleUrls: ['./product-deteail.component.css'],
+  selector: 'es-product-detail',
+  templateUrl: './product-detail.component.html',
+  styleUrls: ['./product-detail.component.css'],
   providers: [StoreService, ProductService, SubcategoryService, CompanyService]
 })
-export class ProductDeteailComponent implements OnInit {
+export class ProductDetailComponent implements OnInit {
 
   productForm: FormGroup;
   product: Product = new Product();
@@ -32,6 +32,7 @@ export class ProductDeteailComponent implements OnInit {
   stores: Store[] = [];
 
   userCompanyId: number = null;
+  isAdminUser: boolean = false;
 
   constructor(private formBuilder: FormBuilder,
         private storeService: StoreService,
@@ -41,7 +42,7 @@ export class ProductDeteailComponent implements OnInit {
         private companyService: CompanyService,
         private snackBarService: SnackbarService,
         private utilsService: UtilsService,
-        private dialogRef: MatDialogRef<ProductDeteailComponent>,
+        private dialogRef: MatDialogRef<ProductDetailComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   async ngOnInit() {
@@ -54,6 +55,7 @@ export class ProductDeteailComponent implements OnInit {
 
   initializeComponentsProperties() {
     this.product = this.data['product'] ? this.data['product'] : new Product();
+    this.isAdminUser = this.securityUserService.isAdminUser;
   }
 
   createForm() {
