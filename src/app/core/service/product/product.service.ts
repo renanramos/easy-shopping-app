@@ -21,4 +21,8 @@ export class ProductService extends ApiService<Product>{
 
     return this.get(`${this.url}`);
    }
+
+   saveProduct(product: Product): Observable<Product> {
+     return this.post(`${this.url}`, product);
+   }
 }
