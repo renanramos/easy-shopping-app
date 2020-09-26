@@ -50,7 +50,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
     this.products = [];
     this.noProductsFound = false;
     const receivedProducts = {
-      next: (products: Product[]) => {
+      next: (products: []) => {
         if (products.length) {
           this.products = products;
         } else {
@@ -85,7 +85,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
 
     const afterDialogClose = {
       next: (response) => {
-        console.log(response);
+        this.loadProducts();
       }
     }
 
