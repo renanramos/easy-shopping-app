@@ -8,5 +8,6 @@ export class Product {
   public productCategoryId: number;
   public productCategoryName: string;
   public storeId: number;
-  public productImage: ProductImage;
+  public picture: any;
+  public companyId: number;
 }
