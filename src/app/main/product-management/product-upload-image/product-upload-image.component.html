@@ -1,0 +1,23 @@
+<div mat-dialog-title>
+  Adicionar foto
+</div>
+<div mat-dialog-content *ngIf="productImageForm">
+  <form class="container-registration-form" [formGroup]="productImageForm">
+    <mat-form-field class="input-full-width">
+      <mat-label>Descrição</mat-label>
+      <input type="text" matInput formControlName="description" id="description">
+      <mat-error *ngIf="description.hasError('required')">Campo obrigatório</mat-error>
+    </mat-form-field>
+    <input type="file" accept='image/*' formControlName="picture" id="picture" (change)="onSelectFile($event);">
+    <span *ngIf="pictureNotSelected" class="picture-error mat-error">Campo obrigatório</span>
+    <div class="image-preview">
+      <div *ngIf="base64Data">
+        <img [src]="base64Data">
+      </div>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions align="right">
+  <button mat-raised-button mat-dialog-close>FECHAR</button>
+  <button mat-raised-button color="primary" (click)="submitProductImage();">SALVAR</button>
+</div>

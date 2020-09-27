@@ -1,0 +1,9 @@
+.image-preview img {
+  width: 20vw;
+  height: 40vh;
+}
+
+.picture-error {
+  font-size: 75%;
+  margin-top: 1%;
+}
