@@ -11,12 +11,14 @@ import { AngularMaterialModule } from 'src/app/shared/angular-material.module';
 import { SharedComponentsModule } from 'src/app/core/shared/components/shared-components.module';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { DirectivesModule } from 'src/app/core/shared/directives/directives.modules';
+import { ProductUploadImageComponent } from './product-upload-image/product-upload-image.component';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
 const components = [
   ProductsListComponent,
-  ProductDetailComponent
+  ProductDetailComponent,
+  ProductUploadImageComponent
 ]
 
 @NgModule({
