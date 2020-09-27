@@ -6,4 +6,6 @@ export class ConstantMessages {
   public static SUCCESSFULLY_CREATED: string = 'Registro incluído com sucesso!';
   public static SUCCESSFULLY_UPDATED: string = 'Registro atualizado com sucesso!';
   public static SUCCESSFULLY_REMOVED: string = 'Registro removido com sucesso!';
+
+  public static IMAGE_SUCCESSFULLY_UPLOADED: string = 'Imagem carregada com sucesso.';
 }
