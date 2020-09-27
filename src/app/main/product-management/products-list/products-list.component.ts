@@ -11,6 +11,9 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SnackbarService } from 'src/app/core/shared/service/snackbar.service';
 import { ConstantMessages } from 'src/app/core/shared/constants/constant-messages';
 import { ConfirmDialogComponent } from 'src/app/core/shared/components/confirm-dialog/confirm-dialog.component';
+import { ProductUploadImageComponent } from '../product-upload-image/product-upload-image.component';
+import { UtilsService } from 'src/app/core/shared/utils/utils.service';
+import { ProductImage } from 'src/app/core/models/product-image/product-image.model';
 
 @Component({
   selector: 'es-products-list',
@@ -28,12 +31,14 @@ export class ProductsListComponent implements OnInit, OnDestroy {
 
   dialogRef: MatDialogRef<ProductDetailComponent>;
   confirmDialogRef: MatDialogRef<ConfirmDialogComponent>;
+  uploadImageDialogRef: MatDialogRef<ProductUploadImageComponent>;
 
   constructor(
     private dialog: MatDialog,
     private productService: ProductService,
     private menuService: MenuService,
-    private snackBarService: SnackbarService) { }
+    private snackBarService: SnackbarService,
+    private utilsService: UtilsService) { }
 
   async ngOnInit() {
     await this.loadProducts();
@@ -142,7 +147,27 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   }
 
   openUploadProductImage(product: Product) {
+    this.uploadImageDialogRef = this.dialog.open(ProductUploadImageComponent, {
+      data: { product: product },
+      disableClose: true,
+      autoFocus: false,
+      panelClass: 'es-dialog'
+    });
 
+    const receivedUploadedImage = {
+      next: (isUploaded: boolean) => {
+        if (isUploaded) {
+          this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_CREATED);
+        }
+        this.loadProducts();
+      },
+      error: (response) => {
+        const errorMessage = this.utilsService.handleErrorMessage(response);
+        this.snackBarService.openSnackBar(errorMessage, 'close');
+      }
+    }
+
+    this.uploadImageDialogRef.afterClosed().subscribe(receivedUploadedImage);
   }
 
 }
