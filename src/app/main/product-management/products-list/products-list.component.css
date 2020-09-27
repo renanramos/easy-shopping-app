@@ -32,6 +32,8 @@
 .product-price-info {
   font-size: 25px;
   font-weight: 300;
+  margin-block-start: 1em;
+  margin-block-end: 0em;
 }
 
 mat-chip {
@@ -54,8 +56,11 @@ mat-chip {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  justify-content: space-around;
-  align-items: center;
+  justify-content: flex-start;
+}
+
+.card-actions > p {
+  margin-right: 1em;
 }
 
 @media screen and (min-width: 280px) and (max-width: 570px) {
