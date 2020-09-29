@@ -22,3 +22,10 @@
     width: auto;
   }
 }
+
+@media screen and (max-width: 1920px) and (min-width: 1367px) {
+  .card-items {
+    width: calc(90% - 25px);
+    margin: 0 auto;
+  }
+}
