@@ -1,7 +1,4 @@
 <div class="filter-container">
-  <div class="title">
-    Produtos
-  </div>
   <div class="filter-list-content" *ngIf="isListFiltererd">
     <span>Filtro: </span>
     <mat-chip-list>
@@ -46,6 +43,9 @@
             <p class="product-price-info">
              Preço: {{ product.price | currency : 'BRL'}}
             </p>
+            <small>
+              {{ product.description }}
+            </small>
             <div class="card-actions">
               <p>
                 <button mat-raised-button >Adicionar ao carrinho</button>
