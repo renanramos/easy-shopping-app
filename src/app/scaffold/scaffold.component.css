@@ -26,6 +26,9 @@
 
 .main {
   flex: 1 1 auto;
+  height: 100vh !important;
+  overflow-y: auto;
+  overflow-x: hidden !important;
 }
 
 .categories-list {
