@@ -11,16 +11,20 @@ import { passwordMatcher } from 'src/app/core/shared/validators/password-matcher
 import { SearchService } from 'src/app/core/shared/service/search-service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AlertDialogComponent } from 'src/app/core/shared/components/alert-dialog/alert-dialog.component';
+import { GoogleLoginProvider, SocialAuthService, SocialUser } from 'angularx-social-login';
+import { UserAuthService } from 'src/app/core/service/auth/user-auth-service.service';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'es-customer-form',
   templateUrl: './customer-form.component.html',
   styleUrls: ['./customer-form.component.css'],
-  providers: [CustomerService]
+  providers: [CustomerService, SocialAuthService, UserAuthService]
 })
 export class CustomerFormComponent implements OnInit, OnDestroy {
 
   customerForm: FormGroup;
+  socialUser: SocialUser;
 
   passwordVisibility: boolean = false;
   passwordInputType: string = 'password';
@@ -33,11 +37,14 @@ export class CustomerFormComponent implements OnInit, OnDestroy {
     private utilsService: UtilsService,
     private searchService: SearchService,
     private dialog: MatDialog,
-    private route: Router) { }
+    private route: Router,
+    private socialAuthService: SocialAuthService,
+    private userAuthService: UserAuthService) { }
 
   ngOnInit() {
     this.createForm();
     this.hideSearchFiled();
+    this.subscribeToAuthState();
   }
 
   ngOnDestroy() {
@@ -124,5 +131,15 @@ export class CustomerFormComponent implements OnInit, OnDestroy {
 
   get  confirmPassword() {
     return this.customerForm.get('confirmPassword');
+  }
+
+  subscribeToAuthState() {
+    this.socialAuthService.authState.subscribe((user: SocialUser) => {
+      this.socialUser = user;
+    })
+  }
+
+  signInWithGoogle() {
+    this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
   }
 }
