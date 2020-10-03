@@ -31,6 +31,9 @@ import { LoaderComponent } from './core/shared/components/loader/loader.componen
 import { AlertDialogComponent } from './core/shared/components/alert-dialog/alert-dialog.component';
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { NoopScrollStrategy } from '@angular/cdk/overlay';
+import { SocialLoginModule } from 'angularx-social-login';
+import { GoogleLoginProvider, SocialAuthServiceConfig } from 'angularx-social-login';
+import { env } from 'process';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -61,6 +64,7 @@ registerLocaleData(localePt, 'pt-BR');
     DirectivesModule,
     RegistrationModule,
     NgSlimScrollModule,
+    SocialLoginModule,
     NgxMaskModule.forRoot()
   ],
   providers: [
@@ -97,6 +101,18 @@ registerLocaleData(localePt, 'pt-BR');
       useValue: {
         scrollStrategy: new NoopScrollStrategy()
       }
+    },
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider('clientId'),
+          }
+        ]
+      } as SocialAuthServiceConfig,
     },
     AsyncPipe,
     CookieService,
