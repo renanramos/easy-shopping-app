@@ -23,6 +23,8 @@
     "@angular/platform-browser": "~9.1.11",
     "@angular/platform-browser-dynamic": "~9.1.11",
     "@angular/router": "~9.1.11",
+    "@fortawesome/fontawesome-free": "^5.15.0",
+    "angularx-social-login": "^3.2.2",
     "express": "^4.17.1",
     "jwt-decode": "^2.2.0",
     "moment": "2.24.0",
