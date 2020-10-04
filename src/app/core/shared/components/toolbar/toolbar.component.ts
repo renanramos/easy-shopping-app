@@ -8,6 +8,7 @@ import { UserAuthService } from 'src/app/core/service/auth/user-auth-service.ser
 import { tap } from 'rxjs/operators';
 import { SearchService } from '../../service/search-service';
 import { Subscription } from 'rxjs';
+import { KeycloakService } from 'keycloak-angular';
 
 @Component({
   selector: 'es-toolbar',
@@ -29,6 +30,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   constructor(private router: Router,
     public dialog: MatDialog,
     private authService: UserAuthService,
+    private keycloakService: KeycloakService,
     private securityUserService: SecurityUserService,
     private searchService: SearchService) { }
 
@@ -73,21 +75,21 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   }
 
   async logout() {
+    this.keycloakService.logout();
+    // const receivedLogout = {
+    //   next: () => {
+    //     this.securityUserService.deleteCookieAndRedirect();
+    //     this.userLoggedName = '';
+    //     this.isUserLoggedIn = false;
+    //     this.router.navigateByUrl('/');
+    //     window.location.reload();
+    //   }
+    // }
 
-    const receivedLogout = {
-      next: () => {
-        this.securityUserService.deleteCookieAndRedirect();
-        this.userLoggedName = '';
-        this.isUserLoggedIn = false;
-        this.router.navigateByUrl('/');
-        window.location.reload();
-      }
-    }
-
-    await this.authService.logout().pipe(tap(receivedLogout))
-      .toPromise()
-      .then(() => true)
-      .catch(() => false);
+    // await this.authService.logout().pipe(tap(receivedLogout))
+    //   .toPromise()
+    //   .then(() => true)
+    //   .catch(() => false);
   }
 
   redirectPage(routeName: string) {
