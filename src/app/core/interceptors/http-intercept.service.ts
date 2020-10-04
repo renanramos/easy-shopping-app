@@ -6,7 +6,6 @@ import { SnackbarService } from '../shared/service/snackbar.service';
 import { SecurityUserService } from '../service/auth/security-user.service';
 import { UtilsService } from '../shared/utils/utils.service';
 import { KeycloakService } from 'keycloak-angular';
-import { EasyShoppingKeycloakService } from '../service/auth/easy-shopping-keycloak.service'
 
 @Injectable()
 export class HttpIntercept implements HttpInterceptor {
@@ -14,7 +13,6 @@ export class HttpIntercept implements HttpInterceptor {
   authToken: string;
 
   constructor(
-    private easyKeycloakService: EasyShoppingKeycloakService,
     private keycloakService: KeycloakService,
     private tokenExtractor: HttpXsrfTokenExtractor,
     private securityUserService: SecurityUserService,
