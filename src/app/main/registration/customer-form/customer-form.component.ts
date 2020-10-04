@@ -37,14 +37,11 @@ export class CustomerFormComponent implements OnInit, OnDestroy {
     private utilsService: UtilsService,
     private searchService: SearchService,
     private dialog: MatDialog,
-    private route: Router,
-    private socialAuthService: SocialAuthService,
-    private userAuthService: UserAuthService) { }
+    private route: Router) { }
 
   ngOnInit() {
     this.createForm();
     this.hideSearchFiled();
-    this.subscribeToAuthState();
   }
 
   ngOnDestroy() {
@@ -131,15 +128,5 @@ export class CustomerFormComponent implements OnInit, OnDestroy {
 
   get  confirmPassword() {
     return this.customerForm.get('confirmPassword');
-  }
-
-  subscribeToAuthState() {
-    this.socialAuthService.authState.subscribe((user: SocialUser) => {
-      this.socialUser = user;
-    })
-  }
-
-  signInWithGoogle() {
-    this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
   }
 }
