@@ -3,8 +3,8 @@ import { Routes, RouterModule } from "@angular/router";
 
 const routes: Routes = [
     {
-        path: '', 
-        loadChildren: () => import('./scaffold/scaffold.module').then(m => m.ScaffoldModule) 
+      path: '', 
+      loadChildren: () => import('./scaffold/scaffold.module').then(m => m.ScaffoldModule) 
     },
     {
       path: 'main',
