@@ -1,7 +1,7 @@
 import { AsyncPipe, CurrencyPipe, DatePipe, DecimalPipe, PercentPipe, registerLocaleData } from "@angular/common";
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
-import { NgModule, LOCALE_ID } from '@angular/core';
+import { NgModule, LOCALE_ID, APP_ID, APP_INITIALIZER } from '@angular/core';
 import { CookieService } from "ngx-cookie-service";
 import localePt from '@angular/common/locales/pt';
 import { NgSlimScrollModule, SLIMSCROLL_DEFAULTS  } from "ngx-slimscroll";
@@ -32,8 +32,8 @@ import { AlertDialogComponent } from './core/shared/components/alert-dialog/aler
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { NoopScrollStrategy } from '@angular/cdk/overlay';
 import { SocialLoginModule } from 'angularx-social-login';
-import { GoogleLoginProvider, SocialAuthServiceConfig } from 'angularx-social-login';
-import { env } from 'process';
+import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
+import { keycloakInitializer } from './core/shared/utils/keycloak-init';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -58,6 +58,7 @@ registerLocaleData(localePt, 'pt-BR');
     MatIconModule,
     MatListModule,
     ScaffoldModule,
+    KeycloakAngularModule,
     LoginModule,
     MainModule,
     PipeModule,
@@ -65,7 +66,7 @@ registerLocaleData(localePt, 'pt-BR');
     RegistrationModule,
     NgSlimScrollModule,
     SocialLoginModule,
-    NgxMaskModule.forRoot()
+    NgxMaskModule.forRoot(),
   ],
   providers: [
     {
@@ -78,6 +79,13 @@ registerLocaleData(localePt, 'pt-BR');
       provide: HTTP_INTERCEPTORS,
       useClass: HttpIntercept,
       multi: true
+    },
+    KeycloakService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: keycloakInitializer,
+      multi: true,
+      deps: [KeycloakService]
     },
     {
       provide: LOCALE_ID, useValue: 'pt-BR'
@@ -101,18 +109,6 @@ registerLocaleData(localePt, 'pt-BR');
       useValue: {
         scrollStrategy: new NoopScrollStrategy()
       }
-    },
-    {
-      provide: 'SocialAuthServiceConfig',
-      useValue: {
-        autoLogin: false,
-        providers: [
-          {
-            id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider('clientId'),
-          }
-        ]
-      } as SocialAuthServiceConfig,
     },
     AsyncPipe,
     CookieService,
