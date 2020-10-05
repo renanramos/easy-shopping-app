@@ -34,6 +34,7 @@ import { NoopScrollStrategy } from '@angular/cdk/overlay';
 import { SocialLoginModule } from 'angularx-social-login';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { keycloakInitializer } from './core/shared/utils/keycloak-init';
+import { AppAuthGuard } from './core/guard/app-auth-guard.guard';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -69,6 +70,7 @@ registerLocaleData(localePt, 'pt-BR');
     NgxMaskModule.forRoot(),
   ],
   providers: [
+    AppAuthGuard,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: LoaderInterceptor,
