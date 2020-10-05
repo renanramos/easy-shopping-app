@@ -8,10 +8,14 @@ export function keycloakInitializer(keycloak: KeycloakService): () => Promise<an
       const { keycloakConfig } = environment;
       try {
         await keycloak.init({
-          config: keycloakConfig,
+          config: {
+            url: 'http://localhost:8080/auth',
+            realm: 'easy-shopping',
+            clientId: 'easy-shopping'
+          },
           initOptions: {
-            onLoad: "login-required",
-            checkLoginIframe: false
+            onLoad: "check-sso",
+            silentCheckSsoRedirectUri: `${window.location.origin}/assets/silent-check-sso.html`
           },
           bearerExcludedUrls: ['/easy-shopping/']
         });
