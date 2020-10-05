@@ -53,17 +53,13 @@
       </button>
       <mat-divider *ngIf="isUserLoggedIn"></mat-divider>
     </div>
-    <button mat-menu-item (click)="openLoginDialog();" *ngIf="!isUserLoggedIn">
+    <button mat-menu-item (click)="redirectPage('/user-management');" *ngIf="!isUserLoggedIn">
       <mat-icon>login</mat-icon>
       <span>Entrar</span>
     </button>
     <button mat-menu-item (click)="logout();" *ngIf="isUserLoggedIn">
       <mat-icon>power_settings_new</mat-icon>
       <span>Sair</span>
-    </button>
-    <button mat-menu-item (click)="redirectPage('/registration');" *ngIf="!isUserLoggedIn">
-      <mat-icon>person_add</mat-icon>
-      <span>Cadastrar</span>
     </button>
   </mat-menu>
 

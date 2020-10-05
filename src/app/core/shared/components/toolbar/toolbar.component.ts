@@ -13,7 +13,8 @@ import { KeycloakService } from 'keycloak-angular';
 @Component({
   selector: 'es-toolbar',
   templateUrl: './toolbar.component.html',
-  styleUrls: ['./toolbar.component.css']
+  styleUrls: ['./toolbar.component.css'],
+  providers: [KeycloakService]
 })
 export class ToolbarComponent implements OnInit, OnDestroy {
 
