@@ -9,12 +9,13 @@ export function keycloakInitializer(keycloak: KeycloakService): () => Promise<an
       try {
         await keycloak.init({
           config: {
-            url: 'http://localhost:8080/auth',
+            url: 'http://localhost:8083/auth',
             realm: 'easy-shopping',
             clientId: 'easy-shopping'
           },
           initOptions: {
             onLoad: "check-sso",
+            checkLoginIframe: false,
             silentCheckSsoRedirectUri: `${window.location.origin}/assets/silent-check-sso.html`
           },
           bearerExcludedUrls: ['/easy-shopping/']
