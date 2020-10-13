@@ -8,21 +8,31 @@ import { UtilsService } from '../shared/utils/utils.service';
 import { KeycloakService } from 'keycloak-angular';
 import { switchMap, tap } from 'rxjs/operators';
 import { from, pipe } from 'rxjs';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 @Injectable()
 export class HttpIntercept implements HttpInterceptor {
 
   constructor(
-    private keycloakService: KeycloakService) { }
+    private oauthService: OAuthService) { }
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return from(this.keycloakService.addTokenToHeader())
-      .pipe(
-        switchMap(response => {
-          const authReq = req.clone({
-            headers: response
-          });
-          return next.handle(authReq);
-        }));
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {   
+    let headers = new HttpHeaders();
+
+    headers.set('Authorization', `Bearer ${this.oauthService.getAccessToken()}`);
+
+    const authReq = req.clone({
+      headers: headers
+    });
+
+    const sendRequest = {
+      next: () => {},
+      error: (error) => {
+        console.log(error);
+      }
+    };
+
+    return next.handle(authReq)
+      .pipe(tap(sendRequest));
   }
 }
