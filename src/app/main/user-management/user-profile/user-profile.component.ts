@@ -37,7 +37,6 @@ export class UserProfileComponent implements OnInit {
     private securityUserService: SecurityUserService) { }
 
   async ngOnInit() {
-    this.currentUserId = this.securityUserService.idUserLoggedIn;
     await this.loadUserLoggedInfo();
   }
   

@@ -45,7 +45,6 @@ export class StoreListComponent implements OnInit {
     private dialog: MatDialog) { }
 
   async ngOnInit() {
-    this.userId = this.securityUserService.idUserLoggedIn;
     this.isAdminUser = this.securityUserService.isAdminUser;
     this.subscribeToSearchService();
     await this.initializeProperties();
