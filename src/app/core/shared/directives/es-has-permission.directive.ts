@@ -16,7 +16,6 @@ export class EsHasPermissionDirective implements OnInit {
   @Input() set esHasPermission(permissions: string | string[]) {
     
     let userLoggedPermission = false;
-    
     if (Array.isArray(permissions)) {
       const hasPermission = (permission) => {
         return this.securityUserService.userLoggedRole === permission;

@@ -16,12 +16,12 @@ export function keycloakInitializer(keycloak: KeycloakService): () => Promise<an
           initOptions: {
             onLoad: "check-sso",
             checkLoginIframe: false,
-            silentCheckSsoRedirectUri: `${window.location.origin}/assets/silent-check-sso.html`
-          },
-          bearerExcludedUrls: ['/easy-shopping/']
+            silentCheckSsoRedirectUri: `${window.location.origin}/assets/silent-check-sso.html`,
+          }
         });
-        resolve();
+        resolve(value => console.log(value));
       } catch (error) {
+        console.log(error);
         reject(error);
       }
     });
