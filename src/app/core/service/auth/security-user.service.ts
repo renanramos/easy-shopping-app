@@ -5,76 +5,40 @@ import { Router } from '@angular/router';
 import { AuthConstants } from '../../shared/constants/auth-constants';
 import { UserRolesConstants } from '../../shared/constants/user-roles-constants';
 import * as jwt_decode from 'jwt-decode';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 @Injectable()
 export class SecurityUserService extends ApiService<UserCredentials> {
  
+  decodedToken: string = '';
+
   constructor(
     private router: Router,
+    private oauthService: OAuthService,
     injector: Injector) {
     super(injector);
+    this.setUserPropertiesFromToken();
   }
 
-  setToken(token: string) {
-    localStorage.setItem(AuthConstants.AUTH_TOKEN, token);
-  }
-
-  setUsername(username: string) {
-    localStorage.setItem(AuthConstants.USERNAME, username);
-  }
-
-  setUserRole(role: string) {
-    localStorage.setItem(AuthConstants.USER_ROLE, role);
-  }
-
-  logout() {
-    const requestLogout = {
-      next: () => {
-        this.deleteCookieFromStorage();
-      },
-      error: (error) => {
-        this.deleteCookieAndRedirect();
-      }
-    };
-
-    this.post('/user/logout', null).subscribe(requestLogout);
-  }
-
-  deleteCookieFromStorage() {
-    localStorage.removeItem(AuthConstants.AUTH_TOKEN);
-    localStorage.removeItem(AuthConstants.USERNAME);
-    localStorage.removeItem(AuthConstants.USER_ROLE);
-    localStorage.removeItem(AuthConstants.AUTH_TOKEN);
-  }
-
-  deleteCookieAndRedirect() {
-    this.deleteCookieFromStorage();
-    this.router.navigate(['/']);
+  setUserPropertiesFromToken() {
+    if (this.oauthService.getAccessToken()) {
+      this.decodedToken = jwt_decode(this.oauthService.getAccessToken());
+    }
   }
 
   isUserLogged() {
-    return !!localStorage.getItem(AuthConstants.AUTH_TOKEN);
+    return !!this.oauthService.getIdToken();
   }
 
   getLoggedUsername(): string {
-    return localStorage.getItem(AuthConstants.USERNAME);
-  }
-
-  getUserLoggedToken() {
-    return localStorage.getItem(AuthConstants.AUTH_TOKEN);
+    return this.decodedToken['given_name'];
   }
 
   get isAdminUser() {
-    return localStorage.getItem(AuthConstants.USER_ROLE) === UserRolesConstants.ADMINISTRATOR;
-  }
-
-  get idUserLoggedIn() {
-    const token = localStorage.getItem(AuthConstants.AUTH_TOKEN);
-    const decodedToken = token ? jwt_decode(token) : [];
-    return decodedToken['user_id'];
+    return this.decodedToken && this.decodedToken['resource_access']['easy-shopping']['roles'][0] === UserRolesConstants.ADMINISTRATOR
   }
 
   get userLoggedRole() {
-    return localStorage.getItem(AuthConstants.USER_ROLE);
+    return this.decodedToken && this.decodedToken['resource_access']['easy-shopping']['roles'][0];
   }
 }
