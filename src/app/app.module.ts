@@ -32,9 +32,9 @@ import { AlertDialogComponent } from './core/shared/components/alert-dialog/aler
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { NoopScrollStrategy } from '@angular/cdk/overlay';
 import { SocialLoginModule } from 'angularx-social-login';
-import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
-import { keycloakInitializer } from './core/shared/utils/keycloak-init';
+import { KeycloakAngularModule } from 'keycloak-angular';
 import { AppAuthGuard } from './core/guard/app-auth-guard.guard';
+import { OAuthModule } from 'angular-oauth2-oidc';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -67,6 +67,12 @@ registerLocaleData(localePt, 'pt-BR');
     RegistrationModule,
     NgSlimScrollModule,
     SocialLoginModule,
+    OAuthModule.forRoot({
+      resourceServer: {
+        allowedUrls: ['http://localhost:8081/api'],
+        sendAccessToken: true
+      }
+    }),
     NgxMaskModule.forRoot(),
   ],
   providers: [
@@ -81,13 +87,6 @@ registerLocaleData(localePt, 'pt-BR');
       provide: HTTP_INTERCEPTORS,
       useClass: HttpIntercept,
       multi: true
-    },
-    KeycloakService,
-    {
-      provide: APP_INITIALIZER,
-      useFactory: keycloakInitializer,
-      multi: true,
-      deps: [KeycloakService]
     },
     {
       provide: LOCALE_ID, useValue: 'pt-BR'
