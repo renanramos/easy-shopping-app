@@ -36,13 +36,13 @@
         <span>Clientes</span>
       </button>
       <button mat-menu-item 
-        [matMenuTriggerFor]="companies" 
-        *esHasPermission="['COMPANY', 'ADMINISTRATOR']">
+        *esHasPermission="['COMPANY', 'ADMINISTRATOR']"
+        [matMenuTriggerFor]="companies" >
         <span>Empresas</span>
       </button>
       <button mat-menu-item 
-        [matMenuTriggerFor]="products" 
-        *esHasPermission="['COMPANY', 'ADMINISTRATOR']">
+        *esHasPermission="['COMPANY', 'ADMINISTRATOR']"
+        [matMenuTriggerFor]="products" >
         <span>Produtos</span>
       </button>
       <button mat-menu-item 
@@ -53,7 +53,7 @@
       </button>
       <mat-divider *ngIf="isUserLoggedIn"></mat-divider>
     </div>
-    <button mat-menu-item (click)="redirectPage('/user-management');" *ngIf="!isUserLoggedIn">
+    <button mat-menu-item (click)="login()" *ngIf="!isUserLoggedIn">
       <mat-icon>login</mat-icon>
       <span>Entrar</span>
     </button>
@@ -65,20 +65,20 @@
 
   <mat-menu #products="matMenu">
     <button mat-menu-item 
-      (click)="redirectPage('/product-management');"
-      *esHasPermission="['COMPANY', 'ADMINISTRATOR']">
+      *esHasPermission="['COMPANY', 'ADMINISTRATOR']"
+      (click)="redirectPage('/product-management');">
       <mat-icon>event_seat</mat-icon>
       <span>Gerenciamento de produtos</span>
     </button>
     <button mat-menu-item 
-        (click)="redirectPage('/product-category-management');"
-        *esHasPermission="['ADMINISTRATOR']">
+        *esHasPermission="['ADMINISTRATOR']"
+        (click)="redirectPage('/product-category-management');">
       <mat-icon>category</mat-icon>
       <span>Categorias</span>
     </button>
     <button mat-menu-item 
-      (click)="redirectPage('/product-subcategory-management')"
-      *esHasPermission="['ADMINISTRATOR']">
+      *esHasPermission="['ADMINISTRATOR']"
+      (click)="redirectPage('/product-subcategory-management')">
       <mat-icon>category</mat-icon>
       <span>Subcategorias</span>
     </button>
@@ -86,13 +86,13 @@
 
   <mat-menu #companies="matMenu">
     <button mat-menu-item 
-      (click)="redirectPage('/company-management');" 
-      *esHasPermission="['ADMINISTRATOR']">
+      *esHasPermission="['ADMINISTRATOR']"
+      (click)="redirectPage('/company-management');" >
       <mat-icon>list</mat-icon>
       <span>Lista de empresas</span>
     </button>
     <button mat-menu-item (click)="redirectPage('/store-management');"
-    *esHasPermission="['COMPANY','ADMINISTRATOR']">
+      *esHasPermission="['COMPANY','ADMINISTRATOR']">
       <mat-icon>store</mat-icon>
       <span>Lojas</span>
     </button>

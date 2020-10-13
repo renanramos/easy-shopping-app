@@ -5,16 +5,16 @@ import { LoginFormComponent } from 'src/app/login/components/login-form/login-fo
 import { UserCredentials } from 'src/app/core/models/user/user-credentials.model';
 import { SecurityUserService } from 'src/app/core/service/auth/security-user.service';
 import { UserAuthService } from 'src/app/core/service/auth/user-auth-service.service';
-import { tap } from 'rxjs/operators';
 import { SearchService } from '../../service/search-service';
 import { Subscription } from 'rxjs';
 import { KeycloakService } from 'keycloak-angular';
+import { AuthConfig, NullValidationHandler, OAuthService } from 'angular-oauth2-oidc';
 
 @Component({
   selector: 'es-toolbar',
   templateUrl: './toolbar.component.html',
   styleUrls: ['./toolbar.component.css'],
-  providers: [KeycloakService]
+  providers: [KeycloakService, OAuthService]
 })
 export class ToolbarComponent implements OnInit, OnDestroy {
 
@@ -28,17 +28,33 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   clearSearchFilter: Subscription;
   isUserLoggedIn: boolean = false;
 
+  authConfig: AuthConfig = {
+    issuer: 'http://localhost:8083/auth/realms/easy-shopping',
+    redirectUri: `${window.location.origin}/`,
+    clientId: 'easy-shopping',
+    scope: 'profile email roles',
+    responseType: 'code',
+    disableAtHashCheck: true,
+    showDebugInformation: false
+  }
+
   constructor(private router: Router,
     public dialog: MatDialog,
-    private authService: UserAuthService,
-    private keycloakService: KeycloakService,
     private securityUserService: SecurityUserService,
-    private searchService: SearchService) { }
+    private searchService: SearchService,
+    private oauthService: OAuthService) { }
 
   ngOnInit() {
-    this.userLoggedName = this.securityUserService.getLoggedUsername();
-    this.isUserLoggedIn = this.securityUserService.idUserLoggedIn;
+    this.configureOAuthProperties();
     this.subscribeToSearchService();
+    this.isUserLoggedIn = this.securityUserService.isUserLogged();
+    this.userLoggedName = this.securityUserService.getLoggedUsername();
+  }
+
+  configureOAuthProperties() {
+    this.oauthService.configure(this.authConfig);
+    this.oauthService.tokenValidationHandler = new NullValidationHandler();
+    this.oauthService.loadDiscoveryDocumentAndTryLogin();
   }
 
   ngOnDestroy() {
@@ -54,52 +70,17 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     this.router.navigate(['/']);
   }
 
-  openLoginDialog() {
-    const dialogRef = this.dialog.open(LoginFormComponent, {
-      disableClose: true,
-      autoFocus: false,
-      panelClass: 'es-dialog'
-    });
-
-    dialogRef.afterClosed().subscribe((userCredentials: UserCredentials) => {
-      this.clearCookieValues();
-      if (userCredentials) {
-        this.securityUserService.setUserRole(userCredentials.roles[0]);
-        this.securityUserService.setUsername(userCredentials.username);
-        this.securityUserService.setToken(userCredentials.token);
-        this.userLoggedName = this.securityUserService.getLoggedUsername();
-        this.isUserLoggedIn = this.securityUserService.idUserLoggedIn;
-        window.location.reload();
-        this.homePage();
-      }
-    });
+  login() {
+    this.oauthService.initLoginFlow();
   }
 
   async logout() {
-    this.keycloakService.logout();
-    // const receivedLogout = {
-    //   next: () => {
-    //     this.securityUserService.deleteCookieAndRedirect();
-    //     this.userLoggedName = '';
-    //     this.isUserLoggedIn = false;
-    //     this.router.navigateByUrl('/');
-    //     window.location.reload();
-    //   }
-    // }
-
-    // await this.authService.logout().pipe(tap(receivedLogout))
-    //   .toPromise()
-    //   .then(() => true)
-    //   .catch(() => false);
+    this.oauthService.logOut();
   }
 
   redirectPage(routeName: string) {
     this.inputSearchField.nativeElement.value = "";
     this.router.navigate([routeName]);
-  }
-
-  clearCookieValues() {
-    this.securityUserService.deleteCookieFromStorage();
   }
 
   onSearchFilter(event: any) {
