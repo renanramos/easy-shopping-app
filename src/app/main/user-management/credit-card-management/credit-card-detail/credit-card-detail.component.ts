@@ -57,6 +57,7 @@ export class CreditCardDetailComponent implements OnInit {
 
   ngOnInit() {
     this.creditCard = this.data['creditCard'] ? this.data['creditCard'] : new CreditCard();
+    this.customerId = this.data['currentUserId'];
     this.createForm();
   }
 
