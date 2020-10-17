@@ -105,12 +105,6 @@ registerLocaleData(localePt, 'pt-BR');
         barMargin: '2px 2px'
       },
     },
-    {
-      provide: MAT_DIALOG_DEFAULT_OPTIONS,
-      useValue: {
-        scrollStrategy: new NoopScrollStrategy()
-      }
-    },
     AsyncPipe,
     CookieService,
     CurrencyPipe,
