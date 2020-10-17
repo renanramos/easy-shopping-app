@@ -19,7 +19,7 @@ export class AddressDetailComponent implements OnInit {
   address: Address;
   addressForm: FormGroup;
   isWaitingResponse: boolean = false;
-  customerId: number = null;
+  customerId: string = null;
 
   constructor(
     private dialogRef: MatDialogRef<AddressDetailComponent>,
@@ -31,7 +31,7 @@ export class AddressDetailComponent implements OnInit {
 
   ngOnInit() {
     this.address = this.data['address'] ? this.data['address'] : new Address();
-    this.customerId = this.data['customerId'];
+    this.customerId = this.data['userTokenId'];
     this.createForm();
   }
 

@@ -5,5 +5,5 @@ export class Address {
   public number: number;
   public state: string;
   public streetName: string;
-  public customerId: number;
+  public customerId: string;
 }
