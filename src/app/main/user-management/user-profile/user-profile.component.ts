@@ -20,7 +20,7 @@ import { CreditCardDetailComponent } from '../credit-card-management/credit-card
 })
 export class UserProfileComponent implements OnInit {
 
-  currentUserId: number = null;
+  currentUserId: string = null;
   customer: Customer;
   addresses: Address[] = [];
   updateAddressSubject: Subject<any> = new Subject<any>();
@@ -37,7 +37,8 @@ export class UserProfileComponent implements OnInit {
     private securityUserService: SecurityUserService) { }
 
   async ngOnInit() {
-    await this.loadUserLoggedInfo();
+    // await this.loadUserLoggedInfo();
+    this.currentUserId = this.securityUserService.userLoggedId;
   }
   
   async loadUserLoggedInfo() {
@@ -52,17 +53,17 @@ export class UserProfileComponent implements OnInit {
       }
     };
 
-    await this.customerService.getCustomerById(this.currentUserId)
-      .pipe(tap(receivedUserInfo))
-      .toPromise()
-      .then(() => true)
-      .catch(() => false);
+    // await this.customerService.getCustomerById(this.currentUserId)
+    //   .pipe(tap(receivedUserInfo))
+    //   .toPromise()
+    //   .then(() => true)
+    //   .catch(() => false);
   }
 
   addNewAddress(event: any) {
     event.stopPropagation();
     this.dialogAddressRef = this.dialog.open(AddressDetailComponent, {
-      data: { customerId: this.customer['id'] },
+      data: { customerId: this.currentUserId },
       disableClose: true,
       autoFocus: false,
       panelClass: 'es-dialog'
@@ -82,7 +83,7 @@ export class UserProfileComponent implements OnInit {
   addNewCreditCard(event: any) {
     event.stopPropagation();
     this.dialogCreditCardRef = this.dialog.open(CreditCardDetailComponent, {
-      data: { customerId: this.customer['id'] },
+      data: { customerId: this.currentUserId },
       disableClose: true,
       autoFocus: false,
       panelClass: 'es-dialog'
