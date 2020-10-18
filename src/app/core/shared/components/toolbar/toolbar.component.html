@@ -19,7 +19,7 @@
     </button>
   </div>
 
-  <mat-menu #menu="matMenu" [overlapTrigger]="false">
+  <mat-menu #menu="matMenu">
     <div *ngIf="isUserLoggedIn">
       <div class="user-logged-details" mat-menu-item>
         Olá {{ userLoggedName }}
@@ -27,7 +27,7 @@
       <mat-divider *ngIf="isUserLoggedIn"></mat-divider>
       <button mat-menu-item 
         (click)="redirectPage('/admin-management');" 
-        *esHasPermission="'ADMINISTRATOR'">
+        *esHasPermission="['ADMINISTRATOR']">
         <span>Administradores</span>
       </button>
       <button mat-menu-item 
@@ -37,12 +37,14 @@
       </button>
       <button mat-menu-item 
         *esHasPermission="['COMPANY', 'ADMINISTRATOR']"
-        [matMenuTriggerFor]="companies" >
+        [matMenuTriggerFor]="companies"
+        >
         <span>Empresas</span>
       </button>
       <button mat-menu-item 
         *esHasPermission="['COMPANY', 'ADMINISTRATOR']"
-        [matMenuTriggerFor]="products" >
+        [matMenuTriggerFor]="products" 
+        #menuTrigger="matMenuTrigger">
         <span>Produtos</span>
       </button>
       <button mat-menu-item 
@@ -64,20 +66,20 @@
   </mat-menu>
 
   <mat-menu #products="matMenu">
-    <button mat-menu-item 
+    <button mat-menu-item
       *esHasPermission="['COMPANY', 'ADMINISTRATOR']"
       (click)="redirectPage('/product-management');">
       <mat-icon>event_seat</mat-icon>
       <span>Gerenciamento de produtos</span>
     </button>
     <button mat-menu-item 
-        *esHasPermission="['ADMINISTRATOR']"
+        *esHasPermission="'ADMINISTRATOR'"
         (click)="redirectPage('/product-category-management');">
       <mat-icon>category</mat-icon>
       <span>Categorias</span>
     </button>
     <button mat-menu-item 
-      *esHasPermission="['ADMINISTRATOR']"
+      *esHasPermission="'ADMINISTRATOR'"
       (click)="redirectPage('/product-subcategory-management')">
       <mat-icon>category</mat-icon>
       <span>Subcategorias</span>

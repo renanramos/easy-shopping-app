@@ -1,14 +1,12 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, ViewChild, ElementRef } from '@angular/core';
-import { Event, Router } from '@angular/router';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, ViewChild, ElementRef, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { LoginFormComponent } from 'src/app/login/components/login-form/login-form.component';
-import { UserCredentials } from 'src/app/core/models/user/user-credentials.model';
 import { SecurityUserService } from 'src/app/core/service/auth/security-user.service';
-import { UserAuthService } from 'src/app/core/service/auth/user-auth-service.service';
 import { SearchService } from '../../service/search-service';
 import { Subscription } from 'rxjs';
 import { KeycloakService } from 'keycloak-angular';
 import { AuthConfig, NullValidationHandler, OAuthService } from 'angular-oauth2-oidc';
+import { OAuthEvent } from 'angular-oauth2-oidc/events';
 
 @Component({
   selector: 'es-toolbar',
@@ -44,17 +42,27 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     private searchService: SearchService,
     private oauthService: OAuthService) { }
 
-  ngOnInit() {
-    this.configureOAuthProperties();
+  async ngOnInit() {
+    await this.configureOAuthProperties();
     this.subscribeToSearchService();
     this.isUserLoggedIn = this.securityUserService.isUserLogged();
     this.userLoggedName = this.securityUserService.getLoggedUsername();
   }
 
-  configureOAuthProperties() {
+  async configureOAuthProperties() {
     this.oauthService.configure(this.authConfig);
     this.oauthService.tokenValidationHandler = new NullValidationHandler();
     this.oauthService.loadDiscoveryDocumentAndTryLogin();
+    this.oauthService.events.subscribe(({ type }: OAuthEvent) => {
+      switch (type) {
+        case 'token_received':
+          this.securityUserService.setUserPropertiesFromToken();
+          this.isUserLoggedIn = this.securityUserService.isUserLogged();
+          this.userLoggedName = this.securityUserService.getLoggedUsername();
+          window.location.reload();
+          break;
+        }
+    });
   }
 
   ngOnDestroy() {
@@ -67,7 +75,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   }
 
   homePage() {
-    this.router.navigate(['/']);
+    this.router.navigateByUrl('/');
   }
 
   login() {
@@ -76,11 +84,12 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
   async logout() {
     this.oauthService.logOut();
+    this.router.navigateByUrl('/');
   }
 
   redirectPage(routeName: string) {
     this.inputSearchField.nativeElement.value = "";
-    this.router.navigate([routeName]);
+    this.router.navigateByUrl(routeName);
   }
 
   onSearchFilter(event: any) {
