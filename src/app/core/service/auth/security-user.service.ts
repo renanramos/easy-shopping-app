@@ -34,6 +34,10 @@ export class SecurityUserService extends ApiService<UserCredentials> {
     return this.decodedToken['given_name'];
   }
 
+  get userLoggedId(): string {
+    return this.decodedToken['sub'].toString();
+  }
+
   get isAdminUser() {
     return this.decodedToken && this.decodedToken['resource_access']['easy-shopping']['roles'][0] === UserRolesConstants.ADMINISTRATOR
   }
