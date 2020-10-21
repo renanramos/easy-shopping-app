@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 import { KeycloakService } from 'keycloak-angular';
 import { AuthConfig, NullValidationHandler, OAuthService } from 'angular-oauth2-oidc';
 import { OAuthEvent } from 'angular-oauth2-oidc/events';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'es-toolbar',
@@ -25,16 +26,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   searchFilter: Subscription;
   clearSearchFilter: Subscription;
   isUserLoggedIn: boolean = false;
-
-  authConfig: AuthConfig = {
-    issuer: 'http://localhost:8083/auth/realms/easy-shopping',
-    redirectUri: `${window.location.origin}/`,
-    clientId: 'easy-shopping',
-    scope: 'profile email roles',
-    responseType: 'code',
-    disableAtHashCheck: true,
-    showDebugInformation: false
-  }
+  authConfig: AuthConfig = environment.authConfig;
 
   constructor(private router: Router,
     public dialog: MatDialog,
