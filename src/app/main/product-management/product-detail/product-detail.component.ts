@@ -31,7 +31,7 @@ export class ProductDetailComponent implements OnInit {
   companies: Company[] = [];
   stores: Store[] = [];
 
-  userCompanyId: number = null;
+  userCompanyId: string = null;
   isAdminUser: boolean = false;
   productPrice: string = '';
 
@@ -58,7 +58,7 @@ export class ProductDetailComponent implements OnInit {
     this.product = this.data['product'] ? this.data['product'] : new Product();
     this.formatPriceValue();
     this.isAdminUser = this.securityUserService.isAdminUser;
-    // this.userCompanyId = this.securityUserService.idUserLoggedIn;
+    this.userCompanyId = this.securityUserService.userLoggedId;
   }
 
   async createForm() {
