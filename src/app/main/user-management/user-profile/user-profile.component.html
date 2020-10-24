@@ -1,11 +1,8 @@
 <div class="card-items">
   <mat-card class="mat-elevation-z2">
     <mat-card-title>
-      {{ customer?.name }}
+      {{ currentUserCompleteName }}
     </mat-card-title>
-    <mat-card-subtitle>
-      {{ customer?.email }}
-    </mat-card-subtitle>
     <mat-icon mat-icon-button [matMenuTriggerFor]="cardOption">more_vert</mat-icon>
     <mat-menu #cardOption="matMenu">
       <button mat-menu-item >
@@ -14,12 +11,11 @@
     </mat-menu>
     <mat-card-content>
       <p>
-        Nome: {{ customer?.name }}
+        <span>Nome:</span> {{ currentUsername }}
       </p>
       <p>
-        CPF: {{ customer?.cpf | mask: '000.000.000-00'}}
+        <span>Email:</span> {{ currentUserEmail }}
       </p>
-      
     </mat-card-content>
   </mat-card>
   <mat-card class="mat-elevation-z2">

@@ -25,6 +25,9 @@ export class UserProfileComponent implements OnInit {
   addresses: Address[] = [];
   updateAddressSubject: Subject<any> = new Subject<any>();
   updateCreditCardSubject: Subject<any> = new Subject<any>();
+  currentUsername: string = '';
+  currentUserEmail: string = '';
+  currentUserCompleteName: string = '';
 
   dialogAddressRef: MatDialogRef<AddressDetailComponent>;
   dialogCreditCardRef: MatDialogRef<CreditCardDetailComponent>;
@@ -37,27 +40,14 @@ export class UserProfileComponent implements OnInit {
     private securityUserService: SecurityUserService) { }
 
   async ngOnInit() {
-    // await this.loadUserLoggedInfo();
+    this.loadUserLoggedInfo();
     this.currentUserId = this.securityUserService.userLoggedId;
   }
-  
-  async loadUserLoggedInfo() {
 
-    const receivedUserInfo = {
-      next: (customerReceived: Customer) => {
-        this.customer = customerReceived;
-      },
-      error: (response) => {
-        const errorMessage = this.utilsService.handleErrorMessage(response);
-        this.snackBarService.openSnackBar(errorMessage, 'close');
-      }
-    };
-
-    // await this.customerService.getCustomerById(this.currentUserId)
-    //   .pipe(tap(receivedUserInfo))
-    //   .toPromise()
-    //   .then(() => true)
-    //   .catch(() => false);
+  loadUserLoggedInfo() {
+    this.currentUsername = this.securityUserService.userLoggedUsername;
+    this.currentUserEmail = this.securityUserService.userLoggedEmail;
+    this.currentUserCompleteName = this.securityUserService.userName;
   }
 
   addNewAddress(event: any) {
