@@ -30,12 +30,12 @@ export class SecurityUserService extends ApiService<UserCredentials> {
     return !!this.oauthService.getIdToken();
   }
 
-  getLoggedUsername(): string {
-    return this.decodedToken['given_name'];
+  get userLoggedUsername(): string {
+    return this.oauthService.getIdentityClaims() ? this.oauthService.getIdentityClaims()['given_name'] : "";
   }
 
   get userLoggedId(): string {
-    return this.decodedToken['sub'].toString();
+    return this.oauthService.getIdentityClaims()['sub'];
   }
 
   get isAdminUser() {
@@ -44,5 +44,17 @@ export class SecurityUserService extends ApiService<UserCredentials> {
 
   get userLoggedRole() {
     return this.decodedToken && this.decodedToken['resource_access']['easy-shopping']['roles'][0];
+  }
+
+  get isEmailVerified() {
+    return this.oauthService.getIdentityClaims()['email_verified'];
+  }
+
+  get userLoggedEmail() {
+    return this.oauthService.getIdentityClaims()['email'];
+  }
+
+  get userName() {
+    return this.oauthService.getIdentityClaims()['name'];
   }
 }
