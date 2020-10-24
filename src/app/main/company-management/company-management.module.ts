@@ -11,6 +11,7 @@ import { CompanyDetailComponent } from './company-detail/company-detail.componen
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgSlimScrollModule } from 'ngx-slimscroll';
+import { DirectivesModule } from 'src/app/core/shared/directives/directives.modules';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -28,6 +29,7 @@ const components = [
     CompanyManagementRoutingModule,
     PipeModule,
     SharedComponentsModule,
+    DirectivesModule,
     NgSlimScrollModule,
     InfiniteScrollModule,
     NgxMaskModule.forRoot()

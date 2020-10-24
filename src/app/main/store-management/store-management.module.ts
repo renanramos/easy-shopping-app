@@ -10,6 +10,7 @@ import { StoreListComponent } from './store-list/store-list.component';
 import { StoreDetailComponent } from './store-detail/store-detail.component';
 import { StoreManagementRoutingModule } from './store-management-routing.module';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
+import { DirectivesModule } from 'src/app/core/shared/directives/directives.modules';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -26,6 +27,7 @@ const components = [
     AngularMaterialModule,
     StoreManagementRoutingModule,
     SharedComponentsModule,
+    DirectivesModule,
     NgSlimScrollModule,
     InfiniteScrollModule,
     NgxMaskModule.forRoot()
