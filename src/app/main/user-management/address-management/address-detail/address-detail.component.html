@@ -43,12 +43,7 @@
     </div>
   </form>
 </div>
-<div mat-dialog-actions align="right" *ngIf="!isWaitingResponse">
+<div mat-dialog-actions align="right">
   <button mat-raised-button mat-dialog-close>FECHAR</button>
   <button mat-raised-button color="primary" (click)="submitAddress();">SALVAR</button>
-</div>
-<div mat-dialog-action align="right" *ngIf="isWaitingResponse">
-  <div class="loading">
-    <mat-spinner diameter="50"></mat-spinner>
-  </div>
 </div>
