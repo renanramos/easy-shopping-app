@@ -47,7 +47,7 @@ export class StoreListComponent implements OnInit {
   async ngOnInit() {
     this.isAdminUser = this.securityUserService.isAdminUser;
     this.subscribeToSearchService();
-    await this.initializeProperties();
+    await this.loadStores();
   }
 
   subscribeToSearchService() {
@@ -56,18 +56,8 @@ export class StoreListComponent implements OnInit {
       this.pageNumber = ScrollValues.DEFAULT_PAGE_NUMBER;
       this.filterName = value;
       this.stores = [];
-      this.securityUserService.isAdminUser ?
-        this.loadStores() :
-        this.loadCompanyOwnStores();
+      this.loadStores();
     });
-  }
-
-  async initializeProperties() {
-   if (this.securityUserService.isAdminUser) {
-      await this.loadStores();
-   } else {
-      await this.loadCompanyOwnStores();
-   }     
   }
 
   async loadStores() {
@@ -92,32 +82,9 @@ export class StoreListComponent implements OnInit {
       .catch(() => false);
   }
 
-  async loadCompanyOwnStores() {
-    const receivedStores = {
-      next: (stores: Store[]) => {
-        this.stores = [...this.stores, ...stores];
-        if (!this.stores.length) {
-          this.noStoreFound = true;
-        }
-      },
-      error: (response) => {
-        const errorMessage = this.utilsService.handleErrorMessage(response);
-        this.snackBarService.openSnackBar(errorMessage, 'close');
-      }
-    };
-
-    await this.storeService.getCompanyOwnStores(this.pageNumber, this.filterName)
-      .pipe(tap(receivedStores))
-      .toPromise()
-      .then(() => true)
-      .catch(() => false);
-  }
-
   onScroll() {
     this.pageNumber += 1;
-    this.securityUserService.isAdminUser ?
-      this.loadStores() :
-      this.loadCompanyOwnStores();
+    this.loadStores();
   }
 
   openEditStore(store: Store) {
@@ -170,7 +137,7 @@ export class StoreListComponent implements OnInit {
       next: (removedResponse) => {
         this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_REMOVED, 'close');
         this.stores = [];
-        this.initializeProperties();
+        this.loadStores();
       },
       error: (response) => {
         const errorMessage = this.utilsService.handleErrorMessage(response);
@@ -210,6 +177,6 @@ export class StoreListComponent implements OnInit {
 
   reloadListOfItens() {
     this.pageNumber = ScrollValues.DEFAULT_PAGE_NUMBER;
-    this.initializeProperties();
+    this.loadStores();
   }
 }

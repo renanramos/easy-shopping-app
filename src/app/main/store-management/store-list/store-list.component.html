@@ -43,4 +43,4 @@
     </li>
   </ul>
 </div>
-<es-add-button (newClickEvent)="onAddNewStore();"></es-add-button>
+<es-add-button *esHasPermission="['COMPANY']" (newClickEvent)="onAddNewStore();"></es-add-button>
