@@ -148,4 +148,8 @@ export class CompanyListComponent implements OnInit, OnDestroy {
     this.pageNumber = ScrollValues.DEFAULT_PAGE_NUMBER;
     this.loadCompanies();
   }
+
+  onAddNewCompany() {
+    
+  }
 }
