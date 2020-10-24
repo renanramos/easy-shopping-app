@@ -38,7 +38,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     await this.configureOAuthProperties();
     this.subscribeToSearchService();
     this.isUserLoggedIn = this.securityUserService.isUserLogged();
-    this.userLoggedName = this.securityUserService.getLoggedUsername();
+    this.userLoggedName = this.securityUserService.userLoggedUsername;
   }
 
   async configureOAuthProperties() {
@@ -50,7 +50,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         case 'token_received':
           this.securityUserService.setUserPropertiesFromToken();
           this.isUserLoggedIn = this.securityUserService.isUserLogged();
-          this.userLoggedName = this.securityUserService.getLoggedUsername();
+          this.userLoggedName = this.securityUserService.userLoggedUsername ? this.securityUserService.userLoggedUsername : "";
           window.location.reload();
           break;
         }

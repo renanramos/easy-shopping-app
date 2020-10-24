@@ -73,13 +73,13 @@
       <span>Gerenciamento de produtos</span>
     </button>
     <button mat-menu-item 
-        *esHasPermission="'ADMINISTRATOR'"
+        *esHasPermission="['ADMINISTRATOR']"
         (click)="redirectPage('/product-category-management');">
       <mat-icon>category</mat-icon>
       <span>Categorias</span>
     </button>
     <button mat-menu-item 
-      *esHasPermission="'ADMINISTRATOR'"
+      *esHasPermission="['ADMINISTRATOR']"
       (click)="redirectPage('/product-subcategory-management')">
       <mat-icon>category</mat-icon>
       <span>Subcategorias</span>
