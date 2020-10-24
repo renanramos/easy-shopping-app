@@ -42,7 +42,7 @@ export class StoreDetailComponent implements OnInit {
     if (this.isAdminUser) {
       await this.loadCompanies();
     } else {
-      // this.companyId.setValue(this.securityUserService.idUserLoggedIn);
+      this.companyId.setValue(this.securityUserService.userLoggedId);
     }
   }
 
