@@ -7,7 +7,7 @@ export class Product {
   public price: number;
   public productCategoryId: number;
   public productCategoryName: string;
-  public storeId: number;
+  public storeId: string;
   public picture: any;
-  public companyId: number;
+  public companyId: string;
 }
