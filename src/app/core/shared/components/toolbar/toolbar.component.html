@@ -35,10 +35,13 @@
         *esHasPermission="['COMPANY', 'ADMINISTRATOR']">
         <span>Clientes</span>
       </button>
+      <button mat-menu-item (click)="redirectPage('/store-management');"
+        *esHasPermission="['COMPANY','ADMINISTRATOR']">
+        <span>Lojas</span>
+      </button>
       <button mat-menu-item 
-        *esHasPermission="['COMPANY', 'ADMINISTRATOR']"
-        [matMenuTriggerFor]="companies"
-        >
+        *esHasPermission="['ADMINISTRATOR']"
+        (click)="redirectPage('/company-management');">
         <span>Empresas</span>
       </button>
       <button mat-menu-item 
@@ -83,20 +86,6 @@
       (click)="redirectPage('/product-subcategory-management')">
       <mat-icon>category</mat-icon>
       <span>Subcategorias</span>
-    </button>
-  </mat-menu>
-
-  <mat-menu #companies="matMenu">
-    <button mat-menu-item 
-      *esHasPermission="['ADMINISTRATOR']"
-      (click)="redirectPage('/company-management');" >
-      <mat-icon>list</mat-icon>
-      <span>Lista de empresas</span>
-    </button>
-    <button mat-menu-item (click)="redirectPage('/store-management');"
-      *esHasPermission="['COMPANY','ADMINISTRATOR']">
-      <mat-icon>store</mat-icon>
-      <span>Lojas</span>
     </button>
   </mat-menu>
 </mat-toolbar>
