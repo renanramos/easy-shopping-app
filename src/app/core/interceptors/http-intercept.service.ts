@@ -1,21 +1,18 @@
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpHeaders, HttpErrorResponse, HttpXsrfTokenExtractor } from '@angular/common/http';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from '@angular/common/http';
 
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
-import { SnackbarService } from '../shared/service/snackbar.service';
-import { SecurityUserService } from '../service/auth/security-user.service';
-import { UtilsService } from '../shared/utils/utils.service';
-import { KeycloakService } from 'keycloak-angular';
-import { switchMap, tap } from 'rxjs/operators';
-import { from, pipe } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { Router } from '@angular/router';
+import { SnackbarService } from '../shared/service/snackbar.service';
 
 @Injectable()
 export class HttpIntercept implements HttpInterceptor {
 
   constructor(
     private router: Router,
+    private snackBarService: SnackbarService,
     private oauthService: OAuthService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {   
@@ -29,12 +26,12 @@ export class HttpIntercept implements HttpInterceptor {
 
       const sendRequest = {
         next: () => {},
-        error: (error) => {
-          console.log(error);
-          if (error) {
-            this.oauthService.logOut();
+        error: (error: HttpErrorResponse) => {
+          if (error.status === 401) {
+            this.snackBarService.openSnackBar(error.message, 'close');
             this.router.navigateByUrl('/');
           }
+          this.snackBarService.openSnackBar(error.message, 'close');
         }
       }; 
 
