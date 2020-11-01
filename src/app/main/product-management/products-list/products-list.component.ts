@@ -13,7 +13,7 @@ import { ConstantMessages } from 'src/app/core/shared/constants/constant-message
 import { ConfirmDialogComponent } from 'src/app/core/shared/components/confirm-dialog/confirm-dialog.component';
 import { ProductUploadImageComponent } from '../product-upload-image/product-upload-image.component';
 import { UtilsService } from 'src/app/core/shared/utils/utils.service';
-import { ProductImage } from 'src/app/core/models/product-image/product-image.model';
+import { SecurityUserService } from 'src/app/core/service/auth/security-user.service';
 
 @Component({
   selector: 'es-products-list',
@@ -32,15 +32,17 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   dialogRef: MatDialogRef<ProductDetailComponent>;
   confirmDialogRef: MatDialogRef<ConfirmDialogComponent>;
   uploadImageDialogRef: MatDialogRef<ProductUploadImageComponent>;
-
+  userId: string = '';
   constructor(
     private dialog: MatDialog,
     private productService: ProductService,
     private menuService: MenuService,
     private snackBarService: SnackbarService,
-    private utilsService: UtilsService) { }
+    private utilsService: UtilsService,
+    private securityUserService: SecurityUserService) { }
 
   async ngOnInit() {
+    this.userId = this.securityUserService.userLoggedId;
     await this.loadProducts();
     this.subscription = this.menuService.currentSubcategoryId.subscribe(subcategory => {
       if (subcategory.id) {

@@ -1,14 +1,3 @@
-<div class="filter-container">
-  <div class="filter-list-content" *ngIf="isListFiltererd">
-    <span>Filtro: </span>
-    <mat-chip-list>
-      <mat-chip (removed)="removeFilter();">
-        {{ categoryFiltered }}
-        <mat-icon matChipRemove>cancel</mat-icon>
-      </mat-chip>
-    </mat-chip-list>
-  </div>
-</div>
 <div class="title">
   Produtos
 </div>
@@ -41,23 +30,6 @@
           <ng-template #showPlaceholderImage>
             <img mat-card-image src="../../../../assets/product-image-placeholder.png" alt="{{ product.name }}">
           </ng-template>
-          <mat-card-content>
-            <mat-divider></mat-divider>
-            <p class="product-price-info">
-             Preço: {{ product.price | currency : 'BRL'}}
-            </p>
-            <small>
-              {{ product.description }}
-            </small>
-            <div class="card-actions">
-              <p>
-                <button mat-raised-button >Adicionar ao carrinho</button>
-              </p>
-              <p>
-                <button mat-raised-button color="primary">Comprar</button>
-              </p>
-            </div>
-          </mat-card-content>
         </mat-card>
     </li>
   </ul>
