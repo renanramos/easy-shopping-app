@@ -1,1 +1,45 @@
-<p>welcome works!</p>
+<div class="filter-container">
+  <div class="filter-list-content" *ngIf="isListFiltererd">
+    <span>Filtro: </span>
+    <mat-chip-list>
+      <mat-chip (removed)="removeFilter();">
+        {{ categoryFiltered }}
+        <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+    </mat-chip-list>
+  </div>
+</div>
+<div class="container-list">
+  <ul class="content-list" fxLayout="row wrap">
+    <p *ngIf="productsNotFound">Nenhum produto encontrado 
+      <span *ngIf="categoryFiltered"> para a categoria<b> {{ categoryFiltered }}</b></span>
+    </p>
+    <li *ngFor="let product of products" class="card-items">
+        <mat-card class="mat-elevation-z4">
+          <mat-card-header>
+            <div mat-card-avatar class="products-header-image"></div>
+            <mat-card-title>{{ product.name }}</mat-card-title>
+            <mat-card-subtitle>{{ product.subcategoryName }}</mat-card-subtitle>
+          </mat-card-header>
+          <img *ngIf="product.productImages[0]?.picture; else showPlaceholderImage" mat-card-image src="{{'data:image/png;base64,' + product.productImages[0]?.picture}}" alt="{{ product.name }}" title="{{ product.name }}">
+          <ng-template #showPlaceholderImage>
+            <img mat-card-image src="../../../../assets/product-image-placeholder.png" alt="{{ product.name }}">
+          </ng-template>
+          <mat-card-content>
+            <mat-divider></mat-divider>
+            <p class="product-price-info">
+             Preço: {{ product.price | currency : 'BRL'}}
+            </p>
+            <small>
+              {{ product.description }}
+            </small>
+            <div class="card-actions">
+              <button mat-raised-button color="warn" matTooltip="Adicionar ao carrinho">
+                <mat-icon>add_shopping_cart</mat-icon></button>
+              <button mat-raised-button color="primary">{{ 'Comprar' | uppercase }}</button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+    </li>
+  </ul>
+</div>

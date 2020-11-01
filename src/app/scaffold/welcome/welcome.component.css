@@ -1,0 +1,112 @@
+.title {
+  width: 100%;
+  margin-left: 1vw;
+  margin-top: 1vw;
+  margin-bottom: auto;
+  font-weight: 100;
+  font-size: 2.5rem;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.filter-container {
+  display: flex;
+  width: 100%;
+  margin: 1% 0px 0px 1%;
+}
+
+.filter-list-content {
+  display: flex;
+  align-items: center;
+  margin-right: 1vw;
+}
+
+.filter-list-content > span {
+  margin-right: 1vw;
+}
+
+.products-header-image {
+  border: 1px solid #0000001a;
+  background-image: url('../../../assets/es-logo-card.jpg');
+  background-size: cover;
+}
+
+.product-price-info {
+  font-size: 25px;
+  font-weight: 300;
+  margin-block-start: 1em;
+  margin-block-end: 0em;
+}
+
+mat-chip {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.mat-card-header {
+  padding-bottom: 1rem !important;
+}
+
+.mat-card-image {
+  max-height: 300px;
+  min-height: 300px;
+}
+
+.card-actions {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 2%;
+}
+
+.card-actions button {
+  width: 48%;
+}
+@media screen and (min-width: 280px) and (max-width: 570px) {
+  .card-items {
+    width: calc(100% - 15px);
+    margin: 10px 13px 10px 2px !important;
+  }
+
+  .mat-card-title {
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 480px) and (max-width: 768px) {
+  .card-items {
+    width: calc(50% - 25px);
+  }
+}
+
+@media screen and (min-width: 480px) and (max-width: 768px) and (orientation: landscape) {
+  .card-items {
+    width: calc(50% - 25px);
+  }
+}
+
+@media screen and (min-width: 769px) and (max-width: 1366px) {
+  .card-items {
+    width: calc(32% - 10px);
+  }
+}
+
+@media screen and (min-width: 1367px) and (max-width: 1920px) {
+  .card-items {
+    width: calc(24.8% - 25px);
+  }
+}
+
+@media screen and (min-width: 1921px) and (max-width: 2160px) {
+  .card-items {
+    width: calc(50% - 25px);
+  }
+}
+
+@media screen and (min-width: 2161px) {
+  .card-items {
+    width: calc(20% - 25px);
+  }
+}
