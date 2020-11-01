@@ -19,7 +19,7 @@ export class ProductService extends ApiService<Product>{
       filterString += `/subcategory?subcategoryId=${subcategoryId}`;
     }
 
-    return this.get(`${this.url}`);
+    return this.get(`${this.url}${filterString}`);
    }
 
    saveProduct(product: Product): Observable<Product> {
