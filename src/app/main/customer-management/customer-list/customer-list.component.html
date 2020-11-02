@@ -13,12 +13,9 @@
     </p>
     <li *ngFor="let customer of customers" class="card-items">
       <mat-card>
-        <mat-icon mat-icon-button [matMenuTriggerFor]="cardOption" *esHasPermission="['CUSTOMER']">more_vert</mat-icon>
+        <mat-icon mat-icon-button [matMenuTriggerFor]="cardOption" *esHasPermission="['ADMINISTRATOR']">more_vert</mat-icon>
 
         <mat-menu #cardOption="matMenu" >
-          <button mat-menu-item (click)="openEditCustomer(customer);">
-            <span>Editar</span>
-          </button>
           <button mat-menu-item (click)="openRemoveCustomer(customer);">
             <span>Remover</span>
           </button>

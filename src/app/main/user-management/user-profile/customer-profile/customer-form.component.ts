@@ -91,7 +91,26 @@ export class CustomerFormComponent implements OnInit, OnDestroy {
   }
 
   async updateCustomer() {
-    console.log('update customer');
+    
+    const customer: Customer = this.customerForm.getRawValue();
+    customer.name = this.securityUserService.userLoggedUsername;
+    customer.email = this.securityUserService.userLoggedEmail;
+
+    const customerUpdated = {
+      next: (customer) => {
+        this.dialogRef.close(customer);
+      },
+      error: (response) => {
+        const errorMessage = this.utilsService.handleErrorMessage(response);
+       this.snackBar.openSnackBar(errorMessage);
+      }
+    };
+
+    await this.customerService.updateCustomer(customer, this.currentCustomerId)
+      .pipe(tap(customerUpdated))
+      .toPromise()
+      .then(() => true)
+      .catch(() => false);
   }
 
   get cpf() {

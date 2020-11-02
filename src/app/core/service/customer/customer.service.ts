@@ -38,8 +38,8 @@ export class CustomerService extends ApiService<Customer> {
     return this.get(`${this.url}/${tokenId}`);
   }
 
-  updateCustomer(customer: Customer): Observable<Customer> {
-    return this.patch(`${this.url}/${customer['id']}`, customer);
+  updateCustomer(customer: Customer, tokenId: string): Observable<Customer> {
+    return this.patch(`${this.url}/${tokenId}`, customer);
   }
 
   removeCustomer(customerId: number): Observable<any> {

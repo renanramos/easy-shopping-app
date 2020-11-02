@@ -4,7 +4,6 @@ import { CustomerService } from 'src/app/core/service/customer/customer.service'
 import { Customer } from 'src/app/core/models/registration/customer.model';
 import { debounce, debounceTime, tap } from 'rxjs/operators';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { CustomerDetailComponent } from '../customer-detail/customer-detail.component';
 import { SnackbarService } from 'src/app/core/shared/service/snackbar.service';
 import { ConstantMessages } from 'src/app/core/shared/constants/constant-messages';
 import { ConfirmDialogComponent } from 'src/app/core/shared/components/confirm-dialog/confirm-dialog.component';
@@ -26,7 +25,6 @@ export class CustomerListComponent implements OnInit, OnDestroy {
   customers: Customer[] = [];
   pageNumber: number = ScrollValues.DEFAULT_PAGE_NUMBER;
 
-  dialogRef: MatDialogRef<CustomerDetailComponent>;
   confirmDialogRef: MatDialogRef<ConfirmDialogComponent>;
 
   searchServiceSubscription: Subscription;
@@ -79,28 +77,6 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       .toPromise()
       .then(() => true)
       .catch(() => false);
-  }
-
-  openEditCustomer(customer: Customer) {
-
-    const receivedDialogResponse = {
-      next: (customerUpdated) => {
-        if(customerUpdated) {
-          this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_UPDATED);
-          this.customers = [];
-          this.reloadListOfItens();
-        }
-      }
-    }
-
-    this.dialogRef = this.dialog.open(CustomerDetailComponent, {
-      data: { customer: customer, isViewing: true },
-      autoFocus: false,
-      disableClose: true,
-      panelClass: 'es-dialog'
-    });
-
-    this.dialogRef.afterClosed().subscribe(receivedDialogResponse);
   }
 
   openRemoveCustomer(customer: Customer) {
