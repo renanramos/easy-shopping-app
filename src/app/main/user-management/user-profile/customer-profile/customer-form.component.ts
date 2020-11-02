@@ -7,7 +7,6 @@ import { SnackbarService } from 'src/app/core/shared/service/snackbar.service';
 import { CustomerService } from 'src/app/core/service/customer/customer.service';
 import { Customer } from 'src/app/core/models/registration/customer.model';
 import { UtilsService } from 'src/app/core/shared/utils/utils.service';
-import { SearchService } from 'src/app/core/shared/service/search-service';
 import { UserAuthService } from 'src/app/core/service/auth/user-auth-service.service';
 import { SecurityUserService } from 'src/app/core/service/auth/security-user.service';
 
@@ -17,7 +16,7 @@ import { SecurityUserService } from 'src/app/core/service/auth/security-user.ser
   styleUrls: ['./customer-form.component.css'],
   providers: [CustomerService, UserAuthService]
 })
-export class CustomerFormComponent implements OnInit, OnDestroy {
+export class CustomerFormComponent implements OnInit {
 
   customerForm: FormGroup;
   currentCustomerId: string = null;
@@ -27,7 +26,6 @@ export class CustomerFormComponent implements OnInit, OnDestroy {
     private customerService: CustomerService,
     private snackBar: SnackbarService,
     private utilsService: UtilsService,
-    private searchService: SearchService,
     private dialogRef: MatDialogRef<CustomerFormComponent>,
     private securityUserService: SecurityUserService) { }
 
@@ -35,15 +33,6 @@ export class CustomerFormComponent implements OnInit, OnDestroy {
     this.currentCustomerId = this.securityUserService.userLoggedId;
     await this.loadCustomerInfo();
     this.createForm();
-    this.hideSearchFiled();
-  }
-
-  ngOnDestroy() {
-    this.searchService.hideSearchFieldOption(false);
-  }
-
-  hideSearchFiled() {
-    this.searchService.hideSearchFieldOption(true);
   }
 
   createForm() {
