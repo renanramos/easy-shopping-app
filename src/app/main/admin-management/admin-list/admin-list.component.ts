@@ -141,27 +141,6 @@ export class AdminListComponent implements OnInit, OnDestroy {
       .catch(() => false);
   }
 
-  onAddNewStore() {
-    this.dialogRef = this.dialog.open(AdminDetailComponent, {
-      data: { admin: new Admin(), isCreatingAdmin: true},
-      disableClose: true,
-      autoFocus: false,
-      panelClass: 'es-dialog'
-    });
-
-    const adminCreated = {
-      next: (admin: Admin) => {
-        if (admin['id']) {
-          this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_CREATED);
-          this.administrators = [];
-          this.reloadListOfItens();
-        }
-      }
-    };
-
-    this.dialogRef.afterClosed().subscribe(adminCreated);
-  }
-
   reloadListOfItens() {
     this.pageNumber = ScrollValues.DEFAULT_PAGE_NUMBER;
     this.loadAdmins();

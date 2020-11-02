@@ -34,14 +34,6 @@
             <span>Email:</span>
             {{customer.email}}
           </p>
-          <p>
-            <span>
-              {{ customer.active ? 'Email verificado' : 'Email não verificado' }}
-              <mat-icon [ngStyle]="{ 'color': customer.active ? '#039e03' : '#d20808' }">
-                {{ customer.active ? 'done' : 'clear' }}
-              </mat-icon>
-            </span>
-          </p>
         </mat-card-content>
       </mat-card>
     </li>

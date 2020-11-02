@@ -6,7 +6,6 @@ export class Customer {
   public name: string;
   public email: string;
   public cpf: string;
-  public password: string;
   public address: Address[];
   public creditCards: CreditCard[];
 }

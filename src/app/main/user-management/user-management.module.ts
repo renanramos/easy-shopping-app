@@ -11,11 +11,13 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserManagementRoutingModule } from './user-management-routing.module';
 import { AddressManagementModule } from './address-management/address-management.module';
 import { CreditCardManagementModule } from './credit-card-management/credit-card-management.module';
+import { CustomerFormComponent } from './user-profile/customer-profile/customer-form.component';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
 const components = [
-  UserProfileComponent
+  UserProfileComponent,
+  CustomerFormComponent
 ]
 
 @NgModule({

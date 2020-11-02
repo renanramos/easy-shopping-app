@@ -62,55 +62,11 @@ body mat-toolbar > mat-form-field > div {
   position: relative;
 }
 
-.registration-header {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  width: 100%;
-}
-
-.registration-title {
-  width: 50%;
-  margin-left: 1vw;
-  margin-top: 1vw;
-  margin-bottom: auto;
-  font-weight: 100;
-  font-size: 1.9rem;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-}
-
-.registration-subtitle {
-  width: 50%;
-  margin-top: 1vw;
-  margin-bottom: 1vw;
-  font-weight: 100;
-  font-size: 1.5rem;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-}
-
-.registration-option {
-  width: 50%;
-  height: 4vh;
-  text-align: right;
-  margin-right: 3vw;
-  margin-top: 1.5vw;
-  font-size: 1.5rem;
-  font-weight: 100;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-}
-
-.registration-option > a {
-  color: #1515d0e0;
-  cursor: pointer;
-}
-
 .page-form-content {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   margin-top: 5vh;
-  margin-right: 20vw;
-  margin-left: 20vw;
 }
 
 .container-registration-form {
@@ -302,33 +258,6 @@ tr.table-stripped:active {
 
   .mat-drawer-content {
     padding-left: none;
-  }
-
-  .registration-header {
-    flex-wrap: wrap;
-  }
-
-  .registration-title {
-    width: 100%;
-  }
-
-  .registration-option {
-    width: 100%;
-    font-size: 1rem;
-    text-align: left;
-    padding-left: 1%;
-  }
-
-  .registration-subtitle {
-    width: 100%;
-    font-size: 1rem;
-  }
-
-  .page-form-content {
-    font-size: 1rem;
-    padding-left: 1%;
-    margin-right: 0;
-    margin-left: 0;
   }
 
   .container-registration-form {
