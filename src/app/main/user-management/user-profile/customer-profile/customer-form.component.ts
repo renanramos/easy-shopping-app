@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { MatDialogRef } from '@angular/material/dialog';
 import { tap } from 'rxjs/operators';
 
 import { SnackbarService } from 'src/app/core/shared/service/snackbar.service';
@@ -8,8 +8,6 @@ import { CustomerService } from 'src/app/core/service/customer/customer.service'
 import { Customer } from 'src/app/core/models/registration/customer.model';
 import { UtilsService } from 'src/app/core/shared/utils/utils.service';
 import { SearchService } from 'src/app/core/shared/service/search-service';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { AlertDialogComponent } from 'src/app/core/shared/components/alert-dialog/alert-dialog.component';
 import { UserAuthService } from 'src/app/core/service/auth/user-auth-service.service';
 import { SecurityUserService } from 'src/app/core/service/auth/security-user.service';
 
@@ -22,7 +20,6 @@ import { SecurityUserService } from 'src/app/core/service/auth/security-user.ser
 export class CustomerFormComponent implements OnInit, OnDestroy {
 
   customerForm: FormGroup;
-  alertDialogRef: MatDialogRef<AlertDialogComponent>;
   currentCustomerId: string = null;
   customer: Customer = null;
 
@@ -31,9 +28,7 @@ export class CustomerFormComponent implements OnInit, OnDestroy {
     private snackBar: SnackbarService,
     private utilsService: UtilsService,
     private searchService: SearchService,
-    private dialog: MatDialog,
     private dialogRef: MatDialogRef<CustomerFormComponent>,
-    private route: Router,
     private securityUserService: SecurityUserService) { }
 
   async ngOnInit() {
@@ -91,7 +86,6 @@ export class CustomerFormComponent implements OnInit, OnDestroy {
   }
 
   async updateCustomer() {
-    
     const customer: Customer = this.customerForm.getRawValue();
     customer.name = this.securityUserService.userLoggedUsername;
     customer.email = this.securityUserService.userLoggedEmail;
