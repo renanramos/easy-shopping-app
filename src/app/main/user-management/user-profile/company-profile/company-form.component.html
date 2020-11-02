@@ -1,0 +1,23 @@
+<div mat-dialog-title>
+  Complete os dados da sua empresa
+</div>
+<div mat-dialog-content *ngIf="companyForm">
+  <form class="company-form" [formGroup]="companyForm">
+    <mat-form-field class="input-full-width">
+      <mat-label>CNPJ</mat-label>
+      <input type="text" matInput formControlName="registeredNumber" id="registeredNumber" mask="00.000.000/0000-00">
+      <mat-error *ngIf="registeredNumber.hasError('required')">Campo obrigatório</mat-error>
+      <mat-error *ngIf="registeredNumber.hasError('mask')">CNPJ com formato inválido</mat-error>
+    </mat-form-field>
+    <mat-form-field class="input-full-width">
+      <mat-label>Telefone</mat-label>
+      <input type="text" matInput formControlName="phone" id="phone" mask="(00) 00000-0000||(00) 0000-0000">
+      <mat-error *ngIf="phone.hasError('required')">Campo obrigatório</mat-error>
+      <mat-error *ngIf="phone.hasError('mask')">Telefone com formato inválido</mat-error>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions align="right">
+  <button mat-raised-button mat-dialog-close>FECHAR</button>
+  <button mat-raised-button color="primary" (click)="onSubmitCompany();">SALVAR</button>
+</div>

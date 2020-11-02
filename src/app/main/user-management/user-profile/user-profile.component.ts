@@ -12,6 +12,9 @@ import { CustomerService } from 'src/app/core/service/customer/customer.service'
 import { Subject } from 'rxjs';
 import { CreditCardDetailComponent } from '../credit-card-management/credit-card-detail/credit-card-detail.component';
 import { CustomerFormComponent } from './customer-profile/customer-form.component';
+import { ConstantMessages } from 'src/app/core/shared/constants/constant-messages';
+import { UserRolesConstants } from 'src/app/core/shared/constants/user-roles-constants';
+import { CompanyFormComponent } from './company-profile/company-form.component';
 
 @Component({
   selector: 'es-user-profile',
@@ -29,15 +32,15 @@ export class UserProfileComponent implements OnInit {
   currentUsername: string = '';
   currentUserEmail: string = '';
   currentUserCompleteName: string = '';
+  currentUserRole: string = '';
 
   dialogAddressRef: MatDialogRef<AddressDetailComponent>;
   dialogCreditCardRef: MatDialogRef<CreditCardDetailComponent>;
   dialogCustomerProfile: MatDialogRef<CustomerFormComponent>;
+  dialogCompanyProfile: MatDialogRef<CompanyFormComponent>;
 
   constructor(
     private dialog: MatDialog,
-    private utilsService: UtilsService,
-    private customerService: CustomerService,
     private snackBarService: SnackbarService,
     private securityUserService: SecurityUserService) { }
 
@@ -50,6 +53,7 @@ export class UserProfileComponent implements OnInit {
     this.currentUsername = this.securityUserService.userLoggedUsername;
     this.currentUserEmail = this.securityUserService.userLoggedEmail;
     this.currentUserCompleteName = this.securityUserService.userName;
+    this.currentUserRole = this.securityUserService.userLoggedRole;
   }
 
   addNewAddress(event: any) {
@@ -92,6 +96,12 @@ export class UserProfileComponent implements OnInit {
     this.dialogCreditCardRef.afterClosed().subscribe(dialogResponse);
   }
 
+  openProfileForm() {
+    this.currentUserRole === UserRolesConstants.CUSTOMER ?
+      this.openCustomerProfileForm() :
+      this.openCompanyProfileForm();
+  }
+
   openCustomerProfileForm() {
     this.dialogCustomerProfile = this.dialog.open(CustomerFormComponent, {
       data: { customerId: this.currentCustomerId },
@@ -100,6 +110,27 @@ export class UserProfileComponent implements OnInit {
       panelClass: 'es-dialog'
     });
 
+    this.dialogCustomerProfile.afterClosed()
+      .subscribe(response => {
+        if (response) {
+          this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_UPDATED, 'close');
+        }
+      })
+  }
 
+  openCompanyProfileForm() {
+    this.dialogCompanyProfile = this.dialog.open(CompanyFormComponent, {
+      data: { customerId: this.currentCustomerId },
+      disableClose: true,
+      autoFocus: false,
+      panelClass: 'es-dialog'
+    });
+
+    this.dialogCompanyProfile.afterClosed()
+      .subscribe(response => {
+        if (response) {
+          this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_UPDATED, 'close');
+        }
+      })
   }
 }

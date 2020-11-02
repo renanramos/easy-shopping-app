@@ -1,0 +1,14 @@
+.company-form {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.input-full-width {
+  margin: 0% 15%;
+}
+
+button {
+  width: 10vw;
+  height: 6vh;
+}

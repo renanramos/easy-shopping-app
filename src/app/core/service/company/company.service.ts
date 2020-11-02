@@ -13,7 +13,7 @@ export class CompanyService extends ApiService<Company>{
   }
 
   saveCompany(company: Company): Observable<Company> {
-    return this.post(`${this.url}/register`, company);
+    return this.post(`${this.url}`, company);
   }
 
   getCompanies(companyId?: number, pageNumber?: number, filterByName?: string, noLimitSize?: boolean): Observable<Company | Company[]> {
@@ -36,8 +36,12 @@ export class CompanyService extends ApiService<Company>{
     return this.get(`${this.url}${companyId ? companyId : filterString}`);
   }
 
-  updateCompany(company: Company): Observable<Company> {
-    return this.patch(`${this.url}/${company['id']}`, company);
+  getCompanyByTokenId(tokenId: string): Observable<Company | Company[]> {
+    return this.get(`${this.url}/${tokenId}`);
+  }
+
+  updateCompany(company: Company, tokenId: string): Observable<Company> {
+    return this.patch(`${this.url}/${tokenId}`, company);
   }
 
   removeCompany(companyId: number): Observable<any> {
