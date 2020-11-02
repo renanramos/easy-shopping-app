@@ -47,13 +47,12 @@
       </button>
       <button mat-menu-item 
         (click)="redirectPage('/user-management');"
-        *esHasPermission="['CUSTOMER']">
-        <mat-icon>perm_contact_calendar</mat-icon>
-        <span>Meus dados</span>
+        *esHasPermission="['COMPANY', 'CUSTOMER']">
+        <span>Perfil</span>
       </button>
       <mat-divider *ngIf="isUserLoggedIn"></mat-divider>
     </div>
-    <button mat-menu-item (click)="login()" *ngIf="!isUserLoggedIn">
+    <button mat-menu-item (click)="login();" *ngIf="!isUserLoggedIn">
       <mat-icon>login</mat-icon>
       <span>Entrar</span>
     </button>
