@@ -48,8 +48,8 @@ mat-chip {
 }
 
 .mat-card-image {
-  max-height: 300px;
-  min-height: 300px;
+  max-height: 50%;
+  max-width: 50%;
 }
 
 .card-actions {
@@ -64,6 +64,11 @@ mat-chip {
 .card-actions button {
   width: 48%;
 }
+
+.img-container {
+  text-align: center;
+}
+
 @media screen and (min-width: 280px) and (max-width: 570px) {
   .card-items {
     width: calc(100% - 15px);
