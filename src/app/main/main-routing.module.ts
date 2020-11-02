@@ -42,11 +42,6 @@ const routes: Routes = [
         path: 'product-subcategory-management',
         loadChildren: () => import('./subcategory-management/subcategory-management.module').then(m => m.SubcategoryManagementModule),
         canActivate: [AuthGuard]
-      },
-      {
-        path: 'admin-management',
-        loadChildren: () => import('./admin-management/admin-management.module').then(m => m.AdminManagementModule),
-        canActivate: [AuthGuard]
       }
     ]
   }  
