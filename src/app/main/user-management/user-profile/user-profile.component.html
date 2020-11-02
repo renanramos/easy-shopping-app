@@ -3,18 +3,15 @@
     <mat-card-title>
       {{ currentUserCompleteName }}
     </mat-card-title>
-    <mat-icon mat-icon-button [matMenuTriggerFor]="cardOption">more_vert</mat-icon>
-    <mat-menu #cardOption="matMenu">
-      <button mat-menu-item >
-          <span>Editar</span>
-      </button>
-    </mat-menu>
     <mat-card-content>
       <p>
         <span>Nome:</span> {{ currentUsername }}
       </p>
       <p>
         <span>Email:</span> {{ currentUserEmail }}
+      </p>
+      <p>
+        <button mat-raised-button color="primary" (click)="openCustomerProfileForm();">Atualizar informações</button>
       </p>
     </mat-card-content>
   </mat-card>

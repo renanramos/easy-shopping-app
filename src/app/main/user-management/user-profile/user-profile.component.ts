@@ -11,6 +11,7 @@ import { AddressDetailComponent } from '../address-management/address-detail/add
 import { CustomerService } from 'src/app/core/service/customer/customer.service';
 import { Subject } from 'rxjs';
 import { CreditCardDetailComponent } from '../credit-card-management/credit-card-detail/credit-card-detail.component';
+import { CustomerFormComponent } from './customer-profile/customer-form.component';
 
 @Component({
   selector: 'es-user-profile',
@@ -20,7 +21,7 @@ import { CreditCardDetailComponent } from '../credit-card-management/credit-card
 })
 export class UserProfileComponent implements OnInit {
 
-  currentUserId: string = null;
+  currentCustomerId: string = null;
   customer: Customer;
   addresses: Address[] = [];
   updateAddressSubject: Subject<any> = new Subject<any>();
@@ -31,6 +32,7 @@ export class UserProfileComponent implements OnInit {
 
   dialogAddressRef: MatDialogRef<AddressDetailComponent>;
   dialogCreditCardRef: MatDialogRef<CreditCardDetailComponent>;
+  dialogCustomerProfile: MatDialogRef<CustomerFormComponent>;
 
   constructor(
     private dialog: MatDialog,
@@ -41,10 +43,10 @@ export class UserProfileComponent implements OnInit {
 
   async ngOnInit() {
     this.loadUserLoggedInfo();
-    this.currentUserId = this.securityUserService.userLoggedId;
   }
 
   loadUserLoggedInfo() {
+    this.currentCustomerId = this.securityUserService.userLoggedId;
     this.currentUsername = this.securityUserService.userLoggedUsername;
     this.currentUserEmail = this.securityUserService.userLoggedEmail;
     this.currentUserCompleteName = this.securityUserService.userName;
@@ -53,7 +55,7 @@ export class UserProfileComponent implements OnInit {
   addNewAddress(event: any) {
     event.stopPropagation();
     this.dialogAddressRef = this.dialog.open(AddressDetailComponent, {
-      data: { customerId: this.currentUserId },
+      data: { customerId: this.currentCustomerId },
       disableClose: true,
       autoFocus: false,
       panelClass: 'es-dialog'
@@ -73,7 +75,7 @@ export class UserProfileComponent implements OnInit {
   addNewCreditCard(event: any) {
     event.stopPropagation();
     this.dialogCreditCardRef = this.dialog.open(CreditCardDetailComponent, {
-      data: { customerId: this.currentUserId },
+      data: { customerId: this.currentCustomerId },
       disableClose: true,
       autoFocus: false,
       panelClass: 'es-dialog'
@@ -88,5 +90,16 @@ export class UserProfileComponent implements OnInit {
     };
 
     this.dialogCreditCardRef.afterClosed().subscribe(dialogResponse);
+  }
+
+  openCustomerProfileForm() {
+    this.dialogCustomerProfile = this.dialog.open(CustomerFormComponent, {
+      data: { customerId: this.currentCustomerId },
+      disableClose: true,
+      autoFocus: false,
+      panelClass: 'es-dialog'
+    });
+
+
   }
 }
