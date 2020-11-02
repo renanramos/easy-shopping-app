@@ -4,9 +4,8 @@ import { CompanyService } from '../../../core/service/company/company.service';
 import { Company } from '../../../core/models/registration/company.model';
 import { SnackbarService } from '../../../core/shared/service/snackbar.service';
 import { UtilsService } from '../../../core/shared/utils/utils.service';
-import { debounceTime, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
-import { CompanyDetailComponent } from '../company-detail/company-detail.component';
 import { ConfirmDialogComponent } from 'src/app/core/shared/components/confirm-dialog/confirm-dialog.component';
 import { ConstantMessages } from 'src/app/core/shared/constants/constant-messages';
 import { Subscription } from 'rxjs';
@@ -24,8 +23,7 @@ export class CompanyListComponent implements OnInit, OnDestroy {
   pageNumber: number = ScrollValues.DEFAULT_PAGE_NUMBER;
   noCompanyFound: boolean = false;
   companies: Company[] = [];
-  
-  dialogRef: MatDialogRef<CompanyDetailComponent>;
+
   confirmDialogRef: MatDialogRef<ConfirmDialogComponent>;
 
   searchSubscription: Subscription;
@@ -33,7 +31,6 @@ export class CompanyListComponent implements OnInit, OnDestroy {
 
   constructor(private companyService: CompanyService,
     private utilsService: UtilsService,
-    private dialog: MatDialog,
     private searchService: SearchService,
     private snackBarService: SnackbarService) { }
 
@@ -58,7 +55,6 @@ export class CompanyListComponent implements OnInit, OnDestroy {
   }
 
   async loadCompanies() {
-
     const receivedCompanies = {
       next: (companies: Company[]) => {
         if (companies.length) {
@@ -81,64 +77,6 @@ export class CompanyListComponent implements OnInit, OnDestroy {
       .catch(() => false);
   }
 
-  openEditCompany(company: Company) {
-
-    const receivedDialogResponse = {
-      next: (companyUpdated) => {
-        if(companyUpdated) {
-          this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_UPDATED);
-          this.companies = [];
-          this.reloadListOfItens();
-        }
-      }
-    }
-
-    this.dialogRef = this.dialog.open(CompanyDetailComponent, {
-      data: { company: company },
-      autoFocus: false,
-      disableClose: true,
-      panelClass: 'es-dialog'
-    });
-
-    this.dialogRef.afterClosed().subscribe(receivedDialogResponse);
-  }
-
-  openRemoveCompany(company: Company) {
-    this.confirmDialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: company,
-      autoFocus: false,
-      disableClose: true,
-      panelClass: 'es-small-dialog'
-    });
-
-    this.confirmDialogRef.afterClosed().subscribe((response) => {
-      if (response) {
-        this.removeCompany(company);
-      }
-    });
-  }
-
-  async removeCompany(company: Company) {
-
-    const removedCustomerResponse = {
-      next: () => {
-        this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_REMOVED, 'close');
-        this.companies = [];
-        this.reloadListOfItens();
-      },
-      error: (error) => {
-        const message = this.utilsService.handleErrorMessage(error);
-        this.snackBarService.openSnackBar(message, 'close');
-      }
-    };
-
-    await this.companyService.removeCompany(company['id'])
-      .pipe(tap(removedCustomerResponse))
-      .toPromise()
-      .then(() => true)
-      .catch(() => false);
-  }
-
   onScroll() {
     this.pageNumber += 1;
     this.loadCompanies();
@@ -147,9 +85,5 @@ export class CompanyListComponent implements OnInit, OnDestroy {
   reloadListOfItens() {
     this.pageNumber = ScrollValues.DEFAULT_PAGE_NUMBER;
     this.loadCompanies();
-  }
-
-  onAddNewCompany() {
-    
   }
 }

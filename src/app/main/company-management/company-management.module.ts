@@ -7,7 +7,6 @@ import { SharedComponentsModule } from 'src/app/core/shared/components/shared-co
 import { CompanyManagementRoutingModule } from './company-management-routing.module';
 import { CompanyListComponent } from './company-list/company-list.component';
 import { PipeModule } from 'src/app/core/shared/pipe/pipe.module';
-import { CompanyDetailComponent } from './company-detail/company-detail.component';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgSlimScrollModule } from 'ngx-slimscroll';
@@ -16,8 +15,7 @@ import { DirectivesModule } from 'src/app/core/shared/directives/directives.modu
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
 const components = [
-  CompanyListComponent,
-  CompanyDetailComponent
+  CompanyListComponent
 ]
 
 @NgModule({
