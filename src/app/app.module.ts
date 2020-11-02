@@ -1,7 +1,7 @@
 import { AsyncPipe, CurrencyPipe, DatePipe, DecimalPipe, PercentPipe, registerLocaleData } from "@angular/common";
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
-import { NgModule, LOCALE_ID, APP_ID, APP_INITIALIZER } from '@angular/core';
+import { NgModule, LOCALE_ID, } from '@angular/core';
 import { CookieService } from "ngx-cookie-service";
 import localePt from '@angular/common/locales/pt';
 import { NgSlimScrollModule, SLIMSCROLL_DEFAULTS  } from "ngx-slimscroll";
@@ -17,7 +17,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { ScaffoldModule } from './scaffold/scaffold.module';
-import { LoginModule } from './login/login.module';
 import { RegistrationModule } from './main/registration/registration.module';
 import { HttpIntercept } from './core/interceptors/http-intercept.service';
 import { MainModule } from './main/main.module';
@@ -29,12 +28,11 @@ import { GlobalLoaderService } from './core/shared/service/global-loader.service
 import { LoaderInterceptor } from './core/interceptors/loader-interceptor.service';
 import { LoaderComponent } from './core/shared/components/loader/loader.component';
 import { AlertDialogComponent } from './core/shared/components/alert-dialog/alert-dialog.component';
-import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
-import { NoopScrollStrategy } from '@angular/cdk/overlay';
 import { SocialLoginModule } from 'angularx-social-login';
 import { KeycloakAngularModule } from 'keycloak-angular';
 import { AppAuthGuard } from './core/guard/app-auth-guard.guard';
 import { OAuthModule } from 'angular-oauth2-oidc';
+import { environment } from '../environments/environment';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -60,7 +58,6 @@ registerLocaleData(localePt, 'pt-BR');
     MatListModule,
     ScaffoldModule,
     KeycloakAngularModule,
-    LoginModule,
     MainModule,
     PipeModule,
     DirectivesModule,
@@ -69,7 +66,7 @@ registerLocaleData(localePt, 'pt-BR');
     SocialLoginModule,
     OAuthModule.forRoot({
       resourceServer: {
-        allowedUrls: ['http://localhost:8081/api'],
+        allowedUrls: [environment.apiUrl],
         sendAccessToken: true
       }
     }),
