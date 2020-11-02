@@ -13,7 +13,7 @@ export class CustomerService extends ApiService<Customer> {
   }
 
   saveCustomer(customer: Customer): Observable<Customer> {
-    return this.post(`${this.url}/register`, customer);
+    return this.post(`${this.url}`, customer);
   }
 
   getCustomers(pageNumber?: number, pageSize?: number, filterByName?: string): Observable<Customer | Customer[]> {
@@ -32,6 +32,10 @@ export class CustomerService extends ApiService<Customer> {
 
   getCustomerById(customerId: number): Observable<Customer | Customer[]> {
     return this.get(`${this.url}/${customerId}`);
+  }
+
+  getCustomerByTokenId(tokenId: string): Observable<Customer| Customer[]> {
+    return this.get(`${this.url}/${tokenId}`);
   }
 
   updateCustomer(customer: Customer): Observable<Customer> {
