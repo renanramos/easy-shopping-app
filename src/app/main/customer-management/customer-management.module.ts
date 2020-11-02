@@ -4,7 +4,6 @@ import { CustomerManagementRoutingModule } from './customer-management-routing.m
 import { SharedComponentsModule } from 'src/app/core/shared/components/shared-components.module';
 import { AngularMaterialModule } from 'src/app/shared/angular-material.module';
 import { CustomerListComponent } from './customer-list/customer-list.component';
-import { CustomerDetailComponent } from './customer-detail/customer-detail.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgSlimScrollModule } from 'ngx-slimscroll';
@@ -14,8 +13,7 @@ import { DirectivesModule } from '../../core/shared/directives/directives.module
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
 const components = [
-  CustomerListComponent,
-  CustomerDetailComponent
+  CustomerListComponent
 ]
 
 @NgModule({
