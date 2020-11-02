@@ -17,7 +17,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { ScaffoldModule } from './scaffold/scaffold.module';
-import { RegistrationModule } from './main/registration/registration.module';
 import { HttpIntercept } from './core/interceptors/http-intercept.service';
 import { MainModule } from './main/main.module';
 import { PipeModule } from './core/shared/pipe/pipe.module';
@@ -61,7 +60,6 @@ registerLocaleData(localePt, 'pt-BR');
     MainModule,
     PipeModule,
     DirectivesModule,
-    RegistrationModule,
     NgSlimScrollModule,
     SocialLoginModule,
     OAuthModule.forRoot({
