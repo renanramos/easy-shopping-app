@@ -78,4 +78,9 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       .then(() => true)
       .catch(() => false);
   }
+
+  onScroll() {
+    this.pageNumber += 1;
+    this.loadCustomers();
+  }
 }

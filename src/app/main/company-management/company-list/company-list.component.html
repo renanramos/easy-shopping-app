@@ -29,17 +29,8 @@
             <span>Email:</span>
             {{company.email}}
           </p>
-          <p>
-            <span>
-              {{ company.active ? 'Email verificado' : 'Email não verificado' }}
-              <mat-icon [ngStyle]="{ 'color': company.active ? '#039e03' : '#d20808' }">
-                {{ company.active ? 'done' : 'clear' }}
-              </mat-icon>
-            </span>
-          </p>
         </mat-card-content>
       </mat-card>
     </li>
   </ul>
 </div>
-<es-add-button *esHasPermission="['ADMINISTRATOR']" (newClickEvent)="onAddNewCompany();"></es-add-button>
