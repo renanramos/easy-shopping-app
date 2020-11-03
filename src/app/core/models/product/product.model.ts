@@ -10,4 +10,5 @@ export class Product {
   public storeId: string;
   public picture: any;
   public companyId: string;
+  public inCart: boolean;
 }
