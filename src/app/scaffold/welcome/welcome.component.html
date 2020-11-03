@@ -36,8 +36,8 @@
               {{ product.description }}
             </small>
             <div class="card-actions">
-              <button mat-raised-button color="warn" matTooltip="Adicionar ao carrinho">
-                <mat-icon>add_shopping_cart</mat-icon></button>
+              <button mat-raised-button color="{{ product.inCart ? 'none' : 'warn' }}" matTooltip="Adicionar ao carrinho" (click)="addItemToShoppingCart(product);">
+                <mat-icon>{{ product.inCart ? 'done' : 'add_shopping_cart' }}</mat-icon></button>
               <button mat-raised-button color="primary">{{ 'Comprar' | uppercase }}</button>
             </div>
           </mat-card-content>
