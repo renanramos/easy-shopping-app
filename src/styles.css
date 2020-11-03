@@ -126,7 +126,7 @@ body mat-toolbar > mat-form-field > div {
   border-radius: 5px;
   height: auto;
   margin-bottom: 25px;
-  margin-right: 25px;
+  margin-right: 2%;
   box-shadow: 0 3px 8px 0 rgba(62, 100, 146, 0.16);
   background-color: white;
 }
