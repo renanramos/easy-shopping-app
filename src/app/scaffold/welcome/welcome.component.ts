@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs/internal/Subscription';
 import { Product } from 'src/app/core/models/product/product.model';
 import { Subcategory } from 'src/app/core/models/subcategory/subcategory.model';
 import { ProductService } from 'src/app/core/service/product/product.service';
+import { ShoppingCartService } from 'src/app/core/service/shopping-cart/shopping-cart.service';
 import { MenuService } from 'src/app/core/shared/service/menu-service.service';
 import { SnackbarService } from 'src/app/core/shared/service/snackbar.service';
 import { UtilsService } from 'src/app/core/shared/utils/utils.service';
@@ -25,7 +26,8 @@ export class WelcomeComponent implements OnInit {
   constructor(private productService: ProductService,
     private menuService: MenuService,
     private utilsService: UtilsService,
-    private snackBarService: SnackbarService) { }
+    private snackBarService: SnackbarService,
+    private shoppingCartService: ShoppingCartService) { }
 
   async ngOnInit() {
     await this.loadProducts();
@@ -70,4 +72,8 @@ export class WelcomeComponent implements OnInit {
     await this.loadProducts();
   }
 
+  addItemToShoppingCart(product: Product) {
+    this.shoppingCartService.addItemShoppingCart(product);
+    product.inCart = !product.inCart;
+  }
 }
