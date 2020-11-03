@@ -50,6 +50,7 @@ mat-chip {
 .mat-card-image {
   max-height: 50%;
   max-width: 50%;
+  min-height: 125px;
 }
 
 .card-actions {
