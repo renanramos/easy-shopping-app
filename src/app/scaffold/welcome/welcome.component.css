@@ -74,16 +74,22 @@ mat-chip {
   .card-items {
     width: calc(100% - 15px);
     margin: 10px 13px 10px 2px !important;
+    min-width: unset;
   }
 
   .mat-card-title {
     width: 100%;
+  }
+
+  .mat-card-image {
+    min-height: unset;
   }
 }
 
 @media screen and (min-width: 480px) and (max-width: 768px) {
   .card-items {
     width: calc(50% - 25px);
+    min-width: unset;
   }
 }
 
