@@ -109,17 +109,20 @@ mat-chip {
 @media screen and (min-width: 1367px) and (max-width: 1920px) {
   .card-items {
     width: calc(25% - 40px);
+    min-width: unset;
   }
 }
 
 @media screen and (min-width: 1921px) and (max-width: 2160px) {
   .card-items {
     width: calc(50% - 25px);
+    min-width: unset;
   }
 }
 
 @media screen and (min-width: 2161px) {
   .card-items {
     width: calc(20% - 25px);
+    min-width: unset;
   }
 }
