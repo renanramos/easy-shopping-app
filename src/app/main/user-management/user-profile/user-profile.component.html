@@ -1,4 +1,4 @@
-<div class="card-items">
+<div class="cards-container">
   <mat-card class="mat-elevation-z2">
     <mat-card-title>
       {{ currentUserCompleteName }}
@@ -15,26 +15,47 @@
       </p>
     </mat-card-content>
   </mat-card>
+  
   <mat-card class="mat-elevation-z2">
     <mat-card-content>
-      <mat-card-title>
-        <mat-icon>my_location</mat-icon> Endereços
-      </mat-card-title>
-      <mat-accordion class="info-panel">
-        <mat-expansion-panel >
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              Ver endereços
-            </mat-panel-title>
-            <mat-panel-description>
-                <mat-icon (click)="addNewAddress($event);"  matTooltip="Incluir novo endereço">add_location_alt</mat-icon>
-            </mat-panel-description>
-          </mat-expansion-panel-header>
-          <es-address-list [shouldUpdateList]="updateAddressSubject.asObservable()"></es-address-list>
-        </mat-expansion-panel>
-      </mat-accordion>
+      <mat-selection-list #prod>
+        <div mat-subheader>Seu carrinho de compras</div>
+        <mat-list-option *ngFor="let product of products" (click)="addItemsToRemoveFromCart(product)">
+          <mat-icon mat-list-icon>arrow_right</mat-icon>
+          <div mat-line>{{ product?.name }}</div>
+          <div mat-line> {{ product.price | currency : 'BRL'}} </div>
+        </mat-list-option>
+      </mat-selection-list>
     </mat-card-content>
+    <mat-card-actions align="right">
+      <button mat-raised-button color="warn" (click)="removeItemsFromCart();">
+        Remover ({{ prod.selectedOptions.selected.length }}) item.
+      </button>
+    </mat-card-actions>
   </mat-card>
+</div>
+
+<mat-card class="mat-elevation-z2">
+  <mat-card-content>
+    <mat-card-title>
+      <mat-icon>my_location</mat-icon> Endereços
+    </mat-card-title>
+    <mat-accordion class="info-panel">
+      <mat-expansion-panel >
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Ver endereços
+          </mat-panel-title>
+          <mat-panel-description>
+              <mat-icon (click)="addNewAddress($event);"  matTooltip="Incluir novo endereço">add_location_alt</mat-icon>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <es-address-list [shouldUpdateList]="updateAddressSubject.asObservable()"></es-address-list>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </mat-card-content>
+</mat-card>
+<div *esHasPermission="'CUSTOMER'">
   <mat-card class="mat-elevation-z2">
     <mat-card-content>
       <mat-card-title>

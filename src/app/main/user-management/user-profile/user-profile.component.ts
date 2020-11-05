@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserAuthService } from 'src/app/core/service/auth/user-auth-service.service';
 import { SecurityUserService } from 'src/app/core/service/auth/security-user.service';
 import { SnackbarService } from 'src/app/core/shared/service/snackbar.service';
@@ -15,6 +15,9 @@ import { CustomerFormComponent } from './customer-profile/customer-form.componen
 import { ConstantMessages } from 'src/app/core/shared/constants/constant-messages';
 import { UserRolesConstants } from 'src/app/core/shared/constants/user-roles-constants';
 import { CompanyFormComponent } from './company-profile/company-form.component';
+import { ShoppingCartService } from 'src/app/core/service/shopping-cart/shopping-cart.service';
+import { Product } from 'src/app/core/models/product/product.model';
+import { MatListOption, MatSelectionList, MatSelectionListChange } from '@angular/material/list';
 
 @Component({
   selector: 'es-user-profile',
@@ -33,6 +36,8 @@ export class UserProfileComponent implements OnInit {
   currentUserEmail: string = '';
   currentUserCompleteName: string = '';
   currentUserRole: string = '';
+  products: Product[] = [];
+  productsToRemove: Product[] = [];
 
   dialogAddressRef: MatDialogRef<AddressDetailComponent>;
   dialogCreditCardRef: MatDialogRef<CreditCardDetailComponent>;
@@ -42,10 +47,16 @@ export class UserProfileComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private snackBarService: SnackbarService,
-    private securityUserService: SecurityUserService) { }
+    private securityUserService: SecurityUserService,
+    private shoppingCartService: ShoppingCartService) { }
 
   async ngOnInit() {
     this.loadUserLoggedInfo();
+    await this.getUserItemsInCart();
+  }
+
+  async getUserItemsInCart() {
+    this.products = await this.shoppingCartService.getProductsParsed();
   }
 
   loadUserLoggedInfo() {
@@ -131,6 +142,14 @@ export class UserProfileComponent implements OnInit {
         if (response) {
           this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_UPDATED, 'close');
         }
-      })
+      });
+  }
+
+  addItemsToRemoveFromCart(prod: Product) {
+    this.productsToRemove.push(prod);
+  }
+
+  removeItemsFromCart() {
+    console.log(this.productsToRemove);
   }
 }
