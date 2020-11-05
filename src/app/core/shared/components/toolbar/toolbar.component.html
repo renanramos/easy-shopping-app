@@ -89,23 +89,22 @@
   </mat-menu>
 
   <mat-menu #shoppingCartItems="matMenu" class="menu-products">
-    <div *ngIf="totalItemsShoppingCart; else noItemsSelected;">
-      <div mat-menu-item *ngFor="let product of productsInShoppingCart" class="menu-item-product">
-        <p class="product-cart-info">
-          {{ product?.name }}
-        </p>
-        <p class="product-cart-image">
-          <img *ngIf="product.productImages[0]?.picture; else showPlaceholderImage" mat-card-image src="{{'data:image/png;base64,' + product.productImages[0]?.picture}}" alt="{{ product.name }}" title="{{ product.name }}">
-          <ng-template #showPlaceholderImage>
-            <img mat-card-image src="../../../../../assets/product-image-placeholder.png" alt="{{ product.name }}">
-          </ng-template>
-        </p>
+    <div mat-menu-item *ngFor="let product of productsInShoppingCart" class="menu-item-product">
+      <div class="product-cart-info">
+        {{ product?.name }}
+      </div>
+      <div class="product-cart-image">
+        <img *ngIf="product.productImages[0]?.picture; else showPlaceholderImage" mat-card-image src="{{'data:image/png;base64,' + product.productImages[0]?.picture}}" alt="{{ product.name }}" title="{{ product.name }}">
+        <ng-template #showPlaceholderImage>
+          <img mat-card-image src="../../../../../assets/product-image-placeholder.png" alt="{{ product.name }}">
+        </ng-template>
       </div>
     </div>
-    <ng-template #noItemsSelected>
+    <div *ngIf="!totalItemsShoppingCart">
       <button mat-menu-item>
+        <mat-icon>sentiment_dissatisfied</mat-icon>
         <span>Nenhum produto selecionado</span>
       </button>
-    </ng-template>
+    </div>
   </mat-menu>
 </mat-toolbar>

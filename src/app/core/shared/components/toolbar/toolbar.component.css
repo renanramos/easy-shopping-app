@@ -29,15 +29,13 @@ span.icon-loggin > mat-icon {
   padding: 0% 2%;
 }
 
-.mat-menu-panel.menu-products {
+.menu-products {
   max-width: unset;
-  width: 500px;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  width: 100%;
 }
 
 .menu-item-product {
-  width: 100%;
+  width: auto;
   height: 100%;
   display: flex;
   justify-content: space-between;
