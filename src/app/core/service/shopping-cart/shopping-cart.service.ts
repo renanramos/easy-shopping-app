@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { OAuthService } from 'angular-oauth2-oidc';
+import { Subject } from 'rxjs/internal/Subject';
 import { Product } from '../../models/product/product.model';
 
 @Injectable({
@@ -8,14 +8,27 @@ import { Product } from '../../models/product/product.model';
 export class ShoppingCartService {
 
   easyShoppingCartIndex: string = `easy-shopping-cart`;
-  products: any = [];
+  products: Product[] = [];
+  
+  newItem: Subject<any> = new Subject<any>();
+  newItem$ = this.newItem.asObservable();
 
-  constructor() { }
+  constructor() {
+    this.newItem.next(this.getTotalProductsInStorage());
+  }
 
   addItemShoppingCart(product: Product) {
-    let items = this.getProductsParsed();
-    this.products = [product, ...items]
+
+    if (this.isProductAlreadyInCart(product)) {
+      return;
+    }
+    this.products = [product, ...this.products]
     sessionStorage.setItem(this.easyShoppingCartIndex, JSON.stringify(this.products));
+    this.newItem.next(this.getTotalProductsInStorage());
+  }
+
+  isProductAlreadyInCart(product: Product) {
+    return this.products.find(prod => prod['id'] === product['id']);
   }
 
   getProductsParsed(): any[] {
@@ -25,5 +38,22 @@ export class ShoppingCartService {
 
   getTotalProductsInStorage() {
     return this.getProductsParsed().length;
-  }  
+  }
+
+  removeItemFromShoppingCart(product: Product) {
+    let items = this.getProductsParsed();
+    let indexToRemove = this.getProductIndexToRemove(product, this.products);
+    items.splice(indexToRemove, 1);
+    this.setShoppingCartItems(items);
+    this.newItem.next(this.getTotalProductsInStorage());
+  }
+
+  getProductIndexToRemove(product: Product, items: any[]) {
+    return items.map(item =>{ return item['id']}).indexOf(product['id']);
+  }
+
+  setShoppingCartItems(items: any[]) {
+    this.products = items;
+    sessionStorage.setItem(this.easyShoppingCartIndex, JSON.stringify(this.products));
+  }
 }
