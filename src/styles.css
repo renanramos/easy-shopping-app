@@ -129,6 +129,7 @@ body mat-toolbar > mat-form-field > div {
   margin-right: 2%;
   box-shadow: 0 3px 8px 0 rgba(62, 100, 146, 0.16);
   background-color: white;
+  min-width: 440px;
 }
 
 .content-list {
@@ -262,10 +263,6 @@ tr.table-stripped:active {
 
   .container-registration-form {
     padding: 0;
-  }
-
-  .input-half-width {
-    width: 100%;
   }
 
   .submit-user-container > button {
