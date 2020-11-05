@@ -73,7 +73,9 @@ export class WelcomeComponent implements OnInit {
   }
 
   addItemToShoppingCart(product: Product) {
-    this.shoppingCartService.addItemShoppingCart(product);
+    product['inCart'] ?
+      this.shoppingCartService.removeItemFromShoppingCart(product) :
+      this.shoppingCartService.addItemShoppingCart(product);
     product.inCart = !product.inCart;
   }
 }
