@@ -13,6 +13,7 @@ import { AddressManagementModule } from './address-management/address-management
 import { CreditCardManagementModule } from './credit-card-management/credit-card-management.module';
 import { CustomerFormComponent } from './user-profile/customer-profile/customer-form.component';
 import { CompanyFormComponent } from './user-profile/company-profile/company-form.component';
+import { DirectivesModule } from 'src/app/core/shared/directives/directives.modules';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -29,6 +30,7 @@ const components = [
     ReactiveFormsModule,
     AngularMaterialModule,
     UserManagementRoutingModule,
+    DirectivesModule,
     SharedComponentsModule,
     AddressManagementModule,
     CreditCardManagementModule,
