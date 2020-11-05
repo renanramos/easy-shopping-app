@@ -3,11 +3,12 @@ import { NavigationEnd, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { SecurityUserService } from 'src/app/core/service/auth/security-user.service';
 import { SearchService } from '../../service/search-service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { KeycloakService } from 'keycloak-angular';
 import { AuthConfig, NullValidationHandler, OAuthService } from 'angular-oauth2-oidc';
 import { OAuthEvent } from 'angular-oauth2-oidc/events';
 import { environment } from '../../../../../environments/environment';
+import { ShoppingCartService } from 'src/app/core/service/shopping-cart/shopping-cart.service';
 
 @Component({
   selector: 'es-toolbar',
@@ -27,18 +28,23 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   clearSearchFilter: Subscription;
   isUserLoggedIn: boolean = false;
   authConfig: AuthConfig = environment.authConfig;
+  shoppingCartSubscription: Subscription;
+  totalItemsShoppingCart: number = 0;
 
   constructor(private router: Router,
     public dialog: MatDialog,
     private securityUserService: SecurityUserService,
     private searchService: SearchService,
-    private oauthService: OAuthService) { }
+    private oauthService: OAuthService,
+    private shoppingCartService: ShoppingCartService) { }
 
   async ngOnInit() {
     await this.configureOAuthProperties();
     this.subscribeToSearchService();
+    this.subscribeToShoppinCart();
     this.isUserLoggedIn = this.securityUserService.isUserLogged();
     this.userLoggedName = this.securityUserService.userLoggedUsername;
+    this.totalItemsShoppingCart = this.shoppingCartService.getTotalProductsInStorage();
   }
 
   async configureOAuthProperties() {
@@ -91,5 +97,10 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   subscribeToSearchService() {
     this.searchFilter = this.searchService.hideSearchField$.subscribe((value) => this.hideSearchInput = value);
   }
-  
+
+  subscribeToShoppinCart() {
+    this.shoppingCartSubscription = this.shoppingCartService.newItem$.subscribe((total) => { 
+      this.totalItemsShoppingCart = total;
+    });
+  }  
 }
