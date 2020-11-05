@@ -14,7 +14,7 @@
   </mat-form-field>
   <span class="scaffold-spacer"></span>
   <div class="account-icon">
-    <button mat-icon-button>
+    <button mat-icon-button [matMenuTriggerFor]="shoppingCartItems" #menuTrigger="matMenuTrigger">
       <mat-icon matBadge="{{totalItemsShoppingCart ? totalItemsShoppingCart : null}}" matBadgeColor="warn">shopping_cart</mat-icon>
     </button>
   </div>
@@ -86,5 +86,26 @@
       <mat-icon>category</mat-icon>
       <span>Subcategorias</span>
     </button>
+  </mat-menu>
+
+  <mat-menu #shoppingCartItems="matMenu" class="menu-products">
+    <div *ngIf="totalItemsShoppingCart; else noItemsSelected;">
+      <div mat-menu-item *ngFor="let product of productsInShoppingCart" class="menu-item-product">
+        <p class="product-cart-info">
+          {{ product?.name }}
+        </p>
+        <p class="product-cart-image">
+          <img *ngIf="product.productImages[0]?.picture; else showPlaceholderImage" mat-card-image src="{{'data:image/png;base64,' + product.productImages[0]?.picture}}" alt="{{ product.name }}" title="{{ product.name }}">
+          <ng-template #showPlaceholderImage>
+            <img mat-card-image src="../../../../../assets/product-image-placeholder.png" alt="{{ product.name }}">
+          </ng-template>
+        </p>
+      </div>
+    </div>
+    <ng-template #noItemsSelected>
+      <button mat-menu-item>
+        <span>Nenhum produto selecionado</span>
+      </button>
+    </ng-template>
   </mat-menu>
 </mat-toolbar>

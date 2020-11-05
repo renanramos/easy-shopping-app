@@ -9,6 +9,7 @@ import { AuthConfig, NullValidationHandler, OAuthService } from 'angular-oauth2-
 import { OAuthEvent } from 'angular-oauth2-oidc/events';
 import { environment } from '../../../../../environments/environment';
 import { ShoppingCartService } from 'src/app/core/service/shopping-cart/shopping-cart.service';
+import { Product } from 'src/app/core/models/product/product.model';
 
 @Component({
   selector: 'es-toolbar',
@@ -30,6 +31,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   authConfig: AuthConfig = environment.authConfig;
   shoppingCartSubscription: Subscription;
   totalItemsShoppingCart: number = 0;
+  productsInShoppingCart: Product[] = [];
 
   constructor(private router: Router,
     public dialog: MatDialog,
@@ -41,10 +43,15 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     await this.configureOAuthProperties();
     this.subscribeToSearchService();
-    this.subscribeToShoppinCart();
+    this.subscribeToShoppingCart();
+    this.setShoppingCartProperties();
     this.isUserLoggedIn = this.securityUserService.isUserLogged();
     this.userLoggedName = this.securityUserService.userLoggedUsername;
+  }
+
+  setShoppingCartProperties() {
     this.totalItemsShoppingCart = this.shoppingCartService.getTotalProductsInStorage();
+    this.productsInShoppingCart = this.shoppingCartService.getProductsParsed();
   }
 
   async configureOAuthProperties() {
@@ -98,9 +105,10 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     this.searchFilter = this.searchService.hideSearchField$.subscribe((value) => this.hideSearchInput = value);
   }
 
-  subscribeToShoppinCart() {
+  subscribeToShoppingCart() {
     this.shoppingCartSubscription = this.shoppingCartService.newItem$.subscribe((total) => { 
       this.totalItemsShoppingCart = total;
+      this.productsInShoppingCart = this.shoppingCartService.getProductsParsed();
     });
-  }  
+  }
 }
