@@ -31,7 +31,7 @@ export class ShoppingCartService {
     return this.products.find(prod => prod['id'] === product['id']);
   }
 
-  getProductsParsed(): any[] {
+  getProductsParsed(): Product[] {
     const items = sessionStorage.getItem(this.easyShoppingCartIndex);
     return items ? JSON.parse(items) : [];
   }
