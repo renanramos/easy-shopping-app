@@ -35,6 +35,9 @@
 
 .card-user-cart {
   width: 55%;
+  max-height: 15vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .mat-expansion-panel-header {
