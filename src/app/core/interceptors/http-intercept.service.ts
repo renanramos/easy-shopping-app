@@ -2,10 +2,14 @@ import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse
 
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
-import { tap } from 'rxjs/operators';
+import { concatMap, delay, last, retryWhen, take, tap } from 'rxjs/operators';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { Router } from '@angular/router';
 import { SnackbarService } from '../shared/service/snackbar.service';
+import { ConstantMessages } from '../shared/constants/constant-messages';
+import { iif, throwError } from 'rxjs';
+import { of } from 'rxjs/internal/observable/of';
+import { InterceptValues } from '../shared/constants/intercept-values';
 
 @Injectable()
 export class HttpIntercept implements HttpInterceptor {
@@ -27,8 +31,8 @@ export class HttpIntercept implements HttpInterceptor {
       const sendRequest = {
         next: () => {},
         error: (error: HttpErrorResponse) => {
-          if (error.status === 401) {
-            this.snackBarService.openSnackBar(error.message, 'close');
+          if (error.status === InterceptValues.UNAUTHORIZED_STATUS_CODE) {
+            this.snackBarService.openSnackBar(ConstantMessages.UNAUTHORIZED_USER, 'close');
             this.router.navigateByUrl('/');
           }
           this.snackBarService.openSnackBar(error.message, 'close');
@@ -39,7 +43,20 @@ export class HttpIntercept implements HttpInterceptor {
         .pipe(tap(sendRequest));
     }
 
-    return next.handle(req);
+    const commonReq = {
+      next: () => {},
+      error: () => this.snackBarService.openSnackBar(ConstantMessages.AUTH_SERVER_ERROR, 'close')
+    }
+
+    return next.handle(req)
+      .pipe(retryWhen(errors => errors.pipe(concatMap((error, attempt) =>
+              iif(() => attempt >= InterceptValues.MAX_RETRY, 
+                  throwError(error).pipe(tap(commonReq)), 
+                  of(error).pipe(delay(InterceptValues.RESPONSE_TIMEOUT)))
+            )
+          )
+        )
+      );
   }
 
   gettingAccessTokenFromOauthService() {
