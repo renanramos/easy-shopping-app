@@ -8,4 +8,8 @@ export class ConstantMessages {
   public static SUCCESSFULLY_REMOVED: string = 'Registro removido com sucesso!';
 
   public static IMAGE_SUCCESSFULLY_UPLOADED: string = 'Imagem carregada com sucesso.';
+
+  public static UNAUTHORIZED_USER: string = 'Usuário não autenticado.';
+
+  public static AUTH_SERVER_ERROR: string = 'Não foi possível comunicar com servidor de autenticação';
 }
