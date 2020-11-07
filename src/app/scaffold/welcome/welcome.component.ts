@@ -22,6 +22,7 @@ export class WelcomeComponent implements OnInit {
   categoryFiltered: String = "";
   productsNotFound: boolean = false;
   menuSubscription: Subscription;
+  cartSubscription: Subscription;
 
   constructor(private productService: ProductService,
     private menuService: MenuService,
@@ -31,12 +32,38 @@ export class WelcomeComponent implements OnInit {
 
   async ngOnInit() {
     await this.loadProducts();
+    await this.subscribeToMenuEvent();
+    this.subscribeToShoppingCart();
+  }
 
-    this.menuSubscription = this.menuService.currentSubcategoryId.subscribe(subcategory => {
-      if (subcategory.id) {
-        this.isListFiltererd = true;
-        this.categoryFiltered = subcategory.name;
-        this.loadProducts(subcategory);
+  async subscribeToMenuEvent() {
+    const menuEvent = {
+      next: (subcategory) => {
+        if (subcategory.id) {
+          this.isListFiltererd = true;
+          this.categoryFiltered = subcategory.name;
+          this.loadProducts(subcategory);
+        }
+      }
+    }
+
+    this.menuSubscription = this.menuService.currentSubcategoryId
+      .pipe(tap(menuEvent))
+      .subscribe();
+  }
+
+  subscribeToShoppingCart() {
+    this.cartSubscription = this.shoppingCartService.shoppingCartUpdated$.subscribe((product: Product) => {
+      if (product) {
+        this.updateSelectedProduct(product);
+      }
+    });
+  }
+
+  updateSelectedProduct(prod: Product) {
+    this.products.map(product => {
+      if (product['id'] === prod['id'] && product['inCart']) {
+        product['inCart'] = false;
       }
     });
   }
@@ -73,9 +100,12 @@ export class WelcomeComponent implements OnInit {
   }
 
   addItemToShoppingCart(product: Product) {
-    product['inCart'] ?
-      this.shoppingCartService.removeItemFromShoppingCart(product) :
+    if (product['inCart']) {
+      this.shoppingCartService.removeItemFromShoppingCart(product);
+      product['inCart'] = false;
+    } else {
       this.shoppingCartService.addItemShoppingCart(product);
-    product.inCart = !product.inCart;
+      product['inCart'] = true;
+    }
   }
 }
