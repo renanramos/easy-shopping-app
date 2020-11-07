@@ -10,6 +10,8 @@ import { OAuthEvent } from 'angular-oauth2-oidc/events';
 import { environment } from '../../../../../environments/environment';
 import { ShoppingCartService } from 'src/app/core/service/shopping-cart/shopping-cart.service';
 import { Product } from 'src/app/core/models/product/product.model';
+import { SnackbarService } from '../../service/snackbar.service';
+import { ConstantMessages } from '../../constants/constant-messages';
 
 @Component({
   selector: 'es-toolbar',
@@ -38,7 +40,8 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     private securityUserService: SecurityUserService,
     private searchService: SearchService,
     private oauthService: OAuthService,
-    private shoppingCartService: ShoppingCartService) { }
+    private shoppingCartService: ShoppingCartService,
+    private snackBarService: SnackbarService) { }
 
   async ngOnInit() {
     await this.configureOAuthProperties();
@@ -110,5 +113,11 @@ export class ToolbarComponent implements OnInit, OnDestroy {
       this.totalItemsShoppingCart = total;
       this.productsInShoppingCart = this.shoppingCartService.getProductsParsed();
     });
+  }
+
+  removeProductFromCart(prod: Product) {
+    this.shoppingCartService.removeItemFromShoppingCart(prod);
+    this.setShoppingCartProperties();
+    this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_REMOVED, 'close');
   }
 }

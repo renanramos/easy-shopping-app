@@ -34,25 +34,50 @@ span.icon-loggin > mat-icon {
   width: 100%;
 }
 
-.menu-item-product {
-  width: auto;
-  height: 100%;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  flex-wrap: wrap;
+.menu-products mat-card {
+  margin: 20px 0px !important;
 }
 
-.product-cart-info {
+.mat-card {
+  margin: 10px;
+  height: 20vh;
+}
+
+.mat-card-title {
+  font-size: 1rem;
+}
+
+.mat-card-subtitle {
+  margin-bottom: unset;
+}
+
+.mat-card-content {
+  text-align: right;
+  padding: 15px;
+  text-overflow: unset;
+}
+
+.mat-icon-cart {
+  color: #6d6d6d;
+  font-size: 18px;
+  width: 100%;
+  position: absolute;
+  text-align: right;
+  top: 0;
+}
+
+.mat-icon-cart:hover {
+  color: #313131;
+  cursor: pointer;
+}
+
+.product-cart-info div {
   width: 30%;
+  font-size: 1rem;
+  font-weight: 300;
 }
 
 .product-cart-image {
-  width: 70%;
-}
-
-.product-cart-image img {
-  width: calc(80% - 15px);
+  width: calc(50% + 40px);
   height: calc(90% - 20px);
-  margin: 5px;
 }
