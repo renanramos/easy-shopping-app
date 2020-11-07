@@ -13,6 +13,9 @@ export class ShoppingCartService {
   newItem: Subject<any> = new Subject<any>();
   newItem$ = this.newItem.asObservable();
 
+  shoppingCartUpdated: Subject<any> = new Subject<any>();
+  shoppingCartUpdated$ = this.shoppingCartUpdated.asObservable();
+
   constructor() {
     this.newItem.next(this.getTotalProductsInStorage());
   }
@@ -46,6 +49,7 @@ export class ShoppingCartService {
     items.splice(indexToRemove, 1);
     this.setShoppingCartItems(items);
     this.newItem.next(this.getTotalProductsInStorage());
+    this.shoppingCartUpdated.next(product);
   }
 
   getProductIndexToRemove(product: Product, items: any[]) {
