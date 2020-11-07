@@ -76,6 +76,8 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.searchFilter
       && this.searchFilter.unsubscribe();
+    this.shoppingCartSubscription
+      && this.shoppingCartSubscription.unsubscribe();
   }
 
   eventMenuHandler($event) {
