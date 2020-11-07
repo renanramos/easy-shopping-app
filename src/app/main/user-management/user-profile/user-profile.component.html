@@ -1,5 +1,5 @@
 <div class="cards-container">
-  <mat-card class="mat-elevation-z2">
+  <mat-card class="card-user-info mat-elevation-z2">
     <mat-card-title>
       {{ currentUserCompleteName }}
     </mat-card-title>
@@ -16,9 +16,9 @@
     </mat-card-content>
   </mat-card>
   
-  <mat-card class="mat-elevation-z2">
+  <mat-card class="card-user-cart mat-elevation-z2">
     <mat-card-content>
-      <mat-selection-list #prod>
+      <mat-selection-list *ngIf="products.length; else emptyShoppingCart">
         <div mat-subheader>Seu carrinho de compras</div>
         <mat-list-option *ngFor="let product of products" (click)="addItemsToRemoveFromCart(product)">
           <mat-icon mat-list-icon>arrow_right</mat-icon>
@@ -27,53 +27,68 @@
         </mat-list-option>
       </mat-selection-list>
     </mat-card-content>
+    <ng-template #emptyShoppingCart>
+      <mat-card-content>
+        <mat-selection-list>
+          <p>Não há itens no carrinho.</p>
+        </mat-selection-list>
+      </mat-card-content>
+    </ng-template>
     <mat-card-actions align="right">
-      <button mat-raised-button color="warn" (click)="removeItemsFromCart();">
-        Remover ({{ prod.selectedOptions.selected.length }}) item.
+      <button mat-raised-button color="warn" (click)="removeItemsFromCart();" [disabled]="!productsToRemove.length">
+        Remover item/itens.
       </button>
     </mat-card-actions>
   </mat-card>
 </div>
 
-<mat-card class="mat-elevation-z2">
-  <mat-card-content>
-    <mat-card-title>
-      <mat-icon>my_location</mat-icon> Endereços
-    </mat-card-title>
-    <mat-accordion class="info-panel">
-      <mat-expansion-panel >
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Ver endereços
-          </mat-panel-title>
-          <mat-panel-description>
-              <mat-icon (click)="addNewAddress($event);"  matTooltip="Incluir novo endereço">add_location_alt</mat-icon>
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <es-address-list [shouldUpdateList]="updateAddressSubject.asObservable()"></es-address-list>
-      </mat-expansion-panel>
-    </mat-accordion>
-  </mat-card-content>
-</mat-card>
-<div *esHasPermission="'CUSTOMER'">
+<div class="user-general-information">
   <mat-card class="mat-elevation-z2">
     <mat-card-content>
       <mat-card-title>
-        <mat-icon>credit_card</mat-icon> Cartões de crédito
+        Endereços
       </mat-card-title>
       <mat-accordion class="info-panel">
         <mat-expansion-panel >
           <mat-expansion-panel-header>
             <mat-panel-title>
-              Ver cartões de crédito
+             <button mat-raised-button color="primary">
+              <mat-icon>my_location</mat-icon>
+              Ver endereços
+             </button> 
             </mat-panel-title>
             <mat-panel-description>
-                <mat-icon (click)="addNewCreditCard($event);"  matTooltip="Incluir novo cartão de crédito">add</mat-icon>
+                <mat-icon (click)="addNewAddress($event);"  matTooltip="Incluir novo endereço">add_location_alt</mat-icon>
             </mat-panel-description>
           </mat-expansion-panel-header>
-          <es-credit-card-list [shouldUpdateList]="updateCreditCardSubject.asObservable()"></es-credit-card-list>
+          <es-address-list [shouldUpdateList]="updateAddressSubject.asObservable()"></es-address-list>
         </mat-expansion-panel>
       </mat-accordion>
     </mat-card-content>
   </mat-card>
+  <div *esHasPermission="'CUSTOMER'">
+    <mat-card class="mat-elevation-z2">
+      <mat-card-content>
+        <mat-card-title>
+          Cartões de crédito
+        </mat-card-title>
+        <mat-accordion class="info-panel">
+          <mat-expansion-panel >
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <button mat-raised-button color="primary">
+                  <mat-icon>credit_card</mat-icon> 
+                  Ver cartões de crédito
+                </button>
+              </mat-panel-title>
+              <mat-panel-description>
+                  <mat-icon (click)="addNewCreditCard($event);"  matTooltip="Incluir novo cartão de crédito">add</mat-icon>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <es-credit-card-list [shouldUpdateList]="updateCreditCardSubject.asObservable()"></es-credit-card-list>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>

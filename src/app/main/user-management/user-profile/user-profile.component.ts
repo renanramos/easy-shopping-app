@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { UserAuthService } from 'src/app/core/service/auth/user-auth-service.service';
 import { SecurityUserService } from 'src/app/core/service/auth/security-user.service';
 import { SnackbarService } from 'src/app/core/shared/service/snackbar.service';
@@ -9,7 +9,7 @@ import { Address } from 'src/app/core/models/address/address.model';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AddressDetailComponent } from '../address-management/address-detail/address-detail.component';
 import { CustomerService } from 'src/app/core/service/customer/customer.service';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { CreditCardDetailComponent } from '../credit-card-management/credit-card-detail/credit-card-detail.component';
 import { CustomerFormComponent } from './customer-profile/customer-form.component';
 import { ConstantMessages } from 'src/app/core/shared/constants/constant-messages';
@@ -25,13 +25,14 @@ import { MatListOption, MatSelectionList, MatSelectionListChange } from '@angula
   styleUrls: ['./user-profile.component.css'],
   providers: [CustomerService]
 })
-export class UserProfileComponent implements OnInit {
+export class UserProfileComponent implements OnInit, OnDestroy, OnChanges {
 
   currentCustomerId: string = null;
   customer: Customer;
   addresses: Address[] = [];
   updateAddressSubject: Subject<any> = new Subject<any>();
   updateCreditCardSubject: Subject<any> = new Subject<any>();
+  shoppingCartUpdated: Subject<any> = new Subject<any>();
   currentUsername: string = '';
   currentUserEmail: string = '';
   currentUserCompleteName: string = '';
@@ -39,20 +40,40 @@ export class UserProfileComponent implements OnInit {
   products: Product[] = [];
   productsToRemove: Product[] = [];
 
+  updateShoppingCartSubscription: Subscription;
+
   dialogAddressRef: MatDialogRef<AddressDetailComponent>;
   dialogCreditCardRef: MatDialogRef<CreditCardDetailComponent>;
   dialogCustomerProfile: MatDialogRef<CustomerFormComponent>;
   dialogCompanyProfile: MatDialogRef<CompanyFormComponent>;
 
   constructor(
+    private ref: ChangeDetectorRef,
     private dialog: MatDialog,
     private snackBarService: SnackbarService,
     private securityUserService: SecurityUserService,
     private shoppingCartService: ShoppingCartService) { }
-
+  
   async ngOnInit() {
     this.loadUserLoggedInfo();
+    this.subscribeToShoppingCartUpdates();
     await this.getUserItemsInCart();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.ref.detectChanges();
+  }
+
+  ngOnDestroy(): void {
+    this.updateShoppingCartSubscription
+      && this.updateShoppingCartSubscription.unsubscribe();
+  }
+
+  subscribeToShoppingCartUpdates() {
+    this.updateShoppingCartSubscription = this.shoppingCartService.shoppingCartUpdated$.subscribe((productRemoved) => {
+      let index = this.shoppingCartService.getProductIndexToRemove(productRemoved, this.products);
+      this.products = this.products.splice(index, 1);
+    })
   }
 
   async getUserItemsInCart() {
@@ -150,6 +171,9 @@ export class UserProfileComponent implements OnInit {
   }
 
   removeItemsFromCart() {
-    console.log(this.productsToRemove);
+    this.productsToRemove.map(prod => this.shoppingCartService.removeItemFromShoppingCart(prod));
+    this.shoppingCartUpdated.next(true);
+    this.getUserItemsInCart();
+    this.productsToRemove = [];
   }
 }
