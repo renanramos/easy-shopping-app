@@ -109,7 +109,7 @@ body mat-toolbar > mat-form-field > div {
   margin-top: 1vw;
   margin-bottom: auto;
   font-weight: 100;
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
@@ -126,7 +126,7 @@ body mat-toolbar > mat-form-field > div {
   border-radius: 5px;
   height: auto;
   margin-bottom: 25px;
-  margin-right: 2%;
+  margin-right: 10px;
   box-shadow: 0 3px 8px 0 rgba(62, 100, 146, 0.16);
   background-color: white;
   min-width: 440px;
@@ -338,7 +338,7 @@ tr.table-stripped:active {
 
 @media screen and (min-width: 1367px) and (max-width: 1920px) {
   .card-items {
-    width: calc(33.3333333% - 25px);
+    width: 32%;
   }
 }
 
