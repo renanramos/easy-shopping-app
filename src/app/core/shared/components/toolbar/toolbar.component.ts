@@ -12,6 +12,8 @@ import { ShoppingCartService } from 'src/app/core/service/shopping-cart/shopping
 import { Product } from 'src/app/core/models/product/product.model';
 import { SnackbarService } from '../../service/snackbar.service';
 import { ConstantMessages } from '../../constants/constant-messages';
+import { UserAuthService } from 'src/app/core/service/auth/user-auth-service.service';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'es-toolbar',
@@ -29,11 +31,14 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
   searchFilter: Subscription;
   clearSearchFilter: Subscription;
+  userUpdatedSubscription: Subscription;
+
   isUserLoggedIn: boolean = false;
   authConfig: AuthConfig = environment.authConfig;
   shoppingCartSubscription: Subscription;
   totalItemsShoppingCart: number = 0;
   productsInShoppingCart: Product[] = [];
+  isUserSynchronized: boolean = false;
 
   constructor(private router: Router,
     public dialog: MatDialog,
@@ -41,15 +46,35 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     private searchService: SearchService,
     private oauthService: OAuthService,
     private shoppingCartService: ShoppingCartService,
-    private snackBarService: SnackbarService) { }
+    private snackBarService: SnackbarService,
+    private userService: UserAuthService) { }
 
   async ngOnInit() {
     await this.configureOAuthProperties();
     this.subscribeToSearchService();
     this.subscribeToShoppingCart();
+    this.subscribeToUserUpdate();
     this.setShoppingCartProperties();
     this.isUserLoggedIn = this.securityUserService.isUserLogged();
     this.userLoggedName = this.securityUserService.userLoggedUsername;
+    if (this.isUserLoggedIn) {
+      await this.loadUserProperties();
+    }
+  }
+
+  async loadUserProperties() {
+    const userProfile = {
+      next: (user) => {
+        this.isUserSynchronized = user['sync'];
+      },
+      error: () => {  }
+    };
+
+    await this.userService.profileInfo()
+      .pipe(tap(userProfile))
+      .toPromise()
+      .then(() => true)
+      .catch(() => false);
   }
 
   setShoppingCartProperties() {
@@ -78,6 +103,8 @@ export class ToolbarComponent implements OnInit, OnDestroy {
       && this.searchFilter.unsubscribe();
     this.shoppingCartSubscription
       && this.shoppingCartSubscription.unsubscribe();
+    this.userUpdatedSubscription
+      && this.userUpdatedSubscription.unsubscribe();
   }
 
   eventMenuHandler($event) {
@@ -114,6 +141,12 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     this.shoppingCartSubscription = this.shoppingCartService.newItem$.subscribe((total) => { 
       this.totalItemsShoppingCart = total;
       this.productsInShoppingCart = this.shoppingCartService.getProductsParsed();
+    });
+  }
+
+  subscribeToUserUpdate() {
+    this.userUpdatedSubscription = this.securityUserService.userUpdated$.subscribe((isUpdated) => {
+      this.isUserSynchronized = isUpdated;
     });
   }
 

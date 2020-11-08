@@ -1,3 +1,10 @@
+
+<div [ngClass]="{ 'popup': !isUserSynchronized }" *ngIf="isUserLoggedIn && !isUserSynchronized">
+  <span class="popuptext" [ngClass]="{ 'show': !isUserSynchronized, '': isUserSynchronized }">
+    Atualize o seu cadastro <a (click)="redirectPage('/user-management');"
+    *esHasPermission="['COMPANY', 'CUSTOMER']">aqui</a>.
+  </span>
+</div>
 <mat-toolbar>
   <button *ngIf="showMenuIcon; else showHomeIcon" mat-icon-button class="scaffold-icon" (click)="eventMenuHandler($event);" >
     <mat-icon>menu</mat-icon>
@@ -21,6 +28,7 @@
   <div class="account-icon">
     <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger">
       <mat-icon>account_circle</mat-icon>
+      <mat-icon *ngIf="!isUserSynchronized && isUserLoggedIn" id="user-warning-icon">priority_high</mat-icon>
     </button>
   </div>
 
