@@ -4,11 +4,14 @@ import { Injector, Injectable } from '@angular/core';
 import { UserRolesConstants } from '../../shared/constants/user-roles-constants';
 import * as jwt_decode from 'jwt-decode';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { Subject } from 'rxjs';
 
 @Injectable()
 export class SecurityUserService extends ApiService<UserCredentials> {
  
   decodedToken: string = '';
+  userUpdated: Subject<boolean> = new Subject<boolean>();
+  userUpdated$ = this.userUpdated.asObservable();
 
   constructor(
     private oauthService: OAuthService,
