@@ -22,7 +22,7 @@ export class UserAuthService extends ApiService<Login>{
     return this.post(`${this.url}/logout`, null);
   }
 
-  profileInfo(userId: number) : Observable<any>{
+  profileInfo(userId?: number) : Observable<any>{
 
     let queryParams = '';
 
