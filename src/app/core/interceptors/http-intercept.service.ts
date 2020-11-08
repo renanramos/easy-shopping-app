@@ -35,7 +35,10 @@ export class HttpIntercept implements HttpInterceptor {
             this.snackBarService.openSnackBar(ConstantMessages.UNAUTHORIZED_USER, 'close');
             this.router.navigateByUrl('/');
           }
-          this.snackBarService.openSnackBar(error.message, 'close');
+          
+          if (!error.status) {
+            this.snackBarService.openSnackBar("Servidor indisponível");
+          }
         }
       }; 
 
