@@ -13,7 +13,7 @@
     </p>
     <li *ngFor="let store of stores" class="card-items">
       <mat-card>
-        <mat-icon mat-icon-button [matMenuTriggerFor]="cardOption">more_vert</mat-icon>
+        <mat-icon mat-icon-button [matMenuTriggerFor]="cardOption" *esHasPermission="['COMPANY']">more_vert</mat-icon>
 
         <mat-menu #cardOption="matMenu">
           <button mat-menu-item (click)="openEditStore(store);">
@@ -33,10 +33,6 @@
           <p>
             <span>CNPJ:</span>
             {{store.registeredNumber  | mask: '00.000.000/0000-00'}}
-          </p>
-          <p *ngIf="isAdminUser">
-            <span>Empresa: </span>
-            {{ store.companyName }}
           </p>
         </mat-card-content>
       </mat-card>

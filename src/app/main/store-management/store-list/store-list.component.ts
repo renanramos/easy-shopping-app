@@ -14,6 +14,7 @@ import { ConfirmDialogComponent } from 'src/app/core/shared/components/confirm-d
 import { ScrollValues } from 'src/app/core/shared/constants/scroll-values';
 import { SearchService } from 'src/app/core/shared/service/search-service';
 import { Subscription } from 'rxjs';
+import { UserRolesConstants } from 'src/app/core/shared/constants/user-roles-constants';
 
 @Component({
   selector: 'es-store-list',
@@ -75,11 +76,19 @@ export class StoreListComponent implements OnInit {
       }
     };
 
-    await this.storeService.getStores(null, this.pageNumber, this.filterName)
-      .pipe(tap(receivedStores))
-      .toPromise()
-      .then(() => true)
-      .catch(() => false);
+    if (this.securityUserService.userLoggedRole == UserRolesConstants.COMPANY) {
+      await this.storeService.getCompanyOwnStores()
+        .pipe(tap(receivedStores))
+        .toPromise()
+        .then(() => true)
+        .catch(() => false);      
+    } else {
+      await this.storeService.getStores(null, this.pageNumber, this.filterName)
+        .pipe(tap(receivedStores))
+        .toPromise()
+        .then(() => true)
+        .catch(() => false);
+    }
   }
 
   onScroll() {
