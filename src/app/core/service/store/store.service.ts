@@ -54,7 +54,7 @@ export class StoreService extends ApiService<Store>{
       filter += filter ? `&name=${filterName}` : `?name=${filterName}`;
     }
 
-    return this.get(`${this.url}/company-stores${filter}`);
+    return this.get(`${this.url}/company${filter}`);
   }
 
   removeStore(storeId: number): Observable<any> {
