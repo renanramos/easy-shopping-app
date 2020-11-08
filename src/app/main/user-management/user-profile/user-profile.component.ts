@@ -143,8 +143,9 @@ export class UserProfileComponent implements OnInit, OnDestroy, OnChanges {
     });
 
     this.dialogCustomerProfile.afterClosed()
-      .subscribe(response => {
-        if (response) {
+      .subscribe(userUpdated => {
+        if (userUpdated) {
+          this.securityUserService.userUpdated.next(userUpdated['sync']);
           this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_UPDATED, 'close');
         }
       })
@@ -159,8 +160,9 @@ export class UserProfileComponent implements OnInit, OnDestroy, OnChanges {
     });
 
     this.dialogCompanyProfile.afterClosed()
-      .subscribe(response => {
-        if (response) {
+      .subscribe(userUpdated => {
+        if (userUpdated) {
+          this.securityUserService.userUpdated.next(userUpdated['sync']);
           this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_UPDATED, 'close');
         }
       });
