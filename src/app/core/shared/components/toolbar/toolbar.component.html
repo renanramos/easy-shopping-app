@@ -1,5 +1,5 @@
 
-<div [ngClass]="{ 'popup': !isUserSynchronized }" *ngIf="isUserLoggedIn && !isUserSynchronized">
+<div [ngClass]="{ 'popup': !isUserSynchronized }" *ngIf="isUserLoggedIn && !isUserSynchronized && !isAdminUser">
   <span class="popuptext" [ngClass]="{ 'show': !isUserSynchronized, '': isUserSynchronized }">
     Atualize o seu cadastro <a (click)="redirectPage('/user-management');"
     *esHasPermission="['COMPANY', 'CUSTOMER']">aqui</a>.
@@ -28,7 +28,7 @@
   <div class="account-icon">
     <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger">
       <mat-icon>account_circle</mat-icon>
-      <mat-icon *ngIf="!isUserSynchronized && isUserLoggedIn" id="user-warning-icon">priority_high</mat-icon>
+      <mat-icon *ngIf="!isUserSynchronized && isUserLoggedIn && !isAdminUser" id="user-warning-icon">priority_high</mat-icon>
     </button>
   </div>
 
@@ -39,12 +39,18 @@
       </div>
       <mat-divider *ngIf="isUserLoggedIn"></mat-divider>
       <button mat-menu-item 
+        (click)="redirectPage('/user-management');"
+        *esHasPermission="['COMPANY', 'CUSTOMER']">
+        <span>Perfil</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item 
         (click)="redirectPage('/customer-management');" 
         *esHasPermission="['COMPANY', 'ADMINISTRATOR']">
         <span>Clientes</span>
       </button>
       <button mat-menu-item (click)="redirectPage('/store-management');"
-        *esHasPermission="['COMPANY','ADMINISTRATOR']">
+        *esHasPermission="['COMPANY']">
         <span>Lojas</span>
       </button>
       <button mat-menu-item 
@@ -57,11 +63,6 @@
         [matMenuTriggerFor]="products" 
         #menuTrigger="matMenuTrigger">
         <span>Produtos</span>
-      </button>
-      <button mat-menu-item 
-        (click)="redirectPage('/user-management');"
-        *esHasPermission="['COMPANY', 'CUSTOMER']">
-        <span>Perfil</span>
       </button>
       <mat-divider *ngIf="isUserLoggedIn"></mat-divider>
     </div>

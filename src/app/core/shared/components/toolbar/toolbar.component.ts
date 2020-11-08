@@ -40,6 +40,8 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   productsInShoppingCart: Product[] = [];
   isUserSynchronized: boolean = false;
 
+  isAdminUser: boolean = false;
+
   constructor(private router: Router,
     public dialog: MatDialog,
     private securityUserService: SecurityUserService,
@@ -57,6 +59,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     this.setShoppingCartProperties();
     this.isUserLoggedIn = this.securityUserService.isUserLogged();
     this.userLoggedName = this.securityUserService.userLoggedUsername;
+    this.isAdminUser = this.securityUserService.isAdminUser;
     if (this.isUserLoggedIn) {
       await this.loadUserProperties();
     }
