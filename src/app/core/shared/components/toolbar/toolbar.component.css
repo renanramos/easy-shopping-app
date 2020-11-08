@@ -81,3 +81,188 @@ span.icon-loggin > mat-icon {
   width: calc(50% + 40px);
   height: calc(90% - 20px);
 }
+
+.popup {
+  position: absolute;
+  display: flex;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  width: 100%;
+  top: 7%;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+}
+
+.popup .popuptext {
+  visibility: hidden;
+  width: auto;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: .6rem;
+  position: absolute;
+  z-index: 1;
+  top: 125%;
+  font-size: .9rem;
+  max-width: 500px;
+}
+
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 90%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent #555  transparent;
+}
+
+.popup .popuptext > a {
+  color:#50a591;
+}
+
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeInAndOut 5s linear forwards;
+  animation: fadeInAndOut 5s linear forwards;
+  opacity: 1;
+}
+
+@-webkit-keyframes fadeInAndOut {
+  0% {
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  90% {
+      opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeInAndOut {
+  0% {
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  90% {
+      opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+#user-warning-icon {
+  position: absolute;
+  right: 0;
+  top: 20%;
+  color: red;
+}
+
+@media screen and (min-width: 280px) and (max-width: 570px) {
+  .popup .popuptext {
+    margin-top: 2%;
+  }
+
+  .popup .popuptext::after {
+    left: 87%;
+  }
+}
+
+@media screen and (min-width: 480px) and (max-width: 768px) {
+  .popup .popuptext {
+    margin-top: 2%;
+  }
+
+  .popup .popuptext::after {
+    left: 80%;
+    margin-left: unset;
+  }
+}
+
+@media screen and (min-width: 480px) and (max-width: 768px) and (orientation: landscape) {
+  .popup .popuptext {
+    margin-top: 2%;
+  }
+
+  .popup .popuptext::after {
+    left: 80%;
+    margin-left: unset;
+  }
+}
+
+@media screen and (min-width: 769px) and (max-width: 1366px) {
+  .popup .popuptext {
+    margin-top: 1%;
+  }
+
+  .popup .popuptext::after {
+    left: 78%;
+    margin-left: unset;
+  }
+}
+
+@media screen and (min-width: 1367px) and (max-width: 1920px) {
+
+  .popup {
+    top: 5%;
+  }
+
+  .popup .popuptext {
+    margin-top: 1%;
+  }
+
+  .popup .popuptext::after {
+    left: 70%;
+    margin-left: unset;
+  }
+}
+
+
+@media screen and (min-width: 1921px) and (max-width: 2160px) {
+  .popup {
+    top: 5%;
+  }
+
+  .popup .popuptext {
+    margin-top: 1%;
+  }
+
+  .popup .popuptext::after {
+    left: 70%;
+    margin-left: unset;
+  }
+}
+
+@media screen and (min-width: 2161px) {
+  .popup {
+    top: 6%;
+  }
+
+  .popup .popuptext {
+    margin-top: 1%;
+  }
+
+  .popup .popuptext::after {
+    left: 63%;
+    margin-left: unset;
+  }
+}
