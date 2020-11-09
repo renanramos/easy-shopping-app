@@ -2,15 +2,12 @@ import { AfterViewInit, Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { tap } from 'rxjs/operators';
-import { ProductCategory } from 'src/app/core/models/product-category/product-category.model';
+
 import { Product } from 'src/app/core/models/product/product.model';
-import { Company } from 'src/app/core/models/registration/company.model';
 import { Store } from 'src/app/core/models/store/store.model';
 import { Subcategory } from 'src/app/core/models/subcategory/subcategory.model';
 import { SecurityUserService } from 'src/app/core/service/auth/security-user.service';
-import { CompanyService } from 'src/app/core/service/company/company.service';
 import { ProductService } from 'src/app/core/service/product/product.service';
-import { ProductCategoryService } from 'src/app/core/service/productCategory/product-category.service';
 import { StoreService } from 'src/app/core/service/store/store.service';
 import { SubcategoryService } from 'src/app/core/service/subcategory/subcategory.service';
 import { SnackbarService } from 'src/app/core/shared/service/snackbar.service';
@@ -20,7 +17,7 @@ import { UtilsService } from 'src/app/core/shared/utils/utils.service';
   selector: 'es-product-detail',
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.css'],
-  providers: [StoreService, ProductService, SubcategoryService, CompanyService]
+  providers: [StoreService, ProductService, SubcategoryService]
 })
 export class ProductDetailComponent implements OnInit {
 
@@ -28,10 +25,8 @@ export class ProductDetailComponent implements OnInit {
   product: Product = new Product();
 
   subcategories: Subcategory[] = [];
-  companies: Company[] = [];
   stores: Store[] = [];
 
-  userCompanyId: string = null;
   isAdminUser: boolean = false;
   productPrice: string = '';
 
@@ -40,7 +35,6 @@ export class ProductDetailComponent implements OnInit {
         private subcategoryService: SubcategoryService,
         private securityUserService: SecurityUserService,
         private productService: ProductService,
-        private companyService: CompanyService,
         private snackBarService: SnackbarService,
         private utilsService: UtilsService,
         private dialogRef: MatDialogRef<ProductDetailComponent>,
@@ -50,7 +44,6 @@ export class ProductDetailComponent implements OnInit {
     await this.initializeComponentsProperties();
     await this.createForm();
     await this.loadSubcategories();
-    await this.loadCompanies();
     await this.loadStores();
   }
 
@@ -58,7 +51,6 @@ export class ProductDetailComponent implements OnInit {
     this.product = this.data['product'] ? this.data['product'] : new Product();
     this.formatPriceValue();
     this.isAdminUser = this.securityUserService.isAdminUser;
-    this.userCompanyId = this.securityUserService.userLoggedId;
   }
 
   async createForm() {
@@ -67,7 +59,6 @@ export class ProductDetailComponent implements OnInit {
       description: [this.product.description, [Validators.required]],
       price: [this.productPrice, [Validators.required]],
       productSubcategoryId: [this.product['subcategoryId'], [Validators.required]],
-      companyId: [ this.isAdminUser ? this.product.companyId : this.userCompanyId, [Validators.required]],
       storeId: [this.product.storeId, [Validators.required]]
     })
   }
@@ -82,7 +73,14 @@ export class ProductDetailComponent implements OnInit {
   async loadSubcategories() {
     const receivedSubcategories = {
       next: (subcategories: Subcategory[]) => {
-        this.subcategories = subcategories;
+        if(subcategories.length) {
+          this.subcategories = subcategories;
+        } else {
+          this.productSubcategoryId.setErrors({
+            'notFound' : true
+          });
+          this.productSubcategoryId.markAsTouched();
+        }
       },
       error: (response) => {
         const errorMessage = this.utilsService.handleErrorMessage(response);
@@ -96,29 +94,18 @@ export class ProductDetailComponent implements OnInit {
       .then(() => true)
       .catch(() => false);
   }
-
-  async loadCompanies() {
-   const receivedCompanies = {
-     next: (companies: Company[]) => {
-       this.companies = companies;
-     },
-     error: (response) => {
-       const errorMessage = this.utilsService.handleErrorMessage(response);
-       this.snackBarService.openSnackBar(errorMessage, 'close');
-     }
-   };
-  
-   await this.companyService.getCompanies(null, null, null, true)
-    .pipe(tap(receivedCompanies))
-    .toPromise()
-    .then(() => true)
-    .catch(() => false);
-  }
   
   async loadStores() {
     const receivedStores = {
       next: (stores: Store[]) => {
-        this.stores = stores;
+        if (stores.length) {
+          this.stores = stores;
+        } else {
+          this.storeId.setErrors({
+            'notFound': true
+          });
+          this.storeId.markAsTouched();
+        }
       },
       error: (response) => {
         const errorMessage = this.utilsService.handleErrorMessage(response);
@@ -201,10 +188,6 @@ export class ProductDetailComponent implements OnInit {
 
   get productSubcategoryId() {
     return this.productForm.get('productSubcategoryId');
-  }
-
-  get companyId() {
-    return this.productForm.get('companyId');
   }
 
   get storeId() {

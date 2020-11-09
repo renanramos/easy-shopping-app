@@ -24,13 +24,7 @@
         <mat-option *ngFor="let subcategory of subcategories" [value]="subcategory.id">{{ subcategory.name }}</mat-option>
       </mat-select>
       <mat-error *ngIf="productSubcategoryId.hasError('required')">Campo obrigatório</mat-error>
-    </mat-form-field>
-    <mat-form-field appearance="outline" class="input-full-width" *ngIf="isAdminUser">
-      <mat-label>Empresa</mat-label>
-      <mat-select formControlName="companyId" id="companyId">
-        <mat-option *ngFor="let company of companies" [value]="company.id">{{ company.name }}</mat-option>
-      </mat-select>
-      <mat-error *ngIf="companyId.hasError('required')">Campo obrigatório</mat-error>
+      <mat-error *ngIf="productSubcategoryId.hasError('notFound')">Não há categorias cadastradas.</mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline" class="input-full-width">
       <mat-label>Loja</mat-label>
@@ -38,6 +32,7 @@
         <mat-option *ngFor="let store of stores" [value]="store.id">{{ store.name }}</mat-option>
       </mat-select>
       <mat-error *ngIf="storeId.hasError('required')">Campo obrigatório</mat-error>
+      <mat-error *ngIf="storeId.hasError('notFound')">Não há lojas cadastradas.</mat-error>
     </mat-form-field>
   </form>
 </div>
