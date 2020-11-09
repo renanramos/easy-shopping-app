@@ -25,8 +25,6 @@ export class SubcategoryDetailComponent implements OnInit {
   isLoadingProductCategories: boolean = false;
   isWaitingResponse: boolean = false;
 
-  productCategoriesNotFound: boolean = false;
-
   constructor(private formBuilder: FormBuilder,
     private utilsService: UtilsService,
     private dialogRef: MatDialogRef<SubcategoryDetailComponent>,
@@ -56,7 +54,10 @@ export class SubcategoryDetailComponent implements OnInit {
         if (productCategories.length) {
           this.productCategories = productCategories;
         } else {
-          this.productCategoriesNotFound = true;
+          this.productCategoryId.setErrors({
+            'notFound': true
+          });
+          this.productCategoryId.markAsTouched();
         }
         this.isLoadingProductCategories = false;
       },

@@ -9,6 +9,7 @@
         <mat-option *ngFor="let productCategory of productCategories" [value]="productCategory.id">{{ productCategory.name }}</mat-option>
       </mat-select>
       <mat-error *ngIf="productCategoryId.hasError('required')">Campo obrigatório</mat-error>
+      <mat-error *ngIf="productCategoryId.hasError('notFound')">Não há categorias cadastradas</mat-error>
     </mat-form-field>
     <mat-form-field class="input-full-width">
       <mat-label>Nome</mat-label>
