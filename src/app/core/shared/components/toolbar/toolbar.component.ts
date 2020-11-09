@@ -63,7 +63,6 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     if (this.isUserLoggedIn) {
       await this.loadUserProperties();
     }
-    console.log(this.isUserSynchronized, this.isAdminUser, this.isUserLoggedIn);
   }
 
   async loadUserProperties() {
