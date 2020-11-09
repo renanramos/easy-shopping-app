@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, ViewChild, ElementRef, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { SecurityUserService } from 'src/app/core/service/auth/security-user.service';
@@ -63,6 +63,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     if (this.isUserLoggedIn) {
       await this.loadUserProperties();
     }
+    console.log(this.isUserSynchronized, this.isAdminUser, this.isUserLoggedIn);
   }
 
   async loadUserProperties() {
@@ -157,5 +158,9 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     this.shoppingCartService.removeItemFromShoppingCart(prod);
     this.setShoppingCartProperties();
     this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_REMOVED, 'close');
+  }
+
+  get isAccessAllowed() {
+    return (this.isUserLoggedIn && !this.isUserSynchronized);
   }
 }

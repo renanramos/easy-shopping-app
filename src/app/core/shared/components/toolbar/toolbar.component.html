@@ -1,5 +1,5 @@
 
-<div [ngClass]="{ 'popup': !isUserSynchronized }" *ngIf="isUserLoggedIn && !isUserSynchronized && !isAdminUser">
+<div [ngClass]="{ 'popup': !isUserSynchronized }" *ngIf="isAccessAllowed && !isAdminUser">
   <span class="popuptext" [ngClass]="{ 'show': !isUserSynchronized, '': isUserSynchronized }">
     Atualize o seu cadastro <a (click)="redirectPage('/user-management');"
     *esHasPermission="['COMPANY', 'CUSTOMER']">aqui</a>.
@@ -28,7 +28,7 @@
   <div class="account-icon">
     <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger">
       <mat-icon>account_circle</mat-icon>
-      <mat-icon *ngIf="!isUserSynchronized && isUserLoggedIn && !isAdminUser" id="user-warning-icon">priority_high</mat-icon>
+      <mat-icon *ngIf="isAccessAllowed && !isAdminUser" id="user-warning-icon">priority_high</mat-icon>
     </button>
   </div>
 
@@ -42,23 +42,29 @@
         (click)="redirectPage('/user-management');"
         *esHasPermission="['COMPANY', 'CUSTOMER']">
         <span>Perfil</span>
+        <mat-icon *ngIf="isAccessAllowed && !isAdminUser" id="user-warning-icon">priority_high</mat-icon>
       </button>
       <mat-divider></mat-divider>
       <button mat-menu-item 
+        [disabled]="isAccessAllowed && !isAdminUser"
         (click)="redirectPage('/customer-management');" 
-        *esHasPermission="['COMPANY', 'ADMINISTRATOR']">
+        *esHasPermission="['ADMINISTRATOR']">
         <span>Clientes</span>
       </button>
-      <button mat-menu-item (click)="redirectPage('/store-management');"
+      <button mat-menu-item 
+        [disabled]="isAccessAllowed && !isAdminUser"
+        (click)="redirectPage('/store-management');"
         *esHasPermission="['COMPANY']">
         <span>Lojas</span>
       </button>
       <button mat-menu-item 
+        [disabled]="isAccessAllowed && !isAdminUser"
         *esHasPermission="['ADMINISTRATOR']"
         (click)="redirectPage('/company-management');">
         <span>Empresas</span>
       </button>
       <button mat-menu-item 
+        [disabled]="isAccessAllowed && !isAdminUser"
         *esHasPermission="['COMPANY', 'ADMINISTRATOR']"
         [matMenuTriggerFor]="products" 
         #menuTrigger="matMenuTrigger">
