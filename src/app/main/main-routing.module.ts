@@ -44,6 +44,11 @@ const routes: Routes = [
         canActivate: [AuthGuard]
       },
       {
+        path: 'stock-management',
+        loadChildren: () => import('./stock-management/stock-management.module').then(m => m.StockManagementModule),
+        canActivate: [AuthGuard]
+      },
+      {
         path: '**',
         redirectTo: ''
       }
