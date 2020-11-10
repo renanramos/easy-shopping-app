@@ -1,5 +1,5 @@
 <div class="cards-container">
-  <mat-card class="card-user-info mat-elevation-z2">
+  <mat-card class="card-user-info mat-elevation-z2" [ngStyle]="{'width': (isCustomerUser ? '35%' : '95%')}">
     <mat-card-title>
       {{ currentUserCompleteName }}
     </mat-card-title>
@@ -16,7 +16,7 @@
     </mat-card-content>
   </mat-card>
   
-  <mat-card class="card-user-cart mat-elevation-z2">
+  <mat-card class="card-user-cart mat-elevation-z2" *esHasPermission="['CUSTOMER']">
     <mat-card-content>
       <mat-selection-list *ngIf="products.length; else emptyShoppingCart">
         <div mat-subheader>Seu carrinho de compras</div>
