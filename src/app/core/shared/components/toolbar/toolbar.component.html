@@ -89,6 +89,11 @@
       <mat-icon>event_seat</mat-icon>
       <span>Gerenciamento de produtos</span>
     </button>
+    <button mat-menu-item
+      *esHasPermission="['COMPANY']">
+      <mat-icon>build</mat-icon>
+      <span>Estoque</span>
+    </button>
     <button mat-menu-item 
         *esHasPermission="['ADMINISTRATOR']"
         (click)="redirectPage('/product-category-management');">
