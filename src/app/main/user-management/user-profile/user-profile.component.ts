@@ -129,7 +129,7 @@ export class UserProfileComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   openProfileForm() {
-    this.currentUserRole === UserRolesConstants.CUSTOMER ?
+    this.isCustomerUser ?
       this.openCustomerProfileForm() :
       this.openCompanyProfileForm();
   }
@@ -177,5 +177,9 @@ export class UserProfileComponent implements OnInit, OnDestroy, OnChanges {
     this.shoppingCartUpdated.next(true);
     this.getUserItemsInCart();
     this.productsToRemove = [];
+  }
+
+  get isCustomerUser() {
+    return this.currentUserRole == UserRolesConstants.CUSTOMER;
   }
 }
