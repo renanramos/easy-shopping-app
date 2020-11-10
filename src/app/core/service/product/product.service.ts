@@ -12,11 +12,15 @@ export class ProductService extends ApiService<Product>{
     super(injector);
    }
 
-   getProducts(subcategoryId?:number): Observable<Product | Product[]> {
+   getProducts(subcategoryId?:number, published?: boolean): Observable<Product | Product[]> {
     let filterString = ``;
 
     if (subcategoryId) {
       filterString += `/subcategory?subcategoryId=${subcategoryId}`;
+    }
+
+    if (published) {
+      filterString += filterString ? `&published=${published}` : `?published=${published}`;
     }
 
     return this.get(`${this.url}${filterString}`);
