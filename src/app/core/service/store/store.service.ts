@@ -43,7 +43,7 @@ export class StoreService extends ApiService<Store>{
     return this.patch(`${this.url}/${store.id}`, store);
   }
 
-  getCompanyOwnStores(pageNumber?: number, filterName?: string): Observable<Store | Store[]> {
+  getCompanyOwnStores(pageNumber?: number, filterName?: string, noLimit?: boolean): Observable<Store | Store[]> {
     let filter = '';
 
     if (pageNumber) {
@@ -52,6 +52,10 @@ export class StoreService extends ApiService<Store>{
 
     if (filterName) {
       filter += filter ? `&name=${filterName}` : `?name=${filterName}`;
+    }
+
+    if (noLimit) {
+      filter += filter ? `&pageSize=-1` : ``;
     }
 
     return this.get(`${this.url}/company${filter}`);
