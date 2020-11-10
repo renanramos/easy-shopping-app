@@ -86,7 +86,7 @@ export class WelcomeComponent implements OnInit {
       }
     };
 
-    await this.productService.getProducts(subcategory?.id)
+    await this.productService.getProducts(subcategory?.id, true)
       .pipe(tap(productsReceived))
       .toPromise()
       .then(() => true)
