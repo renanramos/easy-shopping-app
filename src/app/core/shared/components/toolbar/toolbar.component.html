@@ -90,7 +90,8 @@
       <span>Gerenciamento de produtos</span>
     </button>
     <button mat-menu-item
-      *esHasPermission="['COMPANY']">
+      *esHasPermission="['COMPANY']"
+      (click)="redirectPage('/stock-management');">
       <mat-icon>build</mat-icon>
       <span>Estoque</span>
     </button>
