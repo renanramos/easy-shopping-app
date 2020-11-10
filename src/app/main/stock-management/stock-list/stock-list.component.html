@@ -1,0 +1,38 @@
+<div class="title">
+  Estoques
+</div>
+<div class="container-list">
+  <ul class="content-list" 
+  infiniteScroll
+  [infiniteScrollDistance]="1"
+  [infiniteScrollUpDistance]="2"
+  [infiniteScrollThrottle]="300"
+  (scrolled)="onScroll();" >
+    <p *ngIf="stocksNotFound && !stocks.length">
+      Não há estoques para mostrar.
+    </p>
+    <li *ngFor="let stock of stocks" class="card-items">
+      <mat-card>
+        <mat-icon mat-icon-button [matMenuTriggerFor]="cardOption" *esHasPermission="['COMPANY']">more_vert</mat-icon>
+
+        <mat-menu #cardOption="matMenu">
+          <button mat-menu-item (click)="openEditStock(stock);">
+            <span>Editar</span>
+          </button>
+          <button mat-menu-item (click)="openRemoveStock(stock);">
+            <span>Remover</span>
+          </button>
+        </mat-menu>
+
+        <mat-card-title>{{stock.name}}</mat-card-title>
+        <mat-card-content>
+          <p>
+            <span>Loja:</span>
+            {{stock.storeName}}
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </li>
+  </ul>
+</div>
+<es-add-button *esHasPermission="['COMPANY']" (newClickEvent)="onAddNewStock();"></es-add-button>

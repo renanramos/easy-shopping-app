@@ -1,0 +1,24 @@
+<div mat-dialog-title>
+  {{ stock?.id ? 'Alterar estoque' : 'Incluir estoque' }}
+</div>
+<div mat-dialog-content *ngIf="stockForm">
+  <form class="container-registration-form" [formGroup]="stockForm">
+    <mat-form-field appearance="outline" class="input-full-width">
+      <mat-label>Loja</mat-label>
+      <mat-select formControlName="storeId" id="storeId">
+        <mat-option *ngFor="let store of stores" [value]="store.id">{{ store.name }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="storeId.hasError('required')">Campo obrigatório</mat-error>
+      <mat-error *ngIf="storeId.hasError('storesNotFound')">Não há lojas cadastradas</mat-error>
+    </mat-form-field>
+    <mat-form-field class="input-full-width">
+      <mat-label>Nome</mat-label>
+      <input type="text" matInput formControlName="name" id="name">
+      <mat-error *ngIf="name.hasError('required')">Campo obrigatório</mat-error>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions align="right">
+  <button mat-raised-button mat-dialog-close>FECHAR</button>
+  <button mat-raised-button color="primary" (click)="submitStock();">SALVAR</button>
+</div>
