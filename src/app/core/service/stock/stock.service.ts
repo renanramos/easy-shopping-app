@@ -45,4 +45,8 @@ export class StockService extends ApiService<Stock> {
   updateStock(stock: Stock): Observable<Stock> {
     return this.patch(`${this.url}/${stock.id}`, stock);
   }
+
+  removeStock(stockId: number): Observable<Stock> {
+    return this.delete(`${this.url}/${stockId}`);
+  }
 }
