@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Stock } from 'src/app/core/models/stock/stock.model';
@@ -35,7 +36,8 @@ export class StockListComponent implements OnInit {
     private utilsService: UtilsService,
     private snackBarService: SnackbarService,
     private stockService: StockService,
-    private searchService: SearchService,) { }
+    private searchService: SearchService,
+    private router: Router) { }
 
   async ngOnInit() {
     this.subscribeToSearchService();
@@ -152,7 +154,7 @@ export class StockListComponent implements OnInit {
       next: (removedResponse) => {
         this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_REMOVED);
         this.stocks = [];
-        this.loadStocks();
+        this.reloadListOfItens();
       },
       error: (response) => {
         const errorMessage = this.utilsService.handleErrorMessage(response);
@@ -165,6 +167,9 @@ export class StockListComponent implements OnInit {
       .toPromise()
       .then(() => true)
       .catch(() => false);
+  }
 
+  redirectPage(stockId: number) {
+    
   }
 }
