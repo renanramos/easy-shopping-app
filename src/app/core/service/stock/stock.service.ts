@@ -20,7 +20,7 @@ export class StockService extends ApiService<Stock> {
     let filter = '';
 
     if (storeId) {
-      filter += `?companyId=${storeId}`
+      filter += `?storeId=${storeId}`
     }
 
     if (filterName) {
