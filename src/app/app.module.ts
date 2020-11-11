@@ -29,9 +29,9 @@ import { LoaderComponent } from './core/shared/components/loader/loader.componen
 import { AlertDialogComponent } from './core/shared/components/alert-dialog/alert-dialog.component';
 import { SocialLoginModule } from 'angularx-social-login';
 import { KeycloakAngularModule } from 'keycloak-angular';
-import { AppAuthGuard } from './core/guard/app-auth-guard.guard';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { environment } from '../environments/environment';
+import { AuthGuard } from './core/guard/auth.guard';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -71,7 +71,7 @@ registerLocaleData(localePt, 'pt-BR');
     NgxMaskModule.forRoot(),
   ],
   providers: [
-    AppAuthGuard,
+    AuthGuard,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: LoaderInterceptor,
