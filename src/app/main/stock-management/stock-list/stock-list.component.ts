@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Stock } from 'src/app/core/models/stock/stock.model';
 import { StockService } from 'src/app/core/service/stock/stock.service';
+import { ConfirmDialogComponent } from 'src/app/core/shared/components/confirm-dialog/confirm-dialog.component';
 import { ConstantMessages } from 'src/app/core/shared/constants/constant-messages';
 import { ScrollValues } from 'src/app/core/shared/constants/scroll-values';
 import { SearchService } from 'src/app/core/shared/service/search-service';
@@ -27,6 +28,7 @@ export class StockListComponent implements OnInit {
   filterName: string = '';
 
   dialogRef: MatDialogRef<StockDetailComponent>;
+  dialogRefConfirm: MatDialogRef<ConfirmDialogComponent>;
 
   constructor(
     private dialog: MatDialog,
@@ -126,6 +128,43 @@ export class StockListComponent implements OnInit {
   }
 
   openRemoveStock(stock: Stock) {
+    this.dialogRefConfirm = this.dialog.open(ConfirmDialogComponent, {
+      data: stock,
+      disableClose: true,
+      autoFocus: false,
+      panelClass: 'es-small-dialog'
+    });
+
+    const closedDialog = {
+      next: (response) => {
+        if (response) {
+         this.removeStock(stock.id);
+        }
+      }
+    };
+
+    this.dialogRefConfirm.afterClosed().subscribe(closedDialog); 
+  }
+
+  async removeStock(stockId: number) {
+    
+    const stockRemoved = {
+      next: (removedResponse) => {
+        this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_REMOVED);
+        this.stocks = [];
+        this.loadStocks();
+      },
+      error: (response) => {
+        const errorMessage = this.utilsService.handleErrorMessage(response);
+        this.snackBarService.openSnackBar(errorMessage);
+      }
+    }
+
+    await this.stockService.removeStock(stockId)
+      .pipe(tap(stockRemoved))
+      .toPromise()
+      .then(() => true)
+      .catch(() => false);
 
   }
 }
