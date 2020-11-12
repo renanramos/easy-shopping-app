@@ -22,9 +22,9 @@
           <button mat-menu-item (click)="openRemoveStock(stock);">
             <span>Remover</span>
           </button>
-          <button mat-menu-item (click)="redirectPage(stock.id);">
+          <a mat-menu-item [routerLink]="['items', stock.id]">
             <span>Itens</span>
-          </button>
+          </a>
         </mat-menu>
 
         <mat-card-title>{{stock.name}}</mat-card-title>

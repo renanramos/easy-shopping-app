@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Stock } from 'src/app/core/models/stock/stock.model';
@@ -36,8 +36,7 @@ export class StockListComponent implements OnInit {
     private utilsService: UtilsService,
     private snackBarService: SnackbarService,
     private stockService: StockService,
-    private searchService: SearchService,
-    private router: Router) { }
+    private searchService: SearchService) { }
 
   async ngOnInit() {
     this.subscribeToSearchService();
@@ -83,6 +82,7 @@ export class StockListComponent implements OnInit {
   }
 
   reloadListOfItens() {
+    this.stocks = [];
     this.pageNumber = ScrollValues.DEFAULT_PAGE_NUMBER;
     this.loadStocks();
   }
@@ -99,7 +99,6 @@ export class StockListComponent implements OnInit {
       next: (stock: Stock) => {
         if (stock) {
           this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_CREATED);
-          this.stocks = [];
           this.reloadListOfItens();
         }
       }
@@ -120,7 +119,6 @@ export class StockListComponent implements OnInit {
       next: (stock: Stock) => {
         if (stock) {
           this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_UPDATED);
-          this.stocks = [];
           this.reloadListOfItens();
         }
       }
@@ -153,7 +151,6 @@ export class StockListComponent implements OnInit {
     const stockRemoved = {
       next: (removedResponse) => {
         this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_REMOVED);
-        this.stocks = [];
         this.reloadListOfItens();
       },
       error: (response) => {
@@ -167,9 +164,5 @@ export class StockListComponent implements OnInit {
       .toPromise()
       .then(() => true)
       .catch(() => false);
-  }
-
-  redirectPage(stockId: number) {
-    
   }
 }
