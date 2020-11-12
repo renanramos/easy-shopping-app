@@ -7,4 +7,5 @@ export class StockItem {
   public minAmount: number;
   public currentAmount: number;
   public stockId: number;
+  public storeId: number;
 }
