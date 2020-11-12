@@ -11,7 +11,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'items',
+    path: 'items/:id',
     loadChildren: () => import('./stock-item-management/stock-item-management.module').then(m => m.StockItemManagementModule),
     canActivate: [AuthGuard]
   }
