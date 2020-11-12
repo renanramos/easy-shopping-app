@@ -12,7 +12,7 @@ export class ProductService extends ApiService<Product>{
     super(injector);
    }
 
-   getProducts(subcategoryId?:number, published?: boolean): Observable<Product | Product[]> {
+   getProducts(subcategoryId?:number, published?: boolean, storeId?: number): Observable<Product | Product[]> {
     let filterString = ``;
 
     if (subcategoryId) {
@@ -21,6 +21,10 @@ export class ProductService extends ApiService<Product>{
 
     if (published) {
       filterString += filterString ? `&published=${published}` : `?published=${published}`;
+    }
+
+    if (storeId) {
+      filterString += filterString ? `&storeId=${storeId}` : `?storeId=${storeId}`;
     }
 
     return this.get(`${this.url}${filterString}`);
