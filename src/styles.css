@@ -153,8 +153,8 @@ body mat-toolbar > mat-form-field > div {
 }
 
 .content-list p {
-  font-size: 1.5rem;
-  font-weight: 100;
+  font-size: 1rem;
+  font-weight: 300;
 }
 
 .mat-card {
