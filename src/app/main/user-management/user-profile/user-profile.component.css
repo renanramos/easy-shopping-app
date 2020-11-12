@@ -36,7 +36,7 @@
 
 .card-user-cart {
   width: 55%;
-  max-height: 15vh;
+  max-height: 30vh;
   overflow-y: scroll;
   overflow-x: hidden;
 }
