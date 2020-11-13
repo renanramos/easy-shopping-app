@@ -1,4 +1,4 @@
-import { FormGroup } from '@angular/forms';
+import { AbstractControl, FormGroup } from '@angular/forms';
 
 export function amountValidator(min: string, max: string) {
   return (form: FormGroup) => {
@@ -7,7 +7,6 @@ export function amountValidator(min: string, max: string) {
 
     if (minControl && maxControl) {
       let minErrors = {...minControl.errors};
-      let maxErrors = {...maxControl.errors};
 
       if (Number(minControl.value) && Number(minControl.value) > Number(maxControl.value)) {
         minErrors['invalidValue'] = true;
