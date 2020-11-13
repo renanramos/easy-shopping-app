@@ -8,4 +8,5 @@ export class StockItem {
   public currentAmount: number;
   public stockId: number;
   public storeId: number;
+  public productName: string;
 }
