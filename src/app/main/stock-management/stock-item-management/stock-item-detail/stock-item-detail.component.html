@@ -11,11 +11,22 @@
       <mat-error *ngIf="productId.hasError('required')">Campo obrigatório</mat-error>
       <mat-error *ngIf="productId.hasError('productsNotFound')">Não há produtos cadastrados</mat-error>
     </mat-form-field>
-    <!-- <mat-form-field class="input-full-width">
-      <mat-label>Nome</mat-label>
-      <input type="text" matInput formControlName="name" id="name">
-      <mat-error *ngIf="name.hasError('required')">Campo obrigatório</mat-error>
-    </mat-form-field> -->
+    <mat-form-field class="input-full-width">
+      <mat-label>Quantidade máxima</mat-label>
+      <input type="text" matInput mask="separator.0" thousandSeparator="." formControlName="maxAmount" id="maxAmount">
+      <mat-error *ngIf="maxAmount.hasError('required')">Campo obrigatório</mat-error>
+    </mat-form-field>
+    <mat-form-field class="input-full-width">
+      <mat-label>Quantidade mínima</mat-label>
+      <input type="text" matInput mask="separator.0" thousandSeparator="." formControlName="minAmount" id="minAmount">
+      <mat-error *ngIf="minAmount.hasError('required')">Campo obrigatório</mat-error>
+      <mat-error *ngIf="minAmount.hasError('invalidValue')">Quantidade mínima deve ser maior que a quantidade máxima</mat-error>
+    </mat-form-field>
+    <mat-form-field class="input-full-width">
+      <mat-label>Quantidade atual</mat-label>
+      <input type="text" matInput mask="separator.0" thousandSeparator="." formControlName="currentAmount" id="currentAmount">
+      <mat-error *ngIf="currentAmount.hasError('required')">Campo obrigatório</mat-error>
+    </mat-form-field>
   </form>
 </div>
 <div mat-dialog-actions align="right">
