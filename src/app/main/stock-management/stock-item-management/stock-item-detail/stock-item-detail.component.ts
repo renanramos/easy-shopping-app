@@ -4,8 +4,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { tap } from 'rxjs/operators';
 import { Product } from 'src/app/core/models/product/product.model';
 import { StockItem } from 'src/app/core/models/stock-item/stock-item.model';
-import { Stock } from 'src/app/core/models/stock/stock.model';
-import { SecurityUserService } from 'src/app/core/service/auth/security-user.service';
 import { ProductService } from 'src/app/core/service/product/product.service';
 import { StockItemService } from 'src/app/core/service/stock-item/stock-item.service';
 import { StockService } from 'src/app/core/service/stock/stock.service';
@@ -55,7 +53,9 @@ export class StockItemDetailComponent implements OnInit {
       currentAmount: [this.stockItem['currentAmount'], [Validators.required]]
     },
     {
-      validators: amountValidator('minAmount', 'maxAmount')
+      validators: [
+        amountValidator('minAmount', 'maxAmount')
+      ]
     })
   }
 
@@ -106,6 +106,26 @@ export class StockItemDetailComponent implements OnInit {
       this.stockItemForm.markAllAsTouched();
   }
 
+  validateCurrentAmount() {
+    let currentAmount = Number(this.currentAmount.value);
+    let minAmount = Number(this.minAmount.value);
+    let maxAmount = Number(this.maxAmount.value);
+
+    if (currentAmount > maxAmount) {
+      this.currentAmount.setErrors({
+        maxValueExceeded: true
+      });
+      this.currentAmount.markAsTouched();
+    }
+
+    if (currentAmount < minAmount) {
+      this.currentAmount.setErrors({
+        minValueExceeded: true
+      });
+      this.currentAmount.markAsTouched();
+    }
+  }
+
   async handleStockItemOperation() {
     const stockItem: StockItem = this.getStockItemValuesUpdated();
     this.stockItem['id'] ?
@@ -114,6 +134,7 @@ export class StockItemDetailComponent implements OnInit {
   }
 
   async saveNewStockItem(stockItem: StockItem) {
+    this.validateCurrentAmount();
     const stockItemCreated = {
       next: (stockItem: StockItem) => {
         this.dialogRef.close(stockItem);
