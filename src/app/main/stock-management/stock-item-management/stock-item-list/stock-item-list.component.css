@@ -10,6 +10,15 @@
   font-size: .7rem;
 }
 
-.stock-progress-bar {
-  height: 5px;
+.stock-values-container .stock-status {
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.stock-status mat-icon {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
 }

@@ -167,4 +167,28 @@ export class StockItemListComponent implements OnInit {
     this.pageNumber = ScrollValues.DEFAULT_PAGE_NUMBER;
     this.loadStockItems();
   }
+
+  stockItemIconStatus(item: StockItem) {
+    let current = item['currentAmount'];
+    let min = item['minAmount'];
+    let max = item['maxAmount'];
+    let status = { 
+      icon: 'sentiment_very_satisfied',
+      message: 'Estoque em nível normal'
+    };
+
+    if (current < min) {
+      status['icon'] = 'south';
+      status['message'] = 'Estoque abaixo do nível aceitável';
+      return status;
+    }
+
+    if(current > max) {
+      status['icon'] = 'south';
+      status['message'] = 'Estoque acima do nível aceitável';
+      return status;
+    }
+
+    return status;
+  }
 }
