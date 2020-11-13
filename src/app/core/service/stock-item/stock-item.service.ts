@@ -39,5 +39,8 @@ export class StockItemService extends ApiService<StockItem>{
     
     return this.get(`${this.url}${filter}`);
   }
-  
+
+  updateStockItem(stockItem: StockItem): Observable<StockItem> {
+    return this.patch(`${this.url}/${stockItem['id']}`, stockItem);
+  }
 }
