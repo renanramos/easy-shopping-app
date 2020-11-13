@@ -21,11 +21,34 @@
           </button>
         </mat-menu>
 
-        <mat-card-title>{{item.name}}</mat-card-title>
+        <mat-card-title>{{ item?.productName }}</mat-card-title>
+        <mat-card-subtitle>{{ item?.stockName }}</mat-card-subtitle>
         <mat-card-content>
-          <p>
-            <span>Loja:</span>
-          </p>
+            Saldo atual: <span>{{ item?.currentAmount }}</span>
+          <div class="stock-values-container">
+            <p>
+              <span 
+                matTooltip="Estoque mínimo"
+                matTooltipPosition="left">
+                {{ item?.minAmount }}
+              </span>
+              <small>(min)</small>
+            </p>
+            <p>
+              <span 
+                matTooltip="Estoque máximo"
+                matTooltipPosition="left">
+                {{ item?.maxAmount }}
+              </span>
+              <small>(max)</small>
+            </p>
+          </div>
+            <mat-progress-bar
+                class="stock-progress-bar"
+                color="primary"
+                mode="determinate"
+                value="{{ (item?.currentAmount / (item?.maxAmount / item?.minAmount)) }}">
+            </mat-progress-bar>
         </mat-card-content>
       </mat-card>
     </li>

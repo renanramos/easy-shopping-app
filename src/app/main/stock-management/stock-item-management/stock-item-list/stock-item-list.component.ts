@@ -121,6 +121,7 @@ export class StockItemListComponent implements OnInit {
     let stockItem: StockItem = new StockItem();
 
     stockItem['storeId'] = this.stock['storeId'];
+    stockItem['stockId'] = this.stockId;
 
     this.dialogStockItemDetailRef = this.dialog.open(StockItemDetailComponent, {
       data: { stockItem: stockItem },
@@ -146,7 +147,7 @@ export class StockItemListComponent implements OnInit {
       data: { stockItem: item },
       disableClose: true,
       autoFocus: false,
-      panelClass: 'es-small-dialog'
+      panelClass: 'es-dialog'
     });
 
     const closedDialog = {

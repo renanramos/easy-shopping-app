@@ -1,0 +1,15 @@
+.stock-values-container {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+
+.stock-values-container small {
+  font-size: .7rem;
+}
+
+.stock-progress-bar {
+  height: 5px;
+}
