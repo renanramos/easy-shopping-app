@@ -12,4 +12,6 @@ export class ConstantMessages {
   public static UNAUTHORIZED_USER: string = 'Usuário não autenticado.';
 
   public static AUTH_SERVER_ERROR: string = 'Não foi possível comunicar com servidor de autenticação';
+
+  public static PRODUCT_PUBLISHED_SUCCESSFULLY: string = 'Produto publicado com sucesso.';
 }
