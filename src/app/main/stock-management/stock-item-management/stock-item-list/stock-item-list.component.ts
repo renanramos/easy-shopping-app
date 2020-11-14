@@ -184,7 +184,7 @@ export class StockItemListComponent implements OnInit {
     }
 
     if(current > max) {
-      status['icon'] = 'south';
+      status['icon'] = 'north';
       status['message'] = 'Estoque acima do nível aceitável';
       return status;
     }
