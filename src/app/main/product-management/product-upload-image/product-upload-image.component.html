@@ -1,8 +1,8 @@
 <div mat-dialog-title>
   Adicionar foto
 </div>
-<div mat-dialog-content *ngIf="productImageForm">
-  <form class="container-registration-form" [formGroup]="productImageForm">
+<div mat-dialog-content>
+  <form class="container-registration-form" [formGroup]="productImageForm" *ngIf="productImageForm">
     <mat-form-field class="input-full-width">
       <mat-label>Descrição</mat-label>
       <input type="text" matInput formControlName="description" id="description">
