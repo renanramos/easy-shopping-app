@@ -26,10 +26,18 @@
             <mat-card-title>{{ product.name }}</mat-card-title>
             <mat-card-subtitle>{{ product.subcategoryName }}</mat-card-subtitle>
           </mat-card-header>
-          <img *ngIf="product.productImages[0]?.picture; else showPlaceholderImage" mat-card-image src="{{'data:image/png;base64,' + product.productImages[0]?.picture}}" alt="{{ product.name }}" title="{{ product.name }}">
-          <ng-template #showPlaceholderImage>
-            <img mat-card-image src="../../../../assets/product-image-placeholder.png" alt="{{ product.name }}">
-          </ng-template>
+          <mat-card-content>
+            <img *ngIf="product.productImages[0]?.picture; else showPlaceholderImage" mat-card-image src="{{'data:image/png;base64,' + product.productImages[0]?.picture}}" alt="{{ product.name }}" title="{{ product.name }}">
+            <ng-template #showPlaceholderImage>
+              <img mat-card-image src="../../../../assets/product-image-placeholder.png" alt="{{ product.name }}">
+            </ng-template>
+          </mat-card-content>
+          <mat-card-actions align="right" *esHasPermission="['COMPANY']">
+            <button mat-raised-button color="primary" [disabled]="product.productPublished" (click)="openPublishProduct(product);">
+              {{ product.productPublished ? 'Publicado' : 'Publicar produto'}}
+              <mat-icon *ngIf="product.productPublished">done_all</mat-icon>
+            </button>
+          </mat-card-actions>
         </mat-card>
     </li>
   </ul>

@@ -21,13 +21,11 @@
             <mat-card-title>{{ product.name }}</mat-card-title>
             <mat-card-subtitle>{{ product.subcategoryName }}</mat-card-subtitle>
           </mat-card-header>
-          <div class="img-container">
+          <mat-card-content>
             <img *ngIf="product.productImages[0]?.picture; else showPlaceholderImage" mat-card-image src="{{'data:image/png;base64,' + product.productImages[0]?.picture}}" alt="{{ product.name }}" title="{{ product.name }}">
             <ng-template #showPlaceholderImage>
               <img mat-card-image src="../../../../assets/product-image-placeholder.png" alt="{{ product.name }}">
             </ng-template>
-          </div>
-          <mat-card-content>
             <mat-divider></mat-divider>
             <p class="product-price-info">
              Preço: {{ product.price | currency : 'BRL'}}
@@ -35,12 +33,12 @@
             <small>
               {{ product.description }}
             </small>
-            <div class="card-actions">
-              <button mat-raised-button color="{{ product.inCart ? 'none' : 'warn' }}" matTooltip="Adicionar ao carrinho" (click)="addItemToShoppingCart(product);">
-                <mat-icon>{{ product.inCart ? 'done' : 'add_shopping_cart' }}</mat-icon></button>
-              <button mat-raised-button color="primary">{{ 'Comprar' | uppercase }}</button>
-            </div>
           </mat-card-content>
+          <mat-card-actions class="card-actions">
+            <button mat-raised-button color="{{ product.inCart ? 'none' : 'warn' }}" matTooltip="Adicionar ao carrinho" (click)="addItemToShoppingCart(product);">
+              <mat-icon>{{ product.inCart ? 'done' : 'add_shopping_cart' }}</mat-icon></button>
+            <button mat-raised-button color="primary">{{ 'Comprar' | uppercase }}</button>
+          </mat-card-actions>
         </mat-card>
     </li>
   </ul>

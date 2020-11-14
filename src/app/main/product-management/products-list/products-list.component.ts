@@ -14,6 +14,7 @@ import { ConfirmDialogComponent } from 'src/app/core/shared/components/confirm-d
 import { ProductUploadImageComponent } from '../product-upload-image/product-upload-image.component';
 import { UtilsService } from 'src/app/core/shared/utils/utils.service';
 import { SecurityUserService } from 'src/app/core/service/auth/security-user.service';
+import { PublishProductComponentComponent } from './publish-product-component/publish-product-component.component';
 
 @Component({
   selector: 'es-products-list',
@@ -32,6 +33,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   dialogRef: MatDialogRef<ProductDetailComponent>;
   confirmDialogRef: MatDialogRef<ConfirmDialogComponent>;
   uploadImageDialogRef: MatDialogRef<ProductUploadImageComponent>;
+  publishProductDialogRef: MatDialogRef<PublishProductComponentComponent>;
   userId: string = '';
   constructor(
     private dialog: MatDialog,
@@ -74,7 +76,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
       }
     }
 
-    await this.productService.getProducts(subcategory?.id)
+    await this.productService.getProducts(subcategory?.id, null, null)
     .pipe(tap(receivedProducts))
     .toPromise()
     .then()
@@ -172,4 +174,27 @@ export class ProductsListComponent implements OnInit, OnDestroy {
     this.uploadImageDialogRef.afterClosed().subscribe(receivedUploadedImage);
   }
 
+  openPublishProduct(product: Product) {
+    this.publishProductDialogRef = this.dialog.open(PublishProductComponentComponent, {
+      data: { product: product },
+      disableClose: true,
+      autoFocus: false,
+      panelClass: 'es-small-dialog'
+    });
+
+    const productPublished = {
+      next: (product: Product) => {
+        if (product) {
+          this.loadProducts();
+          this.snackBarService.openSnackBar(ConstantMessages.PRODUCT_PUBLISHED_SUCCESSFULLY);
+        }
+      },
+      error: (response) => {
+        const errorMessage = this.utilsService.handleErrorMessage(response);
+        this.snackBarService.openSnackBar(errorMessage);
+      }
+    }
+
+    this.publishProductDialogRef.afterClosed().subscribe(productPublished);
+  }
 }

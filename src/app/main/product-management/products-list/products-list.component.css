@@ -30,7 +30,7 @@
 }
 
 .product-price-info {
-  font-size: 25px;
+  font-size: 1.2rem;
   font-weight: 300;
   margin-block-start: 1em;
   margin-block-end: 0em;
@@ -60,6 +60,10 @@ mat-chip {
 
 .card-actions > p {
   margin-right: 1em;
+}
+
+.mat-card>.mat-card-actions:last-child {
+  margin-bottom: unset;
 }
 
 @media screen and (min-width: 280px) and (max-width: 570px) {
@@ -106,7 +110,7 @@ mat-chip {
 
 @media screen and (min-width: 1367px) and (max-width: 1920px) {
   .card-items {
-    width: calc(25% - 15px);
+    width: calc(20% - 15px);
     min-width: unset;
   }
 }
