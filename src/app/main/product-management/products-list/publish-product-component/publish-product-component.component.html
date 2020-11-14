@@ -1,0 +1,15 @@
+<div mat-dialog-title>
+  Publicar produto
+</div>
+<div mat-dialog-content>
+  <p>
+    Você realmente deseja publicar o produto selecionado?
+  </p>
+  <p>
+    <b> {{ product.name }} </b> 
+  </p>
+</div>
+<div mat-dialog-actions align="right">
+  <button mat-raised-button mat-dialog-close>FECHAR</button>
+  <button mat-raised-button color="primary" (click)="publishProduct();">Publicar produto</button>
+</div>
