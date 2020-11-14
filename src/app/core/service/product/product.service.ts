@@ -41,4 +41,8 @@ export class ProductService extends ApiService<Product>{
    removeProduct(productId: number): Observable<Product> {
      return this.delete(`${this.url}/${productId}`);
    }
+
+   publishProduct(product: Product): Observable<Product> {
+    return this.patch(`${this.url}/publish/${product['id']}`, product);
+   }
 }
