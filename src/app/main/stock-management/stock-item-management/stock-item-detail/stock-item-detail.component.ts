@@ -47,7 +47,10 @@ export class StockItemDetailComponent implements OnInit {
 
   createForm() {
     this.stockItemForm = this.formBuilder.group({
-      productId: [this.stockItem['productId'], [Validators.required]],
+      productId: [{
+        value: this.stockItem['productId'],
+        disabled: this.stockItem['id'] 
+      }, [Validators.required]],
       maxAmount: [this.stockItem['maxAmount'], [Validators.required]],
       minAmount: [this.stockItem['minAmount'], [Validators.required]],
       currentAmount: [this.stockItem['currentAmount'], [Validators.required]]
