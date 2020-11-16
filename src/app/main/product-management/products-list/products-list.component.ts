@@ -162,8 +162,8 @@ export class ProductsListComponent implements OnInit, OnDestroy {
       next: (isUploaded: boolean) => {
         if (isUploaded) {
           this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_CREATED);
+          this.loadProducts();
         }
-        this.loadProducts();
       },
       error: (response) => {
         const errorMessage = this.utilsService.handleErrorMessage(response);
