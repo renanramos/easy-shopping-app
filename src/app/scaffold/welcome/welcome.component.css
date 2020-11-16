@@ -98,7 +98,7 @@ mat-chip {
   
   .mat-card-title {
     width: 100%;
-    max-width: 140px;
+    max-width: unset;
   }
 }
 
