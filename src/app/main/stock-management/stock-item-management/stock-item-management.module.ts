@@ -10,10 +10,12 @@ import { NgSlimScrollModule } from 'ngx-slimscroll';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgxMaskModule } from 'ngx-mask';
 import { StockItemManagementRoutingModule } from './stock-item-management-routing.module';
+import { StockItemReportComponent } from './stock-item-report/stock-item-report.component';
 
 const components = [
   StockItemDetailComponent,
-  StockItemListComponent
+  StockItemListComponent, 
+  StockItemReportComponent
 ]
 
 @NgModule({
