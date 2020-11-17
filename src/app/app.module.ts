@@ -32,6 +32,7 @@ import { KeycloakAngularModule } from 'keycloak-angular';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { environment } from '../environments/environment';
 import { AuthGuard } from './core/guard/auth.guard';
+import { ChartsModule } from 'ng2-charts';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -69,6 +70,7 @@ registerLocaleData(localePt, 'pt-BR');
       }
     }),
     NgxMaskModule.forRoot(),
+    ChartsModule
   ],
   providers: [
     AuthGuard,
