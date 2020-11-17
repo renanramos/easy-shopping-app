@@ -1,5 +1,10 @@
 <div class="title">
   Itens do estoque
+  <div class="report-button">
+    <button mat-raised-button color="primary" [routerLink]="['report', stockId]">
+      Relatório de estoques
+    </button>
+  </div>
 </div>
 <div class="container-list">
   <ul class="content-list" 
@@ -29,7 +34,7 @@
               Saldo atual: <span>{{ item?.currentAmount }}</span>
             </p>
             <div class="stock-status">
-              <mat-icon matTooltip="{{stockItemIconStatus(item)['message']}}">{{ stockItemIconStatus(item)['icon'] }}</mat-icon>
+            <mat-icon matTooltip="{{stockItemIconStatus(item)['message']}}">{{ stockItemIconStatus(item)['icon'] }}</mat-icon>
             </div>
           </div>
         </mat-card-content>

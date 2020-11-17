@@ -27,6 +27,7 @@ export class StockItemListComponent implements OnInit {
   stockItemsNotFound: boolean = false;
   pageNumber: number = ScrollValues.DEFAULT_PAGE_NUMBER;
   stock: Stock;
+  noLimit: boolean = false;
 
   searchSubscription: Subscription;
   filterName: string = '';
@@ -95,7 +96,7 @@ export class StockItemListComponent implements OnInit {
       }
     };
 
-    await this.stockItemService.getStockItems(this.stockId, this.pageNumber, this.filterName)
+    await this.stockItemService.getStockItems(this.stockId, this.pageNumber, this.filterName, this.noLimit)
       .pipe(tap(stockItemsReceived))
       .toPromise()
       .then(() => true)
@@ -174,21 +175,28 @@ export class StockItemListComponent implements OnInit {
     let max = item['maxAmount'];
     let status = { 
       icon: 'sentiment_very_satisfied',
-      message: 'Estoque em nível normal'
+      message: 'Estoque em nível normal',
+      color: '#797777'
     };
 
     if (current < min) {
       status['icon'] = 'south';
       status['message'] = 'Estoque abaixo do nível aceitável';
+      status['color'] = '#f7264dfc';
       return status;
     }
 
     if(current > max) {
       status['icon'] = 'north';
       status['message'] = 'Estoque acima do nível aceitável';
+      status['color'] = '#03a903';
       return status;
     }
 
     return status;
+  }
+
+  openReportDialog() {
+    
   }
 }
