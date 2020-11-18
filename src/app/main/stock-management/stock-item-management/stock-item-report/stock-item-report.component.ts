@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
+import { Label } from 'ng2-charts';
 import { tap } from 'rxjs/operators';
 import { StockItem } from 'src/app/core/models/stock-item/stock-item.model';
 import { StockItemService } from 'src/app/core/service/stock-item/stock-item.service';
@@ -16,8 +18,27 @@ import { UtilsService } from 'src/app/core/shared/utils/utils.service';
 export class StockItemReportComponent implements OnInit {
 
   stockId: number = null;
-  stockItemsNotFound: boolean;
+  stockItemsNotFound: boolean = false;
   stockItems: StockItem[] = [];
+
+  barChartOptions: ChartOptions = {
+    responsive: true,
+    plugins: {
+      datalabels: {
+        anchor: 'end',
+        align: 'end',
+      }
+    }
+  };
+
+  barChartLabels: Label[] = [];
+  barChartType: ChartType = 'bar';
+  barChartLegend = true;
+  barChartData: ChartDataSets[] = [
+    {data: [], label: 'Atual'},
+    {data: [], label: 'Mínimo'},
+    {data: [], label: 'Máximo'}
+  ];
 
   constructor(private dialog: MatDialog,
     private snackBarService: SnackbarService,
@@ -41,7 +62,8 @@ export class StockItemReportComponent implements OnInit {
     const stockItemsReceived = {
       next: (stockItems: StockItem[]) => {
         if (stockItems.length) {
-          this.stockItems = [...this.stockItems, ...stockItems];
+          this.stockItems = stockItems;
+          this.prepareChartData();
         } else {
           this.stockItemsNotFound = true;
         }
@@ -58,5 +80,14 @@ export class StockItemReportComponent implements OnInit {
       .toPromise()
       .then(() => true)
       .catch(() => false);
+  }
+
+  prepareChartData() {
+    this.stockItems.forEach(stockItem => {
+      this.barChartLabels.push(stockItem['productName']);
+      this.barChartData[0].data.push(stockItem['currentAmount']);
+      this.barChartData[1].data.push(stockItem['minAmount']);
+      this.barChartData[2].data.push(stockItem['maxAmount']);
+    });
   }
 }
