@@ -1,1 +1,14 @@
-<p>stock-item-report works!</p>
+<mat-card>
+  <mat-card-title>
+    Gráfico de nível de itens no estoque
+  </mat-card-title>
+  <mat-card-content>
+    <canvas baseChart
+    [datasets]="barChartData"
+    [labels]="barChartLabels"
+    [options]="barChartOptions"
+    [legend]="barChartLegend"
+    [chartType]="barChartType">
+    </canvas>
+  </mat-card-content>
+</mat-card>
