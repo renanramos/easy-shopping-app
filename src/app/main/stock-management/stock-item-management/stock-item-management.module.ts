@@ -11,6 +11,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgxMaskModule } from 'ngx-mask';
 import { StockItemManagementRoutingModule } from './stock-item-management-routing.module';
 import { StockItemReportComponent } from './stock-item-report/stock-item-report.component';
+import { ChartsModule } from 'ng2-charts';
 
 const components = [
   StockItemDetailComponent,
@@ -29,7 +30,8 @@ const components = [
     DirectivesModule,
     NgSlimScrollModule,
     InfiniteScrollModule,
-    NgxMaskModule.forRoot()
+    NgxMaskModule.forRoot(),
+    ChartsModule
   ],
   exports: [...components]
 })
