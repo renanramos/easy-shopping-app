@@ -38,6 +38,7 @@ export class HttpIntercept implements HttpInterceptor {
           
           if (!error.status) {
             this.snackBarService.openSnackBar("Servidor indisponível");
+            this.router.navigateByUrl('/');
           }
         }
       }; 
