@@ -1,9 +1,12 @@
 <mat-card>
   <mat-card-title>
-    Gráfico de nível de itens no estoque
+    Nível de itens no estoque
   </mat-card-title>
   <mat-card-content>
-    <canvas baseChart
+    <canvas 
+    width="50vw"
+    height="20vh"
+    baseChart
     [datasets]="barChartData"
     [labels]="barChartLabels"
     [options]="barChartOptions"
