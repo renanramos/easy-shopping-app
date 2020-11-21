@@ -118,6 +118,10 @@ body mat-toolbar > mat-form-field > div {
   margin-right: 3%;
 }
 
+.header-button button {
+  background-color: #50a591 !important;
+}
+
 .container-list {
   width: 100%;
   display: flex;
