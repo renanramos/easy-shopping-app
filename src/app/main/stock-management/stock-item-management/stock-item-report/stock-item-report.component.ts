@@ -6,6 +6,7 @@ import { Label } from 'ng2-charts';
 import { tap } from 'rxjs/operators';
 import { StockItem } from 'src/app/core/models/stock-item/stock-item.model';
 import { StockItemService } from 'src/app/core/service/stock-item/stock-item.service';
+import { SearchService } from 'src/app/core/shared/service/search-service';
 import { SnackbarService } from 'src/app/core/shared/service/snackbar.service';
 import { UtilsService } from 'src/app/core/shared/utils/utils.service';
 
@@ -57,13 +58,15 @@ export class StockItemReportComponent implements OnInit {
     private snackBarService: SnackbarService,
     private utilsService: UtilsService,
     private stockItemService: StockItemService,
-    private activatedRoute: ActivatedRoute) { }
+    private activatedRoute: ActivatedRoute,
+    private searchService: SearchService) { }
 
   async ngOnInit() {
     this.setBarChartProperties();
     this.setPieChartProperties();
     this.getItemPropertyId();
     await this.loadStockItems();
+    this.searchService.hideSearchField.next(true);
   }
 
   setPieChartProperties() {
