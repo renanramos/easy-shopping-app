@@ -1,5 +1,9 @@
 <div class="title">
   Produtos
+  <es-export-file 
+    (exportFileEvent)="loadAllProducts();" 
+    [data]="productsToExport" 
+    [headers]="csvHeaders"></es-export-file>
 </div>
 <div class="container-list">
   <ul class="content-list" fxLayout="row wrap"

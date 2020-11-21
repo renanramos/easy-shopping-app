@@ -27,6 +27,8 @@ import { SearchService } from 'src/app/core/shared/service/search-service';
 export class ProductsListComponent implements OnInit, OnDestroy {
 
   products: Product[] = [];
+  productsToExport: Product[] = [];
+  csvHeaders: string[] = [];
   isListFiltererd: boolean = false;
   categoryFiltered: String = "";
   noProductsFound: boolean = false;
@@ -223,4 +225,39 @@ export class ProductsListComponent implements OnInit, OnDestroy {
     this.loadProducts();
   }
 
+  async loadAllProducts() {
+    const productsReceived = {
+      next: (products: Product[]) => {
+        if (products.length) {
+          this.prepareProductsToExport(products);
+        }
+      },
+      error: (response) => {
+        const errorMessage = this.utilsService.handleErrorMessage(response);
+        this.snackBarService.openSnackBar(errorMessage);
+      }
+    };
+  
+    await this.productService.getProducts(null, true, null, null, null)
+      .pipe(tap(productsReceived))
+      .toPromise()
+      .then(() => true)
+      .catch(() => false);
+  }
+
+  prepareProductsToExport(products: Product[]) {
+    let prodToExport: Product[] = [];
+    this.csvHeaders = ['Id do produto', 'Nome do produto', 'Descrição', 'Preço', 'Categoria'];
+    products.forEach((product: Product) => {
+      const prod: Product = {
+        id: product['id'],
+        name: product['name'],
+        description: product['description'],
+        price: product['price'],
+        productCategoryName: product['subcategoryName']
+      };
+      prodToExport.push(prod);
+    });
+    this.productsToExport = [...prodToExport];
+  }
 }
