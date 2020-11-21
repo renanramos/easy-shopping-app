@@ -8,12 +8,14 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { AddButtonComponent } from './add-button/add-button.component';
 import { DirectivesModule } from '../directives/directives.modules';
+import { ExportFileComponent } from './export-file/export-fle.component';
 
 const components = [
   RegistrationHeaderComponent, 
   ToolbarComponent,
   ConfirmDialogComponent,
-  AddButtonComponent
+  AddButtonComponent,
+  ExportFileComponent
 ]
 
 @NgModule({
