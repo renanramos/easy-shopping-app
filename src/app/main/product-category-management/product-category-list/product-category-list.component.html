@@ -1,5 +1,6 @@
 <div class="title">
   Categorias de produtos
+  <es-export-file (exportFileEvent)="loadAllProductCategories();" [data]="productCategoriesToExport" [headers]="csvHeaders"></es-export-file>
 </div>
 <div class="container-list">
   <ul class="content-list" 

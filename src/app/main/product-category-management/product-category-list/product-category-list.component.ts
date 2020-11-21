@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ExportToCsv } from 'export-to-csv';
 import { Subscription } from 'rxjs';
 import { debounceTime, tap } from 'rxjs/operators';
+import { ExportCsvOptions } from 'src/app/core/models/export-csv/export-csv-model';
 import { ProductCategory } from 'src/app/core/models/product-category/product-category.model';
 import { SecurityUserService } from 'src/app/core/service/auth/security-user.service';
 import { ProductCategoryService } from 'src/app/core/service/productCategory/product-category.service';
@@ -24,6 +26,8 @@ export class ProductCategoryListComponent implements OnInit {
   pageNumber: number = ScrollValues.DEFAULT_PAGE_NUMBER;
   dataNotFound: boolean = false;
   productCategories: ProductCategory[] = [];
+  productCategoriesToExport: ProductCategory[] = [];
+  csvHeaders: string[] = ['Id', 'Nome da categoria'];
 
   dialogRef: MatDialogRef<ProductCategoryDetailComponent>;
   dialogRefConfirm: MatDialogRef<ConfirmDialogComponent>;
@@ -35,7 +39,8 @@ export class ProductCategoryListComponent implements OnInit {
     private searchService: SearchService,
     private dialog: MatDialog,
     private snackBarService: SnackbarService,
-    private productCategoryService: ProductCategoryService) { }
+    private productCategoryService: ProductCategoryService,
+    private utilsService: UtilsService) { }
 
   async ngOnInit() {
     await this.loadProductCategories();
@@ -160,5 +165,25 @@ export class ProductCategoryListComponent implements OnInit {
   reloadListOfItens() {
     this.pageNumber = ScrollValues.DEFAULT_PAGE_NUMBER;
     this.loadProductCategories();
+  }
+
+  async loadAllProductCategories() {
+    const productCategoriesReceived = {
+      next:(productCategories: ProductCategory[]) => {
+        if (productCategories.length) {
+          this.productCategoriesToExport = productCategories;
+        }        
+      },
+      error: (response) => {
+        const errorMessage = this.utilsService.handleErrorMessage(response);
+        this.snackBarService.openSnackBar(errorMessage);
+      }
+    };
+
+    await this.productCategoryService.getProductCategories(null, null, true)
+      .pipe(tap(productCategoriesReceived))
+      .toPromise()
+      .then(() => true)
+      .catch(() => false);
   }
 }
