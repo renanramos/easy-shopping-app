@@ -74,8 +74,9 @@ export class ProductCategoryListComponent implements OnInit {
       .catch(() => false);
   }
 
-  onScroll() {
-    console.log('scrolled');
+  async onScroll() {
+    this.pageNumber += 1;
+    await this.loadProductCategories();
   }
 
   openEditCategory(productCategory: ProductCategory) {
