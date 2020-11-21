@@ -17,7 +17,7 @@
         <mat-card-content>
           <p>
             <span>CPF:</span>
-            {{customer.cpf}}
+            {{ customer.cpf | mask: '000.000.000-00'}}
           </p>
           <p>
             <span>Email:</span>
