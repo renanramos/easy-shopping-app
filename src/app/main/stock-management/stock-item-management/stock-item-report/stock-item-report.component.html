@@ -1,17 +1,38 @@
-<mat-card>
-  <mat-card-title>
-    Nível de itens no estoque
-  </mat-card-title>
-  <mat-card-content>
-    <canvas 
-    width="50vw"
-    height="20vh"
-    baseChart
-    [datasets]="barChartData"
-    [labels]="barChartLabels"
-    [options]="barChartOptions"
-    [legend]="barChartLegend"
-    [chartType]="barChartType">
+<div class="title">
+  Indicadores de estoque
+</div>
+<div class="graphic-container">
+  <mat-card>
+    <mat-card-title>
+      Nível de estoque totalizado
+    </mat-card-title>
+    <mat-card-content>
+      <canvas 
+      class="pie-chart"
+      baseChart
+      [data]="pieChartData"
+      [chartType]="pieChartType"
+      [options]="pieChartOptions"
+      [colors]="pieChartColors"
+      [labels]="pieChartLabels"
+      [legend]="pieChartLegend">
     </canvas>
-  </mat-card-content>
-</mat-card>
+    </mat-card-content>
+  </mat-card>
+  <mat-card>
+    <mat-card-title>
+      Nível de estoque por item
+    </mat-card-title>
+    <mat-card-content>
+      <canvas 
+      class="bar-chart"
+      baseChart
+      [datasets]="barChartData"
+      [labels]="barChartLabels"
+      [options]="barChartOptions"
+      [legend]="barChartLegend"
+      [chartType]="barChartType">
+      </canvas>
+    </mat-card-content>
+  </mat-card>
+</div>

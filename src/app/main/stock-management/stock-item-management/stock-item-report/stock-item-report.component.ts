@@ -21,24 +21,37 @@ export class StockItemReportComponent implements OnInit {
   stockItemsNotFound: boolean = false;
   stockItems: StockItem[] = [];
 
-  barChartOptions: ChartOptions = {
-    responsive: true,
-    plugins: {
-      datalabels: {
-        anchor: 'end',
-        align: 'end',
-      }
-    }
-  };
+  barChartOptions: ChartOptions;
 
   barChartLabels: Label[] = [];
   barChartType: ChartType = 'bar';
   barChartLegend = true;
-  barChartData: ChartDataSets[] = [
-    {data: [], label: 'Atual'},
-    {data: [], label: 'Mínimo'},
-    {data: [], label: 'Máximo'}
-  ];
+  barChartData: ChartDataSets[] = [];
+
+  pieChartOptions: ChartOptions= {
+    responsive: true,
+    legend: {
+      position: 'top'
+    },
+    plugins: {
+      datalabels: {
+        formatter: (value, ctx) => {
+          const label = ctx.chart.data.labels[ctx.dataIndex];
+          return label;
+        },
+      },
+    }
+  };
+
+  pieChartType: ChartType = 'pie';
+  pieChartData: number[] = [];
+  pieChartColors = [];
+  pieChartLegend = true;
+  pieChartLabels: Label[] = ['Saldo atual', 'Saldo máximo', 'Saldo mínimo'];
+
+  totalCurrentAmount: number = 0;
+  totalMaximumAmount: number = 0;
+  totalMinimumAmount: number = 0;  
 
   constructor(private dialog: MatDialog,
     private snackBarService: SnackbarService,
@@ -47,8 +60,36 @@ export class StockItemReportComponent implements OnInit {
     private activatedRoute: ActivatedRoute) { }
 
   async ngOnInit() {
+    this.setBarChartProperties();
+    this.setPieChartProperties();
     this.getItemPropertyId();
     await this.loadStockItems();
+  }
+
+  setPieChartProperties() {
+    this.pieChartColors =[
+      {
+        backgroundColor: ['rgb(255, 161, 181)', 'rgb(255, 226, 154)', '#86c7f3'],
+      }
+    ];
+    this.pieChartLabels = ['Saldo atual', 'Saldo máximo', 'Saldo mínimo'];
+  }
+
+  setBarChartProperties() {
+    this.barChartOptions = {
+      responsive: true,
+      plugins: {
+        datalabels: {
+          anchor: 'end',
+          align: 'end',
+        }
+      }
+    };
+    this.barChartData = [
+      {data: [], label: 'Atual'},
+      {data: [], label: 'Mínimo'},
+      {data: [], label: 'Máximo'}
+    ];
   }
 
   getItemPropertyId() {
@@ -64,6 +105,7 @@ export class StockItemReportComponent implements OnInit {
         if (stockItems.length) {
           this.stockItems = stockItems;
           this.prepareChartData();
+          this.generatePizzaData();
         } else {
           this.stockItemsNotFound = true;
         }
@@ -89,5 +131,12 @@ export class StockItemReportComponent implements OnInit {
       this.barChartData[1].data.push(stockItem['minAmount']);
       this.barChartData[2].data.push(stockItem['maxAmount']);
     });
+  }
+
+  generatePizzaData() {
+    this.totalCurrentAmount = this.stockItems.filter(stockItem => stockItem['currentAmount']).map( stockItem => stockItem['currentAmount']).reduce((a, b) => a + b);
+    this.totalMaximumAmount = this.stockItems.filter(stockItem => stockItem['maxAmount']).map( stockItem => stockItem['maxAmount']).reduce((a, b) => a + b);
+    this.totalMinimumAmount = this.stockItems.filter(stockItem => stockItem['minAmount']).map( stockItem => stockItem['minAmount']).reduce((a, b) => a + b);
+    this.pieChartData = [this.totalCurrentAmount, this.totalMaximumAmount, this.totalMinimumAmount];
   }
 }
