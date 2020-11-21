@@ -19,7 +19,7 @@ export class SubcategoryService  extends ApiService<Subcategory> {
      }
 
      if (pageNumber) {
-       filterString = filterString ? `&pageNumber=${pageNumber}` : `?pageNumber=${pageNumber}`;
+       filterString += filterString ? `&pageNumber=${pageNumber}` : `?pageNumber=${pageNumber}`;
      }
 
      if (noLimitSize) {
