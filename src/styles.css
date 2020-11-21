@@ -113,7 +113,7 @@ body mat-toolbar > mat-form-field > div {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-.report-button {
+.header-button {
   float: right;
   margin-right: 3%;
 }
