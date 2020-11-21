@@ -78,7 +78,7 @@ export class SubcategoryListComponent implements OnInit {
       }
     };
 
-    await this.subcategoryService.getSubcategories(null, this.filterName, false)
+    await this.subcategoryService.getSubcategories(this.pageNumber, null, this.filterName, false)
       .pipe(tap(receivedSubcategories))
       .toPromise()
       .then(() => true)
