@@ -16,7 +16,7 @@ export class StoreService extends ApiService<Store>{
     return this.post(this.url, store);
   }
 
-  getStores(companyId?: number, pageNumber?: number, filterName?: string, noLimit?: boolean): Observable<Store | Store[]> {
+  getStores(companyId?: string, pageNumber?: number, filterName?: string, noLimit?: boolean): Observable<Store | Store[]> {
 
     let filter = '';
 

@@ -3,7 +3,7 @@ export class Store {
   public name: string;
   public registeredNumber: string;
   public corporateName: string;
-  public companyId: number;
+  public companyId?: number;
 
   constructor() {
     
