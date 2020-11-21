@@ -24,6 +24,8 @@ export class StockListComponent implements OnInit {
   pageNumber: number = ScrollValues.DEFAULT_PAGE_NUMBER;
   stocksNotFound: boolean = false;
   stocks: Stock[] = [];
+  stocksToExport: Stock[] = [];
+  csvHeaders: string[] = [];
   
   searchSubscription: Subscription;
   filterName: string = '';
@@ -165,5 +167,39 @@ export class StockListComponent implements OnInit {
       .toPromise()
       .then(() => true)
       .catch(() => false);
+  }
+
+  async loadAllStocks() {
+    this.csvHeaders = ['Id do estoque', 'Nome do estoque', 'Id da loja', 'Nome da loja', 'Total de itens no estoque'];
+    const stocksReceived = {
+      next: (stocks: Stock[]) => {
+        if(stocks.length) {
+          this.prepareStocksToExport(stocks);
+        }
+      },
+      error: (response) => {
+        const errorMessage = this.utilsService.handleErrorMessage(response);
+        this.snackBarService.openSnackBar(errorMessage);
+      }
+    };
+
+    await this.stockService.getStocks(null, null, null, true)
+      .pipe(tap(stocksReceived))
+      .toPromise()
+      .then(() => true)
+      .catch(() => false);
+  }
+
+  prepareStocksToExport(stocks: Stock[]) {
+    stocks.forEach((stock: Stock) => {
+      const stockToExport: Stock = {
+        id: stock['id'],
+        name: stock['name'],
+        storeId: stock['storeId'],
+        storeName: stock['storeName'],
+        totalItems: stock['totalItems']
+      };
+      this.stocksToExport.push(stockToExport);
+    })
   }
 }

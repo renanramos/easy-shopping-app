@@ -1,5 +1,9 @@
 <div class="title">
   Estoques
+  <es-export-file 
+    (exportFileEvent)="loadAllStocks();" 
+    [data]="stocksToExport" 
+    [headers]="csvHeaders"></es-export-file>
 </div>
 <div class="container-list">
   <ul class="content-list" 
