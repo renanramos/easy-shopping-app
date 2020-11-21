@@ -29,6 +29,7 @@
     "angular-oauth2-oidc-jwks": "^9.0.0",
     "angularx-social-login": "^3.2.2",
     "chart.js": "^2.9.4",
+    "export-to-csv": "^0.2.1",
     "express": "^4.17.1",
     "jwt-decode": "^2.2.0",
     "keycloak-angular": "^8.0.1",
