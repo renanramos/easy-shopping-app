@@ -44,6 +44,7 @@ export class StockListComponent implements OnInit {
   }
 
   subscribeToSearchService() {
+    this.searchService.hideSearchField.next(false);
     this.searchSubscription = this.searchService.searchSubject$
     .subscribe((value) => {
       this.pageNumber = ScrollValues.DEFAULT_PAGE_NUMBER;
