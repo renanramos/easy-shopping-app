@@ -77,7 +77,7 @@ export class StoreListComponent implements OnInit {
     };
 
     if (this.securityUserService.userLoggedRole == UserRolesConstants.COMPANY) {
-      await this.storeService.getCompanyOwnStores()
+      await this.storeService.getCompanyOwnStores(this.pageNumber, this.filterName, null)
         .pipe(tap(receivedStores))
         .toPromise()
         .then(() => true)
