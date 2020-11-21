@@ -15,6 +15,8 @@ import { ProductUploadImageComponent } from '../product-upload-image/product-upl
 import { UtilsService } from 'src/app/core/shared/utils/utils.service';
 import { SecurityUserService } from 'src/app/core/service/auth/security-user.service';
 import { PublishProductComponentComponent } from './publish-product-component/publish-product-component.component';
+import { ScrollValues } from 'src/app/core/shared/constants/scroll-values';
+import { SearchService } from 'src/app/core/shared/service/search-service';
 
 @Component({
   selector: 'es-products-list',
@@ -28,7 +30,10 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   isListFiltererd: boolean = false;
   categoryFiltered: String = "";
   noProductsFound: boolean = false;
-  subscription: Subscription;
+  menuSubscription: Subscription;
+  searchServiceSubscription: Subscription;
+  pageNumber: number = ScrollValues.DEFAULT_PAGE_NUMBER;
+  filterName: string = '';
 
   dialogRef: MatDialogRef<ProductDetailComponent>;
   confirmDialogRef: MatDialogRef<ConfirmDialogComponent>;
@@ -41,12 +46,27 @@ export class ProductsListComponent implements OnInit, OnDestroy {
     private menuService: MenuService,
     private snackBarService: SnackbarService,
     private utilsService: UtilsService,
-    private securityUserService: SecurityUserService) { }
+    private securityUserService: SecurityUserService,
+    private searchService: SearchService) { }
 
   async ngOnInit() {
     this.userId = this.securityUserService.userLoggedId;
     await this.loadProducts();
-    this.subscription = this.menuService.currentSubcategoryId.subscribe(subcategory => {
+    await this.subscribeToMenuService();
+    await this.subscribeToSearchService();
+  }
+
+  async subscribeToSearchService() {
+    this.searchServiceSubscription = await this.searchService.searchSubject$.subscribe(value => {
+      this.pageNumber = ScrollValues.DEFAULT_PAGE_NUMBER;
+      this.filterName = value;
+      this.products = [];
+      this.loadProducts();
+    })
+  }
+
+  async subscribeToMenuService() {
+    this.menuSubscription = await this.menuService.currentSubcategoryId.subscribe(subcategory => {
       if (subcategory.id) {
         this.isListFiltererd = true;
         this.categoryFiltered = subcategory.name;
@@ -56,8 +76,8 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscription &&
-      this.subscription.unsubscribe();
+    this.menuSubscription &&
+      this.menuSubscription.unsubscribe();
   }
 
   async loadProducts(subcategory?: Subcategory) {
@@ -76,7 +96,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
       }
     }
 
-    await this.productService.getProducts(subcategory?.id, null, null)
+    await this.productService.getProducts(subcategory?.id, null, null, this.pageNumber, this.filterName)
     .pipe(tap(receivedProducts))
     .toPromise()
     .then()
@@ -197,4 +217,10 @@ export class ProductsListComponent implements OnInit, OnDestroy {
 
     this.publishProductDialogRef.afterClosed().subscribe(productPublished);
   }
+
+  onScroll() {
+    this.pageNumber += 1;
+    this.loadProducts();
+  }
+
 }

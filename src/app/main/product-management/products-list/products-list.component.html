@@ -2,7 +2,12 @@
   Produtos
 </div>
 <div class="container-list">
-  <ul class="content-list" fxLayout="row wrap">
+  <ul class="content-list" fxLayout="row wrap"
+      infiniteScroll
+      [infiniteScrollDistance]="1"
+      [infiniteScrollUpDistance]="2"
+      [infiniteScrollThrottle]="300"
+      (scrolled)="onScroll();">
     <p *ngIf="noProductsFound">Nenhum produto encontrado 
       <span *ngIf="categoryFiltered"> para a categoria<b> {{ categoryFiltered }}</b></span>
     </p>
