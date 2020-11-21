@@ -12,7 +12,7 @@ export class ProductService extends ApiService<Product>{
     super(injector);
    }
 
-   getProducts(subcategoryId?:number, published?: boolean, storeId?: number): Observable<Product | Product[]> {
+   getProducts(subcategoryId?:number, published?: boolean, storeId?: number, pageNumber?: number, filterName?: string ): Observable<Product | Product[]> {
     let filterString = ``;
 
     if (subcategoryId) {
@@ -26,8 +26,16 @@ export class ProductService extends ApiService<Product>{
     if (storeId) {
       filterString += filterString ? `&storeId=${storeId}` : `?storeId=${storeId}`;
     }
+  
+    if(pageNumber) {
+      filterString += filterString ? `&pageNumber=${pageNumber}` : `?pageNumber=${pageNumber}`;
+    }
 
-    return this.get(`${this.url}${filterString}`);
+    if(filterName) {
+      filterString += filterString ? `&name=${filterName}` : `?name=${filterName}`;
+    }
+
+    return this.get(`${this.url}${ filterName ? '/search' : ''}${filterString}`);
    }
 
    saveProduct(product: Product): Observable<Product> {
