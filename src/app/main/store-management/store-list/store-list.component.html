@@ -1,5 +1,10 @@
 <div class="title">
   Lojas
+  <es-export-file 
+    *esHasPermission="['COMPANY']"
+    (exportFileEvent)="loadAllStores();" 
+    [data]="storesToExport" 
+    [headers]="csvHeaders"></es-export-file>
 </div>
 <div class="container-list">
   <ul class="content-list" 

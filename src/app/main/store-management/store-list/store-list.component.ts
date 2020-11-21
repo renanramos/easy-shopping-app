@@ -28,7 +28,9 @@ export class StoreListComponent implements OnInit {
   pageNumber: number = ScrollValues.DEFAULT_PAGE_NUMBER;
   noStoreFound: boolean = false;
   stores: Store[] = [];
-  userId: number = null;
+  storesToExport: Store[] = [];
+  csvHeaders: String[] = [];
+  companyId: string = null;
   isAdminUser: boolean = false;
 
   dialogRefStoreDetail: MatDialogRef<StoreDetailComponent>;
@@ -46,9 +48,15 @@ export class StoreListComponent implements OnInit {
     private dialog: MatDialog) { }
 
   async ngOnInit() {
-    this.isAdminUser = this.securityUserService.isAdminUser;
+    
+    this.setUserComponentProperties();
     this.subscribeToSearchService();
     await this.loadStores();
+  }
+
+  setUserComponentProperties() {
+    this.isAdminUser = this.securityUserService.isAdminUser;
+    this.companyId = this.isAdminUser ? null : this.securityUserService.userLoggedId;
   }
 
   subscribeToSearchService() {
@@ -187,5 +195,38 @@ export class StoreListComponent implements OnInit {
   reloadListOfItens() {
     this.pageNumber = ScrollValues.DEFAULT_PAGE_NUMBER;
     this.loadStores();
+  }
+
+  async loadAllStores() {
+    this.csvHeaders = ['Id', 'Nome fantasia', 'Nome', 'CNPJ'];
+    const storesReceived = {
+      next: (stores: Store[]) => {
+        if (stores.length) {
+          this.preparerDataToExport(stores);
+        }
+      },
+      error: (response) => {
+        const errorMessage = this.utilsService.handleErrorMessage(response);
+        this.snackBarService.openSnackBar(errorMessage);
+      }
+    };
+  
+    await this.storeService.getStores(this.companyId, null, null)
+    .pipe(tap(storesReceived))
+    .toPromise()
+    .then(() => true)
+    .catch(() => false);
+  }
+
+  preparerDataToExport(stores: Store[]) {
+    stores.forEach((store: Store) => {
+      const storeToExort: Store = {
+        id: store['id'],
+        corporateName: store['corporateName'],
+        name: store['name'],
+        registeredNumber: store['registeredNumber']
+      }
+      this.storesToExport.push(storeToExort);
+    });
   }
 }
