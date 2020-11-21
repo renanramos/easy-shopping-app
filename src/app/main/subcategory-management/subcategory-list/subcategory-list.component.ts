@@ -25,6 +25,8 @@ export class SubcategoryListComponent implements OnInit {
   noSubcategoriesFound: boolean = false;
   subcategories: Subcategory[] = [];
   productCategories: ProductCategory[] = [];
+  subcategoriesToExport: Subcategory[] = [];
+  csvHeaders: string[] = [];
 
   dialogRef: MatDialogRef<SubcategoryDetailComponent>;
   dialogRefConfirm: MatDialogRef<ConfirmDialogComponent>;
@@ -167,5 +169,27 @@ export class SubcategoryListComponent implements OnInit {
   onScroll() {
     this.pageNumber += 1;
     this.loadComponentProperties();
+  }
+
+  async loadAllSubcategories() {
+    this.csvHeaders = ['Id', 'Nome da subcategoria','Id da categoria', 'Nome da categoria'];
+    const subcategoriesReceived = {
+      next: (subcategories: Subcategory[]) => {
+        if (subcategories.length) {
+          this.subcategoriesToExport = subcategories;
+          console.log(this.subcategories);
+        }
+      },
+      error: (response) => {
+        const errorMessage = this.utilsService.handleErrorMessage(response);
+        this.snackBarService.openSnackBar(errorMessage);
+      }
+    };
+
+    await this.subcategoryService.getSubcategories(null, null, null, true)
+      .pipe(tap(subcategoriesReceived))
+      .toPromise()
+      .then(() => true)
+      .catch(() => false);
   }
 }

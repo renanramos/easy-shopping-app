@@ -1,5 +1,9 @@
 <div class="title">
   Subcategorias
+  <es-export-file 
+    (exportFileEvent)="loadAllSubcategories();" 
+    [data]="subcategoriesToExport" 
+    [headers]="csvHeaders"></es-export-file>
 </div>
 <div class="container-list">
   <ul class="content-list" 
