@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'es-alert-dialog',
@@ -8,12 +8,16 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class AlertDialogComponent implements OnInit {
 
-  constructor(private dialogRef: MatDialogRef<AlertDialogComponent>) { }
+  message: string = '';
+
+  constructor(private dialogRef: MatDialogRef<AlertDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit() {
+    this.message = this.data['message'];
   }
 
   closeDialog() {
-    this.dialogRef.close();
+    this.dialogRef.close(true);
   }
 }

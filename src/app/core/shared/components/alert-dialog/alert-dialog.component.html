@@ -1,10 +1,8 @@
 <h1 mat-dialog-title>Importante!</h1>
 <div mat-dialog-content>
   <p>
-    Enviamos um email para o endereço informado. <br>
-    Acesse o link para ativar a conta.
+    {{ message }}
   </p>
-  <p>Obrigado por se cadastrar :)</p>
 </div>
 <div mat-dialog-actions align="right">
   <button mat-raised-button color="primary" (click)="closeDialog();">Ok!</button>
