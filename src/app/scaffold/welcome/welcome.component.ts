@@ -5,7 +5,9 @@ import { Product } from 'src/app/core/models/product/product.model';
 import { Subcategory } from 'src/app/core/models/subcategory/subcategory.model';
 import { ProductService } from 'src/app/core/service/product/product.service';
 import { ShoppingCartService } from 'src/app/core/service/shopping-cart/shopping-cart.service';
+import { ScrollValues } from 'src/app/core/shared/constants/scroll-values';
 import { MenuService } from 'src/app/core/shared/service/menu-service.service';
+import { SearchService } from 'src/app/core/shared/service/search-service';
 import { SnackbarService } from 'src/app/core/shared/service/snackbar.service';
 import { UtilsService } from 'src/app/core/shared/utils/utils.service';
 
@@ -23,17 +25,32 @@ export class WelcomeComponent implements OnInit {
   productsNotFound: boolean = false;
   menuSubscription: Subscription;
   cartSubscription: Subscription;
+  searchSubscription: Subscription;
+
+  filterName: string = '';
+  pageNumber: number = ScrollValues.DEFAULT_PAGE_NUMBER;
 
   constructor(private productService: ProductService,
     private menuService: MenuService,
     private utilsService: UtilsService,
     private snackBarService: SnackbarService,
-    private shoppingCartService: ShoppingCartService) { }
+    private shoppingCartService: ShoppingCartService,
+    private searchService: SearchService) { }
 
   async ngOnInit() {
     await this.loadProducts();
     await this.subscribeToMenuEvent();
     this.subscribeToShoppingCart();
+    this.subscribeToSearchService();
+  }
+
+  subscribeToSearchService() {
+    this.searchSubscription = this.searchService.searchSubject$.subscribe(value => {
+      this.filterName = value;
+      this.pageNumber = ScrollValues.DEFAULT_PAGE_NUMBER;
+      this.products = [];
+      this.loadProducts();
+    });
   }
 
   async subscribeToMenuEvent() {
@@ -86,7 +103,7 @@ export class WelcomeComponent implements OnInit {
       }
     };
 
-    await this.productService.getProducts(subcategory?.id, true)
+    await this.productService.getProducts(subcategory?.id, true, null, this.pageNumber, this.filterName)
       .pipe(tap(productsReceived))
       .toPromise()
       .then(() => true)
