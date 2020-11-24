@@ -121,11 +121,21 @@
           </ng-template>
         </mat-card-content>
       </mat-card>
-    <div *ngIf="!totalItemsShoppingCart">
+    <div *ngIf="!totalItemsShoppingCart; else cartOptions">
       <button mat-menu-item>
         <mat-icon>sentiment_dissatisfied</mat-icon>
         <span>Nenhum produto selecionado</span>
       </button>
     </div>
+    <ng-template #cartOptions>
+      <div class="cart-options">
+        <button mat-raised-button>
+          <mat-icon mat-icon-button>shopping_basket</mat-icon>
+        </button>
+        <button mat-raised-button color="warn" (click)="removeAllItensFromCart();" matTooltip="Remover itens do carinho">
+          <mat-icon mat-icon-button >remove_shopping_cart</mat-icon>
+        </button>
+      </div>
+    </ng-template>
   </mat-menu>
 </mat-toolbar>

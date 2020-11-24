@@ -133,6 +133,13 @@ span.icon-loggin > mat-icon {
   opacity: 1;
 }
 
+.cart-options {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-around;
+}
+
 @-webkit-keyframes fadeInAndOut {
   0% {
     opacity: 0;

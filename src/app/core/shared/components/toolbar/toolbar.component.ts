@@ -164,4 +164,8 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   get isAccessAllowed() {
     return (this.isUserLoggedIn && !this.isUserSynchronized);
   }
+
+  removeAllItensFromCart() {
+    this.productsInShoppingCart.map(prod => this.removeProductFromCart(prod));
+  }
 }
