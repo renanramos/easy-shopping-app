@@ -10,6 +10,7 @@ import { AngularMaterialModule } from 'src/app/shared/angular-material.module';
 import { SharedComponentsModule } from 'src/app/core/shared/components/shared-components.module';
 import { ProductCategoryListComponent } from './product-category-list/product-category-list.component';
 import { ProductCategoryDetailComponent } from './product-category-detail/product-category-detail.component';
+import { DirectivesModule } from 'src/app/core/shared/directives/directives.modules';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -27,6 +28,7 @@ const components = [
     ReactiveFormsModule,
     AngularMaterialModule,
     ProductCategoryManagementRoutingModule,
+    DirectivesModule,
     SharedComponentsModule,
     NgSlimScrollModule,
     InfiniteScrollModule,

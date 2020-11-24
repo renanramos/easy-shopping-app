@@ -1,6 +1,6 @@
 <div class="title">
   Categorias de produtos
-  <es-export-file (exportFileEvent)="loadAllProductCategories();" [data]="productCategoriesToExport" [headers]="csvHeaders"></es-export-file>
+    <es-export-file *esHasPermission="['ADMINISTRATOR']" (exportFileEvent)="loadAllProductCategories();" [data]="productCategoriesToExport" [headers]="csvHeaders"></es-export-file>
 </div>
 <div class="container-list">
   <ul class="content-list" 
@@ -30,4 +30,4 @@
     </li>
   </ul>
 </div>
-<es-add-button (newClickEvent)="onAddNewProductCategory();"></es-add-button>
+<es-add-button *esHasPermission="['ADMINISTRATOR']" (newClickEvent)="onAddNewProductCategory();"></es-add-button>

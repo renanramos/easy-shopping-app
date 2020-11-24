@@ -38,12 +38,12 @@ export class SecurityUserService extends ApiService<UserCredentials> {
     return this.oauthService.getIdentityClaims()['sub'];
   }
 
-  get isAdminUser() {
-    return this.decodedToken && this.decodedToken['resource_access']['easy-shopping']['roles'][0] === UserRolesConstants.ADMINISTRATOR
-  }
-
   get userLoggedRole() {
     return this.decodedToken && this.decodedToken['resource_access']['easy-shopping']['roles'][0];
+  }
+
+  get isAdminUser() {
+    return this.decodedToken && this.userLoggedRole === UserRolesConstants.ADMINISTRATOR
   }
 
   get isEmailVerified() {

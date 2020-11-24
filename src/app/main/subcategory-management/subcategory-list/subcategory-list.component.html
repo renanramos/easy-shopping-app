@@ -1,6 +1,7 @@
 <div class="title">
   Subcategorias
   <es-export-file 
+    *esHasPermission="['ADMINISTRATOR']"
     (exportFileEvent)="loadAllSubcategories();" 
     [data]="subcategoriesToExport" 
     [headers]="csvHeaders"></es-export-file>
@@ -34,4 +35,4 @@
     </li>
   </ul>
 </div>
-<es-add-button (newClickEvent)="onAddNewSubcategory();"></es-add-button>
+<es-add-button *esHasPermission="['ADMINISTRATOR']" (newClickEvent)="onAddNewSubcategory();"></es-add-button>

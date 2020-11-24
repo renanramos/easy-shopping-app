@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, ViewChild, ElementRef, OnChanges, SimpleChanges } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { SecurityUserService } from 'src/app/core/service/auth/security-user.service';
@@ -14,6 +14,7 @@ import { SnackbarService } from '../../service/snackbar.service';
 import { ConstantMessages } from '../../constants/constant-messages';
 import { UserAuthService } from 'src/app/core/service/auth/user-auth-service.service';
 import { tap } from 'rxjs/operators';
+import { MatMenu, MatMenuItem } from '@angular/material/menu';
 
 @Component({
   selector: 'es-toolbar',
@@ -23,6 +24,7 @@ import { tap } from 'rxjs/operators';
 })
 export class ToolbarComponent implements OnInit, OnDestroy {
 
+  @ViewChild('menu') productsMenu: MatMenu;
   @ViewChild('inputSearchField') inputSearchField: ElementRef<HTMLInputElement>;
   @Output() menuEvent = new EventEmitter<any>();
   @Input() showMenuIcon: boolean = true;
@@ -89,13 +91,14 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     this.oauthService.configure(this.authConfig);
     this.oauthService.tokenValidationHandler = new NullValidationHandler();
     this.oauthService.loadDiscoveryDocumentAndTryLogin();
-    this.oauthService.events.subscribe(({ type }: OAuthEvent) => {
+    this.oauthService.events.subscribe(async ({ type }: OAuthEvent) => {
       switch (type) {
         case 'token_received':
           this.securityUserService.setUserPropertiesFromToken();
           this.isUserLoggedIn = this.securityUserService.isUserLogged();
           this.userLoggedName = this.securityUserService.userLoggedUsername ? this.securityUserService.userLoggedUsername : "";
-          window.location.reload();
+          this.isAdminUser = this.securityUserService.isAdminUser;
+          await this.loadUserProperties();
           break;
         }
     });
@@ -124,7 +127,6 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
   async logout() {
     this.oauthService.logOut();
-    this.router.navigateByUrl('/');
   }
 
   redirectPage(routeName: string) {

@@ -9,6 +9,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { IConfig, NgxMaskModule } from 'ngx-mask';
 import { SubcategoryListComponent } from './subcategory-list/subcategory-list.component';
 import { SubcategoryDetailComponent } from './subcategory-detail/subcategory-detail.component';
+import { DirectivesModule } from 'src/app/core/shared/directives/directives.modules';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -25,6 +26,7 @@ const components = [
     AngularMaterialModule,
     SubcategoryManagementRoutingModule,
     SharedComponentsModule,
+    DirectivesModule,
     NgSlimScrollModule,
     InfiniteScrollModule,
     NgxMaskModule.forRoot()

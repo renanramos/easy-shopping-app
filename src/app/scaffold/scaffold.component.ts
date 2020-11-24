@@ -91,7 +91,7 @@ export class ScaffoldComponent implements OnInit {
         }
       };
   
-      await this.subcategoryService.getSubcategories(productCategory.id)
+      await this.subcategoryService.getSubcategories(null, productCategory.id, null, null)
       .pipe(tap(receiveSubcategories))
       .toPromise()
       .then()
