@@ -51,8 +51,9 @@ span.icon-loggin > mat-icon {
 }
 
 .mat-card-content {
-  text-align: right;
-  padding: 15px;
+  /* text-align: right;
+  padding: 15px; */
+  max-height: 20vh;
   text-overflow: unset;
 }
 
@@ -78,7 +79,11 @@ span.icon-loggin > mat-icon {
 
 .product-cart-image {
   width: calc(50% + 40px);
-  height: calc(90% - 20px);
+}
+
+.mat-card-content > img {
+  max-height: unset;
+  min-height: 15vh;
 }
 
 .popup {

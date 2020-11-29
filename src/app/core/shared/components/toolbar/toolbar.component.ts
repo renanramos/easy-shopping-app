@@ -143,7 +143,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   }
 
   subscribeToShoppingCart() {
-    this.shoppingCartSubscription = this.shoppingCartService.newItem$.subscribe((total) => { 
+    this.shoppingCartSubscription = this.shoppingCartService.newItem$.subscribe((total) => {
       this.totalItemsShoppingCart = total;
       this.productsInShoppingCart = this.shoppingCartService.getProductsParsed();
     });

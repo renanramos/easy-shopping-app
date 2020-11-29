@@ -115,9 +115,9 @@
           {{ product.price | currency : 'BRL'}}
         </mat-card-subtitle>
         <mat-card-content>
-          <img class="product-cart-image" *ngIf="product.productImages[0]?.picture; else showPlaceholderImage" mat-card-image src="{{'data:image/png;base64,' + product.productImages[0]?.picture}}" alt="{{ product.name }}" title="{{ product.name }}">
+          <img class="product-cart-image" *ngIf="product.productImages[0]?.picture; else showPlaceholderImage" mat-card-sm-image src="{{'data:image/png;base64,' + product.productImages[0]?.picture}}" alt="{{ product.name }}" title="{{ product.name }}">
           <ng-template #showPlaceholderImage>
-            <img class="product-cart-image" mat-card-image src="../../../../../assets/product-image-placeholder.png" alt="{{ product.name }}">
+            <img class="product-cart-image"  mat-card-sm-image src="../../../../../assets/product-image-placeholder.png" alt="{{ product.name }}">
           </ng-template>
         </mat-card-content>
       </mat-card>
