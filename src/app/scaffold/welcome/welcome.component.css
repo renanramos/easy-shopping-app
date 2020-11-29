@@ -60,6 +60,11 @@ mat-chip {
   text-align: center;
 }
 
+.mat-card-content img {
+  max-height: 30vh;
+  min-height: 30vh;
+}
+
 @media screen and (min-width: 280px) and (max-width: 570px) {
   .card-items {
     width: calc(100% - 15px);
@@ -119,5 +124,10 @@ mat-chip {
   .card-items {
     width: calc(20% - 25px);
     min-width: unset;
+  }
+
+  .mat-card-content img {
+    min-height: unset;
+    max-height: 50vh;
   }
 }
