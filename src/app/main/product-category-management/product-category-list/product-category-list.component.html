@@ -14,7 +14,7 @@
     </p>
     <li *ngFor="let category of productCategories" class="card-items">
       <mat-card>
-        <mat-icon mat-icon-button [matMenuTriggerFor]="cardOption">more_vert</mat-icon>
+        <mat-icon mat-icon-button [matMenuTriggerFor]="cardOption" *esHasPermission="['ADMINISTRATOR']">more_vert</mat-icon>
 
         <mat-menu #cardOption="matMenu">
           <button mat-menu-item (click)="openEditCategory(category);">
