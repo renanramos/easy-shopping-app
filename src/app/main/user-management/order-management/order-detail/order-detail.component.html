@@ -2,16 +2,15 @@
  Pedido: {{ order.orderNumber }}
 </div>
 <div  mat-dialog-content>
-  <mat-list *ngFor="let item of orderItems">
-    <mat-list-item >
-      <h5 matLine> {{ item.productName }}</h5>
+  <mat-list role="list" *ngIf="orderItems.length">
+    <div mat-subheader>Itens</div>
+    <mat-list-item role="listitem" *ngFor="let item of orderItems">
+      <div matLine>{{ item.productName }}</div>
       <div matLine>
-        <p>
-          Quantidade: <span>{{ item.amount }}</span>
-        </p>
-        <p>
-          Preço: <span>{{ item.price | currency : 'BRL'  }}</span>
-        </p>
+        Quantidade: <span>{{ item.amount }}</span>
+      </div>
+      <div matLine>
+        Preço: <span>{{ item.price | currency : 'BRL'  }}</span>
       </div>
     </mat-list-item>
     <mat-divider></mat-divider>
