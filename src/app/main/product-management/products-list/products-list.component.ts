@@ -238,7 +238,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
       }
     };
   
-    await this.productService.getProducts(null, true, null, null, null)
+    await this.productService.getProducts(null, null, null, null, null)
       .pipe(tap(productsReceived))
       .toPromise()
       .then(() => true)
