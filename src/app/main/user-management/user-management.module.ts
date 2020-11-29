@@ -14,17 +14,20 @@ import { CreditCardManagementModule } from './credit-card-management/credit-card
 import { CustomerFormComponent } from './user-profile/customer-profile/customer-form.component';
 import { CompanyFormComponent } from './user-profile/company-profile/company-form.component';
 import { DirectivesModule } from 'src/app/core/shared/directives/directives.modules';
+import { ShoppingCartItemsComponent } from './user-profile/shopping-cart-items/shopping-cart-items.component';
+import { OrderManagementModule } from './order-management/order-management.module';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
 const components = [
   UserProfileComponent,
   CustomerFormComponent,
-  CompanyFormComponent
+  CompanyFormComponent,
+  ShoppingCartItemsComponent
 ]
 
 @NgModule({
-  declarations: [...components],
+  declarations: [...components ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -34,6 +37,7 @@ const components = [
     SharedComponentsModule,
     AddressManagementModule,
     CreditCardManagementModule,
+    OrderManagementModule,
     NgSlimScrollModule,
     InfiniteScrollModule,
     NgxMaskModule.forRoot()
