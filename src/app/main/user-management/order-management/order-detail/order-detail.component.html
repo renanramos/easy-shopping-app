@@ -1,0 +1,23 @@
+<div mat-dialog-title>
+ Pedido: {{ order.orderNumber }}
+</div>
+<div  mat-dialog-content>
+  <mat-list *ngFor="let item of orderItems">
+    <mat-list-item >
+      <h5 matLine> {{ item.productName }}</h5>
+      <div matLine>
+        <p>
+          Quantidade: <span>{{ item.amount }}</span>
+        </p>
+        <p>
+          Preço: <span>{{ item.price | currency : 'BRL'  }}</span>
+        </p>
+      </div>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+  </mat-list>
+</div>
+<div mat-dialog-actions align="right">
+  <button mat-dialog-close mat-raised-button>Fechar</button>
+  <button mat-raised-button color="primary">Finalizar compra</button>
+</div>
