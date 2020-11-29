@@ -40,7 +40,7 @@ export class ShoppingCartService {
   }
 
   getTotalProductsInStorage() {
-    return this.getProductsParsed().length;
+    return this.getProductsParsed() ? this.getProductsParsed().length : 0;
   }
 
   removeItemFromShoppingCart(product: Product) {
@@ -59,5 +59,9 @@ export class ShoppingCartService {
   setShoppingCartItems(items: any[]) {
     this.products = items;
     sessionStorage.setItem(this.easyShoppingCartIndex, JSON.stringify(this.products));
+  }
+
+  clearShoppingCart() {
+    sessionStorage.setItem(this.easyShoppingCartIndex, JSON.stringify(null));
   }
 }
