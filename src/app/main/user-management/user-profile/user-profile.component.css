@@ -37,8 +37,6 @@
 .card-user-cart {
   width: 55%;
   max-height: 30vh;
-  overflow-y: scroll;
-  overflow-x: hidden;
 }
 
 .mat-expansion-panel-header {
@@ -47,6 +45,17 @@
 
 mat-card > mat-card-content > mat-selection-list > mat-list-option {
   height: 50px;
+}
+
+.mat-card-content#cart-content-list {
+  overflow-y: auto;
+  margin-bottom: 0px;
+  max-height: 20vh;
+  min-height: 20vh;
+}
+
+.mat-card-footer {
+  display: unset;
 }
 
 @media screen and (min-width: 280px) and (max-width: 570px) {

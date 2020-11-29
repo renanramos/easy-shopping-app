@@ -1,5 +1,4 @@
 import { ChangeDetectorRef, Component, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { UserAuthService } from 'src/app/core/service/auth/user-auth-service.service';
 import { SecurityUserService } from 'src/app/core/service/auth/security-user.service';
 import { SnackbarService } from 'src/app/core/shared/service/snackbar.service';
 import { UtilsService } from 'src/app/core/shared/utils/utils.service';
@@ -17,13 +16,16 @@ import { UserRolesConstants } from 'src/app/core/shared/constants/user-roles-con
 import { CompanyFormComponent } from './company-profile/company-form.component';
 import { ShoppingCartService } from 'src/app/core/service/shopping-cart/shopping-cart.service';
 import { Product } from 'src/app/core/models/product/product.model';
-import { MatListOption, MatSelectionList, MatSelectionListChange } from '@angular/material/list';
+import { ShoppingCartItemsComponent } from './shopping-cart-items/shopping-cart-items.component';
+import { Order } from 'src/app/core/models/order/order.model';
+import { OrderService } from 'src/app/core/service/order/order.service';
+import { MatSelectionListChange } from '@angular/material/list';
 
 @Component({
   selector: 'es-user-profile',
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.css'],
-  providers: [CustomerService]
+  providers: [CustomerService, OrderService]
 })
 export class UserProfileComponent implements OnInit, OnDestroy, OnChanges {
 
@@ -33,12 +35,14 @@ export class UserProfileComponent implements OnInit, OnDestroy, OnChanges {
   updateAddressSubject: Subject<any> = new Subject<any>();
   updateCreditCardSubject: Subject<any> = new Subject<any>();
   shoppingCartUpdated: Subject<any> = new Subject<any>();
+  updateOrderSubject: Subject<any> = new Subject<any>();
   currentUsername: string = '';
   currentUserEmail: string = '';
   currentUserCompleteName: string = '';
   currentUserRole: string = '';
   products: Product[] = [];
-  productsToRemove: Product[] = [];
+  productsSelected: Product[] = [];
+  order: Order;
 
   updateShoppingCartSubscription: Subscription;
 
@@ -46,13 +50,17 @@ export class UserProfileComponent implements OnInit, OnDestroy, OnChanges {
   dialogCreditCardRef: MatDialogRef<CreditCardDetailComponent>;
   dialogCustomerProfile: MatDialogRef<CustomerFormComponent>;
   dialogCompanyProfile: MatDialogRef<CompanyFormComponent>;
+  dialogShoppingCartItemstRef: MatDialogRef<ShoppingCartItemsComponent>;
+  hasSelectedItems: boolean;
 
   constructor(
     private ref: ChangeDetectorRef,
     private dialog: MatDialog,
     private snackBarService: SnackbarService,
     private securityUserService: SecurityUserService,
-    private shoppingCartService: ShoppingCartService) { }
+    private shoppingCartService: ShoppingCartService,
+    private uttilsService: UtilsService,
+    private orderService: OrderService) { }
   
   async ngOnInit() {
     this.loadUserLoggedInfo();
@@ -168,18 +176,75 @@ export class UserProfileComponent implements OnInit, OnDestroy, OnChanges {
       });
   }
 
-  addItemsToRemoveFromCart(prod: Product) {
-    this.productsToRemove.push(prod);
-  }
-
   removeItemsFromCart() {
-    this.productsToRemove.map(prod => this.shoppingCartService.removeItemFromShoppingCart(prod));
+    this.products.map(prod => this.shoppingCartService.removeItemFromShoppingCart(prod));
     this.shoppingCartUpdated.next(true);
     this.getUserItemsInCart();
-    this.productsToRemove = [];
+    this.productsSelected = [];
   }
 
   get isCustomerUser() {
     return this.currentUserRole == UserRolesConstants.CUSTOMER;
+  }
+
+  async handleProductsSelected() {
+    this.openShoppingCartCheckout();
+  }
+
+  // async submitNewOrder(order: Order) {
+  //   const orderReceived = {
+  //     next: (order: Order) => {
+  //       if (order['id']) {
+  //         this.order = order;
+          
+  //       }
+  //     },
+  //     error: (response) => {
+  //       const errorMessage = this.uttilsService.handleErrorMessage(response);
+  //       this.snackBarService.openSnackBar(errorMessage);
+  //     }
+  //   };
+  
+  //   await this.orderService.saveOrder(order)
+  //     .pipe(tap(orderReceived))
+  //     .toPromise()
+  //     .then(() => true)
+  //     .catch(() => false);
+  // }
+
+  async openShoppingCartCheckout() {
+    this.dialogShoppingCartItemstRef = this.dialog.open(ShoppingCartItemsComponent, {
+      data: { 
+        order: this.order
+      },
+      disableClose: true,
+      autoFocus: false,
+      panelClass: 'es-dialog'
+    });
+
+    const orderDialogClosed = {
+      next: (res) => {
+        if (res) {
+          this.updateOrderSubject.next();
+          this.shoppingCartService.clearShoppingCart();
+          this.getUserItemsInCart();
+          this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_CREATED);
+        }
+      }
+    }
+
+    await this.dialogShoppingCartItemstRef.afterClosed()
+      .pipe(tap(orderDialogClosed))
+      .toPromise()
+      .then(() => true)
+      .catch(() => false);
+  }
+
+  viewSelected(event: MatSelectionListChange) {
+    this.hasSelectedItems = event.option.selectionList.selectedOptions.hasValue();
+  }
+
+  viewOrderItems(event) {
+    event.stopPropagation();
   }
 }
