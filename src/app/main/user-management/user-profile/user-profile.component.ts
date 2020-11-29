@@ -191,27 +191,6 @@ export class UserProfileComponent implements OnInit, OnDestroy, OnChanges {
     this.openShoppingCartCheckout();
   }
 
-  // async submitNewOrder(order: Order) {
-  //   const orderReceived = {
-  //     next: (order: Order) => {
-  //       if (order['id']) {
-  //         this.order = order;
-          
-  //       }
-  //     },
-  //     error: (response) => {
-  //       const errorMessage = this.uttilsService.handleErrorMessage(response);
-  //       this.snackBarService.openSnackBar(errorMessage);
-  //     }
-  //   };
-  
-  //   await this.orderService.saveOrder(order)
-  //     .pipe(tap(orderReceived))
-  //     .toPromise()
-  //     .then(() => true)
-  //     .catch(() => false);
-  // }
-
   async openShoppingCartCheckout() {
     this.dialogShoppingCartItemstRef = this.dialog.open(ShoppingCartItemsComponent, {
       data: { 
