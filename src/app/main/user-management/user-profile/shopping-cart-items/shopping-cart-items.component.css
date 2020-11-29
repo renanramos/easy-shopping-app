@@ -1,0 +1,13 @@
+.shopping-cart-total {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  margin-right: 1rem;
+  margin-left: 1rem;
+  font-weight: 600;
+}
+
+.item-price {
+  float: right;
+}

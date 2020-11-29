@@ -1,0 +1,46 @@
+<div mat-dialog-title>
+  Itens no carrinho
+</div>
+<div mat-dialog-content>
+    <mat-list role="list" *ngIf="products.length">
+      <div mat-subheader>Itens</div>
+      <mat-list-item role="listitem" *ngFor="let product of products">
+        <div mat-line>
+          {{ product?.name }}
+          <div class="item-price">
+            {{ product?.price | currency : 'BRL' }}
+          </div>
+        </div>
+        <div mat-line>
+          <small> {{ product?.description }}</small>
+        </div>
+      </mat-list-item>
+      <mat-divider></mat-divider>    
+    </mat-list>
+    <p class="shopping-cart-total" *ngIf="products.length">
+      <span>Total:</span>
+      <span>{{ cartTotal | currency : 'BRL' }}</span>
+    </p>
+    <!-- <mat-form-field appearance="outline" class="input-full-width">
+      <mat-label>Cartão de crédito</mat-label>
+      <mat-select formControlName="creditCardId" id="creditCardId">
+        <mat-option *ngFor="let creditCard of creditCards" [value]="creditCard.id">
+          {{ creditCard.creditCardNumber }} - {{ creditCard.ownerName }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="creditCardId.hasError('required')">Campo obrigatório</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="input-full-width">
+      <mat-label>Endereço para entrega</mat-label>
+      <mat-select formControlName="addressId" id="addressId">
+        <mat-option *ngFor="let address of addresses" [value]="address.id">
+          {{ address.streetName }}, {{ address.number }} - {{ address.district }} - {{ address.city }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="addressId.hasError('required')">Campo obrigatório</mat-error>
+    </mat-form-field> -->
+</div>
+<div mat-dialog-actions align="right">
+  <button mat-raised-button mat-dialog-close>Fechar</button>
+  <button mat-raised-button color="primary" (click)="saveOrder();">Salvar novo pedido</button>
+</div>
