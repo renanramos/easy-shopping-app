@@ -47,17 +47,7 @@ export class ShoppingCartItemsComponent implements OnInit {
   async ngOnInit() {
     this.initializeOrderProperties();
     this.getProductsFromCart();
-    // this.createForm();
-    // await this.loadUserAddresses();
-    // await this.loadUserCrediCards();
   }
-
-  // createForm() {
-  //   this.orderItemForm = this.formBuilder.group({
-  //     creditCardId: [null, [Validators.required]],
-  //     addressId: [null, [Validators.required]]
-  //   })
-  // }
 
   async loadUserCrediCards() {
     const creditCardsReceived = {
