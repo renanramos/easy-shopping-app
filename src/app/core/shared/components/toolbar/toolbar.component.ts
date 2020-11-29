@@ -130,8 +130,14 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   }
 
   redirectPage(routeName: string) {
-    this.inputSearchField.nativeElement.value = "";
+    this.clearSearchField();
     this.router.navigateByUrl(`/main${routeName}`);
+  }
+
+  clearSearchField(){
+    if (this.inputSearchField) {
+      this.inputSearchField.nativeElement.value = "";
+    }
   }
 
   onSearchFilter(event: any) {
