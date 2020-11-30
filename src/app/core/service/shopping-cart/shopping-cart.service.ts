@@ -36,7 +36,7 @@ export class ShoppingCartService {
 
   getProductsParsed(): Product[] {
     const items = sessionStorage.getItem(this.easyShoppingCartIndex);
-    return items ? JSON.parse(items) : [];
+    return items != null ? JSON.parse(items) : [];
   }
 
   getTotalProductsInStorage() {
