@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, ViewChild, ElementRef, OnChanges, SimpleChanges } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { SecurityUserService } from 'src/app/core/service/auth/security-user.service';
 import { SearchService } from '../../service/search-service';
@@ -44,7 +44,9 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
   isAdminUser: boolean = false;
 
-  constructor(private router: Router,
+  constructor(
+    private active: ActivatedRoute,
+    private router: Router,
     public dialog: MatDialog,
     private securityUserService: SecurityUserService,
     private searchService: SearchService,
@@ -173,5 +175,11 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
   removeAllItensFromCart() {
     this.productsInShoppingCart.map(prod => this.removeProductFromCart(prod));
+  }
+
+  redirectToUserManagement() {
+    this.router.navigateByUrl('/main/user-management', {
+      state: { openDialog: true }
+    });
   }
 }
