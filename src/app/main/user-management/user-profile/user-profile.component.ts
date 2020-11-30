@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { SecurityUserService } from 'src/app/core/service/auth/security-user.service';
 import { SnackbarService } from 'src/app/core/shared/service/snackbar.service';
-import { UtilsService } from 'src/app/core/shared/utils/utils.service';
 import { Customer } from 'src/app/core/models/registration/customer.model';
 import { tap } from 'rxjs/operators';
 import { Address } from 'src/app/core/models/address/address.model';
@@ -20,6 +19,7 @@ import { ShoppingCartItemsComponent } from './shopping-cart-items/shopping-cart-
 import { Order } from 'src/app/core/models/order/order.model';
 import { OrderService } from 'src/app/core/service/order/order.service';
 import { MatSelectionListChange } from '@angular/material/list';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'es-user-profile',
@@ -54,18 +54,26 @@ export class UserProfileComponent implements OnInit, OnDestroy, OnChanges {
   hasSelectedItems: boolean;
 
   constructor(
+    private active: ActivatedRoute,
+    private router: Router,
     private ref: ChangeDetectorRef,
     private dialog: MatDialog,
     private snackBarService: SnackbarService,
     private securityUserService: SecurityUserService,
-    private shoppingCartService: ShoppingCartService,
-    private uttilsService: UtilsService,
-    private orderService: OrderService) { }
+    private shoppingCartService: ShoppingCartService) {
+    }
   
   async ngOnInit() {
     this.loadUserLoggedInfo();
     this.subscribeToShoppingCartUpdates();
     await this.getUserItemsInCart();
+    this.verifyUserCheckoutItems();
+  }
+
+  verifyUserCheckoutItems() {
+    if (history.state['openDialog']) {
+      this.handleProductsSelected();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {

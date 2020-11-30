@@ -18,7 +18,7 @@
   
   <mat-card class="card-user-cart mat-elevation-z2" *esHasPermission="['CUSTOMER']">
     <mat-card-content id="cart-content-list">
-      <mat-list *ngIf="products.length; else emptyShoppingCart" (selectionChange)="viewSelected($event)">
+      <mat-list *ngIf="products; else emptyShoppingCart" (selectionChange)="viewSelected($event)">
         <div mat-subheader>Seu carrinho de compras</div>
         <mat-list-item *ngFor="let product of products">
           <mat-icon mat-list-icon>arrow_right</mat-icon>
@@ -35,8 +35,8 @@
       </mat-card-content>
     </ng-template>
     <mat-card-footer align="right">
-      <button mat-stroked-button color="primary" (click)="handleProductsSelected();" [disabled]="!products.length">Ver todos</button>
-      <button mat-stroked-button color="warn" (click)="removeItemsFromCart();" [disabled]="!products.length">
+      <button mat-stroked-button color="primary" (click)="handleProductsSelected();" [disabled]="!products?.length">Ver todos</button>
+      <button mat-stroked-button color="warn" (click)="removeItemsFromCart();" [disabled]="!products?.length">
         Remover itens.
       </button>
     </mat-card-footer>
