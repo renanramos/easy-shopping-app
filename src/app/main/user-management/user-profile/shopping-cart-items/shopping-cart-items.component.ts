@@ -150,7 +150,6 @@ export class ShoppingCartItemsComponent implements OnInit {
   }
 
   async saveOrderItems(orderItem: OrderItem) {
-    console.log(orderItem);
     const orderItemSaved = {
       next: (orderItem: OrderItem) => {
         this.dialog.close(orderItem);
