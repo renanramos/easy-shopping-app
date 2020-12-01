@@ -63,5 +63,6 @@ export class ShoppingCartService {
 
   clearShoppingCart() {
     sessionStorage.setItem(this.easyShoppingCartIndex, JSON.stringify(null));
+    this.newItem.next(0);
   }
 }
