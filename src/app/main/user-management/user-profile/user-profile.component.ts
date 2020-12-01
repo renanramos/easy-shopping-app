@@ -45,6 +45,7 @@ export class UserProfileComponent implements OnInit, OnDestroy, OnChanges {
   order: Order;
 
   updateShoppingCartSubscription: Subscription;
+  userUpdatedSubscription: Subscription;
 
   dialogAddressRef: MatDialogRef<AddressDetailComponent>;
   dialogCreditCardRef: MatDialogRef<CreditCardDetailComponent>;
@@ -52,10 +53,9 @@ export class UserProfileComponent implements OnInit, OnDestroy, OnChanges {
   dialogCompanyProfile: MatDialogRef<CompanyFormComponent>;
   dialogShoppingCartItemstRef: MatDialogRef<ShoppingCartItemsComponent>;
   hasSelectedItems: boolean;
+  isUserSynchronized: boolean = true;
 
   constructor(
-    private active: ActivatedRoute,
-    private router: Router,
     private ref: ChangeDetectorRef,
     private dialog: MatDialog,
     private snackBarService: SnackbarService,
@@ -66,6 +66,7 @@ export class UserProfileComponent implements OnInit, OnDestroy, OnChanges {
   async ngOnInit() {
     this.loadUserLoggedInfo();
     this.subscribeToShoppingCartUpdates();
+    this.subscribeToUserUpdate();
     await this.getUserItemsInCart();
     this.verifyUserCheckoutItems();
   }
@@ -83,6 +84,8 @@ export class UserProfileComponent implements OnInit, OnDestroy, OnChanges {
   ngOnDestroy(): void {
     this.updateShoppingCartSubscription
       && this.updateShoppingCartSubscription.unsubscribe();
+    this.userUpdatedSubscription
+      && this.userUpdatedSubscription.unsubscribe();
   }
 
   subscribeToShoppingCartUpdates() {
@@ -215,6 +218,7 @@ export class UserProfileComponent implements OnInit, OnDestroy, OnChanges {
           this.updateOrderSubject.next();
           this.shoppingCartService.clearShoppingCart();
           this.getUserItemsInCart();
+          this.shoppingCartUpdated.next(true);
           this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_CREATED);
         }
       }
@@ -233,5 +237,11 @@ export class UserProfileComponent implements OnInit, OnDestroy, OnChanges {
 
   viewOrderItems(event) {
     event.stopPropagation();
+  }
+
+  subscribeToUserUpdate() {
+    this.userUpdatedSubscription = this.securityUserService.userUpdated$.subscribe((isUpdated) => {
+      this.isUserSynchronized = isUpdated;
+    });
   }
 }

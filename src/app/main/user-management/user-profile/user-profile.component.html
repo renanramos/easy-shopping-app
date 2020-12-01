@@ -11,15 +11,18 @@
         <span>Email:</span> {{ currentUserEmail }}
       </p>
       <p>
-        <button mat-stroked-button color="primary" (click)="openProfileForm();">Atualizar informações</button>
+        <button mat-stroked-button color="primary" (click)="openProfileForm();">Atualizar informações
+          <mat-icon *ngIf="!isUserSynchronized" [style.color]="!isUserSynchronized ? 'red' : 'black'">priority_high</mat-icon>
+        </button>
       </p>
+      <div class="sync-alert" *ngIf="!isUserSynchronized">* Suas informações estão incompletas.</div>
     </mat-card-content>
   </mat-card>
   
   <mat-card class="card-user-cart mat-elevation-z2" *esHasPermission="['CUSTOMER']">
+    <mat-card-title>Seu carrinho de compras</mat-card-title>
     <mat-card-content id="cart-content-list">
       <mat-list *ngIf="products; else emptyShoppingCart" (selectionChange)="viewSelected($event)">
-        <div mat-subheader>Seu carrinho de compras</div>
         <mat-list-item *ngFor="let product of products">
           <mat-icon mat-list-icon>arrow_right</mat-icon>
           <div mat-line>{{ product?.name }}</div>
@@ -34,12 +37,12 @@
         </mat-selection-list>
       </mat-card-content>
     </ng-template>
-    <mat-card-footer align="right">
+    <mat-card-actions align="right">
       <button mat-stroked-button color="primary" (click)="handleProductsSelected();" [disabled]="!products?.length">Ver todos</button>
       <button mat-stroked-button color="warn" (click)="removeItemsFromCart();" [disabled]="!products?.length">
         Remover itens.
       </button>
-    </mat-card-footer>
+    </mat-card-actions>
   </mat-card>
 </div>
 

@@ -58,6 +58,18 @@ mat-card > mat-card-content > mat-selection-list > mat-list-option {
   display: unset;
 }
 
+mat-icon {
+  font-size: 1rem;
+  height: auto;
+  vertical-align: sub !important;
+}
+
+.sync-alert {
+  color: #de0909fa;
+  font-weight: 500;
+  font-size: .8rem;
+}
+
 @media screen and (min-width: 280px) and (max-width: 570px) {
   .card-user-info,
   .card-user-cart {
