@@ -15,8 +15,33 @@
     </mat-list-item>
     <mat-divider></mat-divider>
   </mat-list>
+  <div *ngIf="showForm">
+    <h5>Complete o formulário antes de prosseguir</h5>
+    <form [formGroup]="purchaseForm" *ngIf="purchaseForm">
+      <mat-form-field appearance="outline" class="input-full-width">
+        <mat-label>Endereço</mat-label>
+        <mat-select formControlName="addressId" id="addressId">
+          <mat-option *ngFor="let address of addresses" [value]="address.id">
+            {{ address.streetName }} - {{ address.number }}, {{ address.district }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="addressId.hasError('required') && addresses.length">Campo obrigatório</mat-error>
+        <mat-error *ngIf="!addresses.length">Não há endereços cadastrados</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="input-full-width">
+        <mat-label>Cartão de crédito</mat-label>
+        <mat-select formControlName="creditCardId" id="creditCardId">
+          <mat-option *ngFor="let creditCard of creditCards" [value]="creditCard.id">
+            {{ creditCard.creditCardNumber }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="creditCardId.hasError('required') && creditCards.length">Campo obrigatório</mat-error>
+        <mat-error *ngIf="!creditCards.length">Não há cartões cadastrados</mat-error>
+      </mat-form-field>
+    </form>
+  </div>
 </div>
 <div mat-dialog-actions align="right">
   <button mat-dialog-close mat-raised-button>Fechar</button>
-  <button mat-raised-button color="primary">Finalizar compra</button>
+  <button mat-raised-button color="primary" (click)="openPurchaseForm();">Finalizar compra</button>
 </div>
