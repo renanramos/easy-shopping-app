@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { tap } from 'rxjs/internal/operators/tap';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { Product } from 'src/app/core/models/product/product.model';
@@ -35,7 +36,8 @@ export class WelcomeComponent implements OnInit {
     private utilsService: UtilsService,
     private snackBarService: SnackbarService,
     private shoppingCartService: ShoppingCartService,
-    private searchService: SearchService) { }
+    private searchService: SearchService,
+    private router: Router) { }
 
   async ngOnInit() {
     await this.loadProducts();
@@ -124,5 +126,16 @@ export class WelcomeComponent implements OnInit {
       this.shoppingCartService.addItemShoppingCart(product);
       product['inCart'] = true;
     }
+  }
+
+  prepareItemToBuy(prod: Product) {
+    this.shoppingCartService.addItemShoppingCart(prod);
+    this.redirectToUserManagement();
+  }
+
+  redirectToUserManagement() {
+    this.router.navigateByUrl('/main/user-management', {
+      state: { openDialog: true }
+    });
   }
 }
