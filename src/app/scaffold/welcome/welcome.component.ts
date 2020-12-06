@@ -4,6 +4,7 @@ import { tap } from 'rxjs/internal/operators/tap';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { Product } from 'src/app/core/models/product/product.model';
 import { Subcategory } from 'src/app/core/models/subcategory/subcategory.model';
+import { SecurityUserService } from 'src/app/core/service/auth/security-user.service';
 import { ProductService } from 'src/app/core/service/product/product.service';
 import { ShoppingCartService } from 'src/app/core/service/shopping-cart/shopping-cart.service';
 import { ScrollValues } from 'src/app/core/shared/constants/scroll-values';
@@ -30,6 +31,7 @@ export class WelcomeComponent implements OnInit {
 
   filterName: string = '';
   pageNumber: number = ScrollValues.DEFAULT_PAGE_NUMBER;
+  userLoggedRole: string = null;
 
   constructor(private productService: ProductService,
     private menuService: MenuService,
@@ -37,6 +39,7 @@ export class WelcomeComponent implements OnInit {
     private snackBarService: SnackbarService,
     private shoppingCartService: ShoppingCartService,
     private searchService: SearchService,
+    private securityUserService: SecurityUserService,
     private router: Router) { }
 
   async ngOnInit() {
@@ -44,6 +47,7 @@ export class WelcomeComponent implements OnInit {
     await this.subscribeToMenuEvent();
     this.subscribeToShoppingCart();
     this.subscribeToSearchService();
+    this.userLoggedRole = this.securityUserService.userLoggedRole;
   }
 
   subscribeToSearchService() {
