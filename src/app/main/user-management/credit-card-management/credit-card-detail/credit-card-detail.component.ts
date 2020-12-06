@@ -71,7 +71,7 @@ export class CreditCardDetailComponent implements OnInit {
   }
 
   formatCreditCardValidDate() {
-    return moment(moment(this.creditCard['validDate'])).subtract(1, 'month').format('YYYY-MM-DD');
+    return moment(moment(this.creditCard['validDate'], 'YYYY-MM-DD'), 'YYYY-MM-DD')
   }
 
   submitCreditCard() {
