@@ -1,15 +1,17 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { tap } from 'rxjs/operators';
 import { Address } from 'src/app/core/models/address/address.model';
 import { CreditCard } from 'src/app/core/models/credit-card/credit-card.model';
 import { Order } from 'src/app/core/models/order/order.model';
 import { OrderItem } from 'src/app/core/models/orderItem/order-item.model';
+import { Purchase } from 'src/app/core/models/purchase/purchase.model';
 import { AddressService } from 'src/app/core/service/address/address.service';
 import { CreditCardService } from 'src/app/core/service/credit-card/credit-card.service';
 import { OrderItemService } from 'src/app/core/service/order-item/order-item.service';
 import { ProductService } from 'src/app/core/service/product/product.service';
+import { PurchaseService } from 'src/app/core/service/purchase/purchase.service';
 import { SnackbarService } from 'src/app/core/shared/service/snackbar.service';
 import { UtilsService } from 'src/app/core/shared/utils/utils.service';
 
@@ -17,7 +19,7 @@ import { UtilsService } from 'src/app/core/shared/utils/utils.service';
   selector: 'es-order-detail',
   templateUrl: './order-detail.component.html',
   styleUrls: ['./order-detail.component.css'],
-  providers: [OrderItemService, ProductService, UtilsService, SnackbarService, AddressService, CreditCardService]
+  providers: [OrderItemService, ProductService, UtilsService, SnackbarService, AddressService, CreditCardService, PurchaseService]
 })
 export class OrderDetailComponent implements OnInit {
 
@@ -37,6 +39,8 @@ export class OrderDetailComponent implements OnInit {
     private snackBarService: SnackbarService,
     private orderItemService: OrderItemService,
     private formBuilder: FormBuilder,
+    private dialogRef: MatDialogRef<OrderDetailComponent>,
+    private purchaseService: PurchaseService,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   async ngOnInit() {
@@ -119,7 +123,7 @@ export class OrderDetailComponent implements OnInit {
   }
 
   openPurchaseForm() {
-    this.showForm = true;      
+    this.showForm = !this.showForm;      
   }
 
   get addressId() {
@@ -128,5 +132,27 @@ export class OrderDetailComponent implements OnInit {
 
   get creditCardId() {
     return this.purchaseForm.get('creditCardId');
+  }
+
+  async closeOrder() {
+    let purchase: Purchase = this.purchaseForm.getRawValue();
+    purchase['orderId'] = this.order['id'];
+
+    const purchaseCompleted = {
+      next: (purchase: Purchase) => {
+        this.dialogRef.close(purchase);
+      },
+      error: (response) => {
+        console.log(response);
+        const errorMessage = this.utilsService.handleErrorMessage(response);
+        this.snackBarService.openSnackBar(errorMessage);
+      }
+    };
+
+    await this.purchaseService.savePurchase(purchase)
+      .pipe(tap(purchaseCompleted))
+      .toPromise()
+      .then(() => true)
+      .catch(() => false);
   }
 }

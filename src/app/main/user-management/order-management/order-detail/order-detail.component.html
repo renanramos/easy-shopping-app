@@ -7,10 +7,13 @@
     <mat-list-item role="listitem" *ngFor="let item of orderItems">
       <div matLine>{{ item.productName }}</div>
       <div matLine>
-        Quantidade: <span>{{ item.amount }}</span>
+        <mat-form-field >
+          <mat-label>Quantidade</mat-label>
+          <input matInput value="{{ item.amount }}" #amount>
+        </mat-form-field>
       </div>
       <div matLine>
-        Preço: <span>{{ item.price | currency : 'BRL'  }}</span>
+        Preço: <span>{{ (item.price * amount.value) | currency : 'BRL'  }}</span>
       </div>
     </mat-list-item>
     <mat-divider></mat-divider>
@@ -43,5 +46,6 @@
 </div>
 <div mat-dialog-actions align="right">
   <button mat-dialog-close mat-raised-button>Fechar</button>
-  <button mat-raised-button color="primary" (click)="openPurchaseForm();">Finalizar compra</button>
+  <button mat-raised-button color="primary" (click)="openPurchaseForm();" *ngIf="!showForm" [disabled]="order.finished">Finalizar pedido</button>
+  <button mat-raised-button color="primary" (click)="closeOrder();" *ngIf="showForm">Comprar</button>
 </div>
