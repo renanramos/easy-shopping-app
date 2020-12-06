@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable, Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -25,6 +25,8 @@ export class OrderListComponent implements OnInit {
 
   dialogOrderItemsRef: MatDialogRef<OrderDetailComponent>;
 
+  @Output() totalOpenOrders = new EventEmitter<number>();
+
   constructor(
     private snackBarService: SnackbarService,
     private utilsService: UtilsService,
@@ -49,6 +51,7 @@ export class OrderListComponent implements OnInit {
     const ordersReceived = {
       next: (orders: Order[]) => {
         this.orders = orders;
+        this.calculateTotalOpenOrders();
       },
       error: (response) => {
         const errorMessage = this.utilsService.handleErrorMessage(response);
@@ -61,6 +64,16 @@ export class OrderListComponent implements OnInit {
       .toPromise()
       .then(() => true)
       .catch(() => false);
+  }
+
+  calculateTotalOpenOrders() {
+    let openOrders: number = 0;
+    for(let order of this.orders) {
+      if (!order['finished']) {
+        openOrders++;
+      }
+    }
+    this.totalOpenOrders.next(openOrders);
   }
 
   viewOrderItems(order: Order) {

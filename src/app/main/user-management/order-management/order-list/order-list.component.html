@@ -7,7 +7,7 @@
   
     <ng-container matColumnDef="finished">
       <th mat-header-cell *matHeaderCellDef>Status</th>
-      <td mat-cell *matCellDef="let order">{{ order.finsished ? 'Encerrado' : 'Aberto' }}</td>
+      <td mat-cell *matCellDef="let order">{{ order.finished ? 'Encerrado' : 'Aberto' }}</td>
     </ng-container>
 
     <ng-container matColumnDef="options">
@@ -21,4 +21,4 @@
     <tr mat-row class="table-stripped" *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
 </div>
-<div *ngIf="!orders.length">Nenhum cartão de crédito cadastrado.</div>
+<div *ngIf="!orders.length">Nenhum pedido cadastrado.</div>
