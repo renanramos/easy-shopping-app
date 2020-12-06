@@ -50,6 +50,28 @@
   <mat-card class="mat-elevation-z2">
     <mat-card-content>
       <mat-card-title>
+        Meus pedidos
+      </mat-card-title>
+      <mat-accordion class="info-panel">
+        <mat-expansion-panel >
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <p>
+                <button mat-stroked-button color="primary" matBadge="{{totalOrders}}" matBadgePosition="after" matBadgeSize="small">
+                  <mat-icon>done_all</mat-icon> 
+                  Ver pedidos
+                </button>
+              </p>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <es-order-list [shouldUpdateList]="updateOrderSubject.asObservable()" (totalOpenOrders)="setTotalOpenOrders($event);"></es-order-list>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </mat-card-content>
+  </mat-card>
+  <mat-card class="mat-elevation-z2">
+    <mat-card-content>
+      <mat-card-title>
         Endereços
       </mat-card-title>
       <mat-accordion class="info-panel">
@@ -90,26 +112,6 @@
               </mat-panel-description>
             </mat-expansion-panel-header>
             <es-credit-card-list [shouldUpdateList]="updateCreditCardSubject.asObservable()"></es-credit-card-list>
-          </mat-expansion-panel>
-        </mat-accordion>
-      </mat-card-content>
-    </mat-card>
-    <mat-card class="mat-elevation-z2">
-      <mat-card-content>
-        <mat-card-title>
-          Meus pedidos
-        </mat-card-title>
-        <mat-accordion class="info-panel">
-          <mat-expansion-panel >
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                <button mat-stroked-button color="primary">
-                  <mat-icon>done_all</mat-icon> 
-                  Ver pedidos
-                </button>
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <es-order-list [shouldUpdateList]="updateOrderSubject.asObservable()"></es-order-list>
           </mat-expansion-panel>
         </mat-accordion>
       </mat-card-content>

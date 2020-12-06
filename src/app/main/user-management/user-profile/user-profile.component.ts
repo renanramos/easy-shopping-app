@@ -19,7 +19,6 @@ import { ShoppingCartItemsComponent } from './shopping-cart-items/shopping-cart-
 import { Order } from 'src/app/core/models/order/order.model';
 import { OrderService } from 'src/app/core/service/order/order.service';
 import { MatSelectionListChange } from '@angular/material/list';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'es-user-profile',
@@ -43,6 +42,7 @@ export class UserProfileComponent implements OnInit, OnDestroy, OnChanges {
   products: Product[] = [];
   productsSelected: Product[] = [];
   order: Order;
+  totalOrders: string = null;
 
   updateShoppingCartSubscription: Subscription;
   userUpdatedSubscription: Subscription;
@@ -243,5 +243,9 @@ export class UserProfileComponent implements OnInit, OnDestroy, OnChanges {
     this.userUpdatedSubscription = this.securityUserService.userUpdated$.subscribe((isUpdated) => {
       this.isUserSynchronized = isUpdated;
     });
+  }
+
+  setTotalOpenOrders(event) {
+    this.totalOrders = event ? `${event}`: '';
   }
 }
