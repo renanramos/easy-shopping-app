@@ -7,13 +7,10 @@
     <mat-list-item role="listitem" *ngFor="let item of orderItems">
       <div matLine>{{ item.productName }}</div>
       <div matLine>
-        <mat-form-field >
-          <mat-label>Quantidade</mat-label>
-          <input matInput value="{{ item.amount }}" #amount>
-        </mat-form-field>
+        Quantidade: {{ item.amount }}
       </div>
       <div matLine>
-        Preço: <span>{{ (item.price * amount.value) | currency : 'BRL'  }}</span>
+        Preço: <span>{{ item.price | currency : 'BRL'  }}</span>
       </div>
     </mat-list-item>
     <mat-divider></mat-divider>
