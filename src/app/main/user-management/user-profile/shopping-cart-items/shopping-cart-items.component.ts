@@ -33,6 +33,8 @@ export class ShoppingCartItemsComponent implements OnInit {
   addresses: Address[] = [];
   creditCards: CreditCard[] = [];
 
+  total: number = 0;
+
   constructor(private formBuilder: FormBuilder,
     private dialog: MatDialogRef<ShoppingCartItemsComponent>,
     private snackBarService: SnackbarService,
@@ -98,14 +100,24 @@ export class ShoppingCartItemsComponent implements OnInit {
     this.order['orderNumber'] = this.orderNumber;
   }
 
-  get cartTotal() {
-    return this.products.length ? this.products.map(prod => prod['price']).reduce(this.totalPriceItems, 0) : 0;
+  cartTotal(prodId?: number, products?: Product[], amount?: number) {
+    this.total = products && products.length ?
+      this.updateAmountItems(prodId, products, amount).reduce(this.totalPriceItems, 0) :
+      (this.products.length ? this.products.map(prod => prod['price']).reduce(this.totalPriceItems, 0) : 0);
   }
+
+  updateAmountItems = (prodId: number, products: Product[], amount) => products.map(prod => {
+    if (prod['id'] ===  prodId) {
+      prod['total'] = prod['price'] * Number(amount);
+      prod['amount'] = Number(amount);
+    }
+   return prod['total'];
+  })
 
   totalPriceItems = (prevPrice, currentPrice) => (prevPrice + currentPrice);
 
-  async saveOrder() {
-    this.preparItemsBeforSubmit();
+  async saveOrder(products: Product[]) {
+    this.preparItemsBeforeSubmit(products);
     await this.saveParentOrder();
   }
 
@@ -129,15 +141,15 @@ export class ShoppingCartItemsComponent implements OnInit {
       .catch(() => false);
   }
 
-  preparItemsBeforSubmit() {
-    this.products.map(product => {
+  preparItemsBeforeSubmit(products: Product[]) {
+    products.map(product => {
       this.orderItem.push({
         orderId: this.order['id'],
         productId: product['id'],
         productName: product['name'],
-        amount: 1,
+        amount: product['amount'],
         price: product['price'],
-        total: product['price'] * 1
+        total: product['price'] * product['amount']
       });
     });
   }

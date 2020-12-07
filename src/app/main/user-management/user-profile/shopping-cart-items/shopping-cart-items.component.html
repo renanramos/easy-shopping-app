@@ -7,22 +7,30 @@
       <mat-list-item role="listitem" *ngFor="let product of products">
         <div mat-line>
           {{ product?.name }}
-          <div class="item-price">
-            {{ product?.price | currency : 'BRL' }}
-          </div>
         </div>
         <div mat-line>
           <small> {{ product?.description }}</small>
+        </div>
+        <div  class="info-item" mat-line>
+          <div class="item-amount">
+            <mat-form-field>
+              <mat-label>Quantidade</mat-label>
+              <input matInput #amount mask="0*" value="{{ product.amount ? product.amount : '' }}" (keyup)="cartTotal(product.id, products, amount?.value)">
+            </mat-form-field>
+          </div>
+          <div class="item-price">
+            {{ (product?.price * (amount.value ? amount.value : 1)) | currency : 'BRL' }}
+          </div>
         </div>
       </mat-list-item>
       <mat-divider></mat-divider>    
     </mat-list>
     <p class="shopping-cart-total" *ngIf="products.length">
       <span>Total:</span>
-      <span>{{ cartTotal | currency : 'BRL' }}</span>
+      <span>{{ total | currency : 'BRL' }}</span>
     </p>
 </div>
 <div mat-dialog-actions align="right">
   <button mat-raised-button mat-dialog-close>Fechar</button>
-  <button mat-raised-button color="primary" (click)="saveOrder();">Salvar novo pedido</button>
+  <button mat-raised-button color="primary" (click)="saveOrder(products);">Salvar novo pedido</button>
 </div>
