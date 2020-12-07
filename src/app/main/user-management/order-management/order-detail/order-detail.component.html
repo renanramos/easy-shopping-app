@@ -12,6 +12,9 @@
       <div matLine>
         Preço: <span>{{ item.price | currency : 'BRL'  }}</span>
       </div>
+      <div mat-line>
+        Total: <span>{{ item.total | currency : 'BRL' }}</span>
+      </div>
     </mat-list-item>
     <mat-divider></mat-divider>
   </mat-list>
