@@ -52,12 +52,18 @@
       <mat-card-title>
         Meus pedidos
       </mat-card-title>
+      <mat-panel-description *ngIf="!isUserSynchronized">
+        <p >
+          Antes de finalizar sua compra, por favor complete seus dados.
+          <mat-icon [style.color]="!isUserSynchronized ? 'red' : 'black'">priority_high</mat-icon>
+        </p>
+      </mat-panel-description>
       <mat-accordion class="info-panel">
-        <mat-expansion-panel >
+        <mat-expansion-panel [disabled]="!isUserSynchronized">
           <mat-expansion-panel-header>
             <mat-panel-title>
               <p>
-                <button mat-stroked-button color="primary" matBadge="{{totalOrders}}" matBadgePosition="after" matBadgeSize="small">
+                <button mat-stroked-button color="primary" matBadge="{{totalOrders}}" matBadgePosition="after" matBadgeSize="small" [disabled]="!isUserSynchronized">
                   <mat-icon>done_all</mat-icon> 
                   Ver pedidos
                 </button>

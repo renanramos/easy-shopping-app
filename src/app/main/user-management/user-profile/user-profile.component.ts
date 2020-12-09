@@ -19,6 +19,7 @@ import { ShoppingCartItemsComponent } from './shopping-cart-items/shopping-cart-
 import { Order } from 'src/app/core/models/order/order.model';
 import { OrderService } from 'src/app/core/service/order/order.service';
 import { MatSelectionListChange } from '@angular/material/list';
+import { AlertDialogComponent } from 'src/app/core/shared/components/alert-dialog/alert-dialog.component';
 
 @Component({
   selector: 'es-user-profile',
@@ -52,8 +53,9 @@ export class UserProfileComponent implements OnInit, OnDestroy, OnChanges {
   dialogCustomerProfile: MatDialogRef<CustomerFormComponent>;
   dialogCompanyProfile: MatDialogRef<CompanyFormComponent>;
   dialogShoppingCartItemstRef: MatDialogRef<ShoppingCartItemsComponent>;
+  dialogAlertDialogRef: MatDialogRef<AlertDialogComponent>;
   hasSelectedItems: boolean;
-  isUserSynchronized: boolean = true;
+  isUserSynchronized: boolean = false;
 
   constructor(
     private ref: ChangeDetectorRef,
@@ -72,7 +74,7 @@ export class UserProfileComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   verifyUserCheckoutItems() {
-    if (history.state['openDialog']) {
+    if (history.state['openDialog'] && this.isCustomerUser) {
       this.handleProductsSelected();
     }
   }
@@ -199,7 +201,27 @@ export class UserProfileComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   async handleProductsSelected() {
-    this.openShoppingCartCheckout();
+    this.isUserSynchronized ?
+    this.openShoppingCartCheckout() :
+    this.openAlertDialog();
+  }
+
+  openAlertDialog() {
+    this.dialogAlertDialogRef = this.dialog.open(AlertDialogComponent, {
+      data: {
+        message: "Você precisa atualizar seus dados antes de prosseguir."
+      },
+      disableClose: true,
+      autoFocus: false,
+      panelClass: 'es-dialog'
+    });
+  
+    this.dialogAlertDialogRef.afterClosed()
+      .subscribe((response) => {
+        if (response) {
+          this.openProfileForm();
+        }
+      });
   }
 
   async openShoppingCartCheckout() {
@@ -233,10 +255,6 @@ export class UserProfileComponent implements OnInit, OnDestroy, OnChanges {
 
   viewSelected(event: MatSelectionListChange) {
     this.hasSelectedItems = event.option.selectionList.selectedOptions.hasValue();
-  }
-
-  viewOrderItems(event) {
-    event.stopPropagation();
   }
 
   subscribeToUserUpdate() {
