@@ -106,7 +106,7 @@ export class OrderDetailComponent implements OnInit {
     const orderItemsReceived = {
       next: (orderItems: OrderItem[]) => {
         if(orderItems.length) {
-          this.orderItems = orderItems;
+          this.orderItems = orderItems.reverse();
         }
       },
       error: (response) => {
