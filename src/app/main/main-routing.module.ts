@@ -49,6 +49,11 @@ const routes: Routes = [
         canActivate: [AuthGuard]
       },
       {
+        path: 'purchase-management',
+        loadChildren: () => import('./purchase-management/purchase-management.module').then(m => m.PurchaseManagementModule),
+        canActivate: [AuthGuard]
+      },
+      {
         path: '**',
         redirectTo: ''
       }
