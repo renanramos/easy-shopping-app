@@ -59,6 +59,12 @@
       </button>
       <button mat-menu-item 
         [disabled]="isAccessAllowed && !isAdminUser"
+        (click)="redirectPage('/purchase-management');"
+        *esHasPermission="['COMPANY']">
+        <span>Vendas</span>
+      </button>
+      <button mat-menu-item 
+        [disabled]="isAccessAllowed && !isAdminUser"
         *esHasPermission="['ADMINISTRATOR']"
         (click)="redirectPage('/company-management');">
         <span>Empresas</span>
