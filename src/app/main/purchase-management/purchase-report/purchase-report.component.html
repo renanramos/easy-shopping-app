@@ -1,10 +1,17 @@
-<canvas 
-    class="bar-chart"
-    baseChart
-    [datasets]="barChartData"
-    [labels]="barChartLabels"
-    [options]="barChartOptions"
-    [legend]="barChartLegend"
-    [chartType]="barChartType">
-    aqi
-</canvas>
+<div class="container">
+  <mat-card>
+    <mat-card-title> Vendas </mat-card-title>
+    <mat-card-content>
+      <canvas
+        class="bar-chart"
+        baseChart
+        [datasets]="barChartData"
+        [labels]="barChartLabels"
+        [options]="barChartOptions"
+        [legend]="barChartLegend"
+        [chartType]="barChartType"
+      >
+      </canvas>
+    </mat-card-content>
+  </mat-card>
+</div>

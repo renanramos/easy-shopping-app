@@ -60,34 +60,75 @@ export class PurchaseReportComponent implements OnInit {
       .catch(() => false);
   }
 
-  async configureBarChartData() {
-    this.purchasePerMonths = await this.purchaseStatistics.reduce((previous, current) => {
-      if(current.purchase.date) {
-        previous[current.purchase.date[1]] = [...previous[current.purchase.date[1]] || [], current.purchase.date[1]];
+  async configureBarChartData(statistics?: []) {
+    const purchaseStatistics = statistics ? statistics : this.purchaseStatistics;
+    purchaseStatistics.forEach(statistic => {
+      let purchaseDate = statistic.purchase.date;
+      if (purchaseDate && !this.findPurchaseMonths(statistic.purchase.date[1])) {
+        this.setPurchasePerMonthsValues(statistic.purchase.date[1], statistic.purchase);
       }
-      return previous;
-    }, []);
+    });
   }
 
+  setPurchasePerMonthsValues(monthId: number, purchase: Purchase) {
+    if (this.purchasePerMonths.findIndex(value => value.date == monthId) != -1) {
+      let index = this.purchasePerMonths.findIndex(value => value.date == monthId);
+      this.purchasePerMonths[index].total += 1;
+    } else {
+      this.purchasePerMonths.push({
+        date: monthId,
+        purchase: purchase,
+        total: 0
+     });
+    }
+  }
+
+  findPurchaseMonths = (dateParam: number) => this.purchasePerMonths.find(purchase => purchase['date'][1] == dateParam);
+
   async loadBarChartInfo() {
-    await this.purchasePerMonths.map(purchase => {
-      this.barChartData.push({
-        data: purchase.length,
-        label: this.monthNames[purchase[0] - 1]
-      })
-    });
+    this.barChartData = [];
+    this.barChartLabels.push('Vendas no mês');
+    this.purchasePerMonths.forEach(purchase => {
+      let month = this.monthNames[purchase.date - 1];
+      this.barChartData.push(
+        {
+          data: [purchase.total], 
+          label: month,
+          borderColor: 'rgba(0,0,0,1)',
+          borderWidth: 1,
+          hoverBorderWidth: 1,
+          hoverBorderColor: 'rgba(0,0,0,1)'
+        });
+      });
   }
 
   setBarChartProperties() {
     this.barChartOptions = {
       responsive: true,
+      showLines: true,
+      legend: {
+        display: true
+      },
       plugins: {
         datalabels: {
-          anchor: 'end',
-          align: 'end',
+          formatter: (value, ctx) => {
+            const label = ctx.chart.data.labels[ctx.dataIndex];
+            return label;
+          },
+        },
+      },
+      scales: {
+        yAxes: [{
+          ticks: {
+            stepSize: 0.5,
+            min: 0
+          }
+        }],
+        gridLines: {
+          display: true,
+          circular: true
         }
       }
     };
-    this.barChartData = [];
   }
 }
