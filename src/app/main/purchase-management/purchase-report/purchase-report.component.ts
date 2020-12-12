@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
-import { Label } from 'ng2-charts';
+import { BaseChartDirective, Label } from 'ng2-charts';
 import { tap } from 'rxjs/operators';
 import { PurchaseStatistic } from 'src/app/core/models/purchase/purchase-statistic.model';
 import { Purchase } from 'src/app/core/models/purchase/purchase.model';
@@ -15,8 +16,8 @@ import { UtilsService } from 'src/app/core/shared/utils/utils.service';
   providers: [PurchaseService]
 })
 export class PurchaseReportComponent implements OnInit {
-  monthNames = ["January", "February", "March", "April", "May", "June",
-                  "July", "August", "September", "October", "November", "December"];
+  monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+                  "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
 
   purchaseStatistics: PurchaseStatistic[] = [];
   purchasePerMonths: any[] = [];
@@ -28,13 +29,30 @@ export class PurchaseReportComponent implements OnInit {
   barChartLegend = true;
   barChartData: ChartDataSets[] = [];
 
-  constructor(private purchaseServive: PurchaseService,
+  formFilter: FormGroup;
+
+  @ViewChild(BaseChartDirective) chart: BaseChartDirective;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private purchaseServive: PurchaseService,
     private utilsService: UtilsService,
     private snackBarService: SnackbarService) { }
 
   async ngOnInit() {
     this.setBarChartProperties();
     await this.loadStatistics();
+    this.createFormFilter();
+  }
+
+  createFormFilter() {
+    this.formFilter = this.formBuilder.group({
+      month: ['']
+    });
+  }
+
+  get month() {
+    return this.formFilter.get('month');
   }
 
   async loadStatistics() {
@@ -60,12 +78,11 @@ export class PurchaseReportComponent implements OnInit {
       .catch(() => false);
   }
 
-  async configureBarChartData(statistics?: []) {
-    const purchaseStatistics = statistics ? statistics : this.purchaseStatistics;
-    purchaseStatistics.forEach(statistic => {
+  async configureBarChartData() {
+    this.purchaseStatistics.forEach(statistic => {
       let purchaseDate = statistic.purchase.date;
-      if (purchaseDate && !this.findPurchaseMonths(statistic.purchase.date[1])) {
-        this.setPurchasePerMonthsValues(statistic.purchase.date[1], statistic.purchase);
+      if (purchaseDate && !this.findPurchaseMonths(purchaseDate[1])) {
+        this.setPurchasePerMonthsValues(purchaseDate[1], statistic.purchase);
       }
     });
   }
@@ -83,7 +100,7 @@ export class PurchaseReportComponent implements OnInit {
     }
   }
 
-  findPurchaseMonths = (dateParam: number) => this.purchasePerMonths.find(purchase => purchase['date'][1] == dateParam);
+  findPurchaseMonths = (dateParam: number) => this.purchasePerMonths.find(purchase => purchase['date'] && purchase['date'][1] == dateParam);
 
   async loadBarChartInfo() {
     this.barChartData = [];
@@ -130,5 +147,22 @@ export class PurchaseReportComponent implements OnInit {
         }
       }
     };
+  }
+
+  async onSelectMonth() {
+    this.barChartData = [];
+    this.purchasePerMonths = [];
+    const monthSelectedIndex = this.monthNames.findIndex(month => month === this.month.value);
+    this.purchaseStatistics = this.filterPurchaseStatisticByMonthId(monthSelectedIndex + 1);
+    await this.configureBarChartData();
+    await this.loadBarChartInfo();
+  }
+
+  filterPurchaseStatisticByMonthId = (monthId) => this.purchaseStatistics
+    .filter(statistic => statistic.purchase.date && statistic.purchase.date[1] === monthId);
+
+  async onClearSelectMonth(event: any) {
+   event.preventDefault();
+   this.month.setValue('');
   }
 }

@@ -1,7 +1,21 @@
 <div class="container">
   <mat-card>
-    <mat-card-title> Vendas </mat-card-title>
-    <mat-card-content>
+    <mat-card-title> Vendas por mês </mat-card-title>
+    <mat-card-subtitle>
+      Acumulado de vendas
+    </mat-card-subtitle>
+    <mat-card-content *ngIf="formFilter">
+      <form [formGroup]="formFilter">
+        <mat-form-field appearance="outline" class="input-half-width">
+          <mat-label>Mês</mat-label>
+          <mat-select formControlName="month" (selectionChange)="onSelectMonth();">
+            <mat-option *ngFor="let month of monthNames" [value]="month">{{ month }}</mat-option>
+          </mat-select>
+          <!-- <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="onClearSelectMonth($event);">
+            <mat-icon matSuffix>close</mat-icon>
+          </button> -->
+        </mat-form-field>
+      </form>
       <canvas
         class="bar-chart"
         baseChart
