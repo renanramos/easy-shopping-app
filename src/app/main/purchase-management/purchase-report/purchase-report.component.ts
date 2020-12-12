@@ -3,9 +3,13 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { BaseChartDirective, Label } from 'ng2-charts';
 import { tap } from 'rxjs/operators';
+import { OrderItem } from 'src/app/core/models/orderItem/order-item.model';
+import { Product } from 'src/app/core/models/product/product.model';
 import { PurchaseStatistic } from 'src/app/core/models/purchase/purchase-statistic.model';
 import { Purchase } from 'src/app/core/models/purchase/purchase.model';
+import { ProductService } from 'src/app/core/service/product/product.service';
 import { PurchaseService } from 'src/app/core/service/purchase/purchase.service';
+import { SearchService } from 'src/app/core/shared/service/search-service';
 import { SnackbarService } from 'src/app/core/shared/service/snackbar.service';
 import { UtilsService } from 'src/app/core/shared/utils/utils.service';
 
@@ -13,12 +17,13 @@ import { UtilsService } from 'src/app/core/shared/utils/utils.service';
   selector: 'es-purchase-report',
   templateUrl: './purchase-report.component.html',
   styleUrls: ['./purchase-report.component.css'],
-  providers: [PurchaseService]
+  providers: [PurchaseService, ProductService]
 })
 export class PurchaseReportComponent implements OnInit {
   monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
                   "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
 
+  products: Product[] = [];
   purchaseStatistics: PurchaseStatistic[] = [];
   purchasePerMonths: any[] = [];
 
@@ -31,28 +36,57 @@ export class PurchaseReportComponent implements OnInit {
 
   formFilter: FormGroup;
 
-  @ViewChild(BaseChartDirective) chart: BaseChartDirective;
-
   constructor(
     private formBuilder: FormBuilder,
     private purchaseServive: PurchaseService,
+    private productService: ProductService,
     private utilsService: UtilsService,
-    private snackBarService: SnackbarService) { }
+    private snackBarService: SnackbarService,
+    private searchService: SearchService) { }
 
   async ngOnInit() {
+    this.searchService.hideSearchFieldOption(true);
     this.setBarChartProperties();
-    await this.loadStatistics();
     this.createFormFilter();
+    await this.loadStatistics();
+    await this.loadProducts();
+    await this.configureBarChartData();
+    await this.loadBarChartInfo();
+  }
+
+  async loadProducts() {
+    const productsReceived = {
+      next: (products: Product[]) => {
+        if (products.length) {
+          this.products = products;
+        }
+      },
+      error: (response) => {
+        const errorMessage = this.utilsService.handleErrorMessage(response);
+        this.snackBarService.openSnackBar(errorMessage);
+      }
+    };
+
+   await this.productService.getProducts(null, null, null, null, null)
+      .pipe(tap(productsReceived))
+      .toPromise()
+      .then(() => true)
+      .catch(() => false);
   }
 
   createFormFilter() {
     this.formFilter = this.formBuilder.group({
-      month: ['']
+      month: [''],
+      product: [null]
     });
   }
 
   get month() {
     return this.formFilter.get('month');
+  }
+
+  get product() {
+    return this.formFilter.get('product');
   }
 
   async loadStatistics() {
@@ -61,8 +95,6 @@ export class PurchaseReportComponent implements OnInit {
       next: async (purchaseStatistics: PurchaseStatistic[]) => {
         if(purchaseStatistics.length) {
           this.purchaseStatistics = purchaseStatistics;
-          await this.configureBarChartData();
-          await this.loadBarChartInfo();
         }
       },
       error: (response) => {
@@ -150,19 +182,60 @@ export class PurchaseReportComponent implements OnInit {
   }
 
   async onSelectMonth() {
-    this.barChartData = [];
-    this.purchasePerMonths = [];
-    const monthSelectedIndex = this.monthNames.findIndex(month => month === this.month.value);
-    this.purchaseStatistics = this.filterPurchaseStatisticByMonthId(monthSelectedIndex + 1);
+    this.product.setValue(null);
+    await this.resetChartPropertiesFields();
+    await this.loadStatistics();
+    const monthSelectedIndex = await this.monthNames.findIndex(month => month === this.month.value);
+    this.purchaseStatistics = await this.filterPurchaseStatisticByMonthId(monthSelectedIndex + 1);
     await this.configureBarChartData();
     await this.loadBarChartInfo();
   }
 
-  filterPurchaseStatisticByMonthId = (monthId) => this.purchaseStatistics
+  filterPurchaseStatisticByMonthId = async (monthId) => this.purchaseStatistics
     .filter(statistic => statistic.purchase.date && statistic.purchase.date[1] === monthId);
 
-  async onClearSelectMonth(event: any) {
+  async resetChartPropertiesFields() {
+    this.barChartData = [];
+    this.barChartLabels = [];
+    this.purchasePerMonths = [];
+    this.purchaseStatistics = [];
+  }
+
+  async onClearSelectSelectField(event?: any) {
    event.preventDefault();
    this.month.setValue('');
+   this.product.setValue(null);
+   await this.resetGraphic();
+  }
+
+  async resetGraphic() {
+    await this.resetChartPropertiesFields();
+    await this.loadStatistics();
+    await this.configureBarChartData();
+    await this.loadBarChartInfo();
+  }
+
+  async onSelectProduct() {
+    this.month.setValue('');
+    const productId = this.product.value;
+    await this.resetChartPropertiesFields();
+    await this.loadStatistics();
+    this.purchaseStatistics = this.filterPurchaseStatisticsByProductId(productId);
+    await this.configureBarChartData();
+    await this.loadBarChartInfo();
+  }
+
+  filterPurchaseStatisticsByProductId(productId: number) {
+    return this.purchaseStatistics
+      .map(statistic => {
+        let order = statistic.order;
+        statistic.order['items'] = this.hasItemWithProductId(order['items'], productId);
+        return statistic.order['items'].length ? statistic : null;
+      })
+      .filter(statistic => statistic != null);
+  }
+
+  hasItemWithProductId(items: OrderItem[], productId?: number) {
+    return items && items.filter(item => item['productId'] == productId);
   }
 }

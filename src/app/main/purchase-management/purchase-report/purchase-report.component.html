@@ -1,20 +1,40 @@
 <div class="container">
   <mat-card>
-    <mat-card-title> Vendas por mês </mat-card-title>
+    <mat-card-title> Grafico de vendas efetuadas</mat-card-title>
+  </mat-card>
+  <mat-card>
     <mat-card-subtitle>
-      Acumulado de vendas
+      <div class="clear-filter">
+        <button 
+          type="button" 
+          mat-button 
+          aria-label="Clear" 
+          (click)="onClearSelectSelectField($event);">
+          Limpar filtro
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
     </mat-card-subtitle>
     <mat-card-content *ngIf="formFilter">
       <form [formGroup]="formFilter">
-        <mat-form-field appearance="outline" class="input-half-width">
-          <mat-label>Mês</mat-label>
-          <mat-select formControlName="month" (selectionChange)="onSelectMonth();">
-            <mat-option *ngFor="let month of monthNames" [value]="month">{{ month }}</mat-option>
-          </mat-select>
-          <!-- <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="onClearSelectMonth($event);">
-            <mat-icon matSuffix>close</mat-icon>
-          </button> -->
-        </mat-form-field>
+        <div class="input-full-width">
+          <div class="input-half-width">
+            <mat-form-field appearance="outline" class="input-full-width">
+              <mat-label>Mês</mat-label>
+              <mat-select formControlName="month" (selectionChange)="onSelectMonth();">
+                <mat-option *ngFor="let month of monthNames" [value]="month">{{ month }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="input-half-width">
+            <mat-form-field appearance="outline" class="input-full-width">
+              <mat-label>Produto</mat-label>
+              <mat-select formControlName="product" (selectionChange)="onSelectProduct();">
+                <mat-option *ngFor="let prod of products" [value]="prod.id">{{ prod.name }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
       </form>
       <canvas
         class="bar-chart"

@@ -2,6 +2,25 @@
   margin: 1% 25vw;
 }
 
+.container mat-card {
+  margin: 5% auto;
+}
+
 .bar-chart {
   max-height: 45vh;
+}
+
+.clear-filter {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.clear-filter button {
+  font-size: .9rem;
+}
+
+.clear-filter mat-icon {
+  font-size: .8rem;
+  height: auto;
+  vertical-align: middle;
 }
