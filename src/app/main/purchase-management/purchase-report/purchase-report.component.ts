@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
-import { BaseChartDirective, Label } from 'ng2-charts';
+import { Label } from 'ng2-charts';
 import { tap } from 'rxjs/operators';
+
 import { OrderItem } from 'src/app/core/models/orderItem/order-item.model';
 import { Product } from 'src/app/core/models/product/product.model';
 import { PurchaseStatistic } from 'src/app/core/models/purchase/purchase-statistic.model';
@@ -169,7 +170,7 @@ export class PurchaseReportComponent implements OnInit {
       scales: {
         yAxes: [{
           ticks: {
-            stepSize: 0.5,
+            stepSize: 1,
             min: 0
           }
         }],
