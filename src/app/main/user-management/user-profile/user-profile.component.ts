@@ -55,7 +55,7 @@ export class UserProfileComponent implements OnInit, OnDestroy, OnChanges {
   dialogShoppingCartItemstRef: MatDialogRef<ShoppingCartItemsComponent>;
   dialogAlertDialogRef: MatDialogRef<AlertDialogComponent>;
   hasSelectedItems: boolean;
-  isUserSynchronized: boolean = false;
+  isUserSynchronized: boolean;
 
   constructor(
     private ref: ChangeDetectorRef,
@@ -107,6 +107,7 @@ export class UserProfileComponent implements OnInit, OnDestroy, OnChanges {
     this.currentUserEmail = this.securityUserService.userLoggedEmail;
     this.currentUserCompleteName = this.securityUserService.userName;
     this.currentUserRole = this.securityUserService.userLoggedRole;
+    this.isUserSynchronized = !!this.securityUserService.isUserSyncronized;
   }
 
   addNewAddress(event: any) {
