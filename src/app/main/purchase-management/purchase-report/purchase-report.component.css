@@ -2,6 +2,10 @@
   margin: 1% 25vw;
 }
 
+.title {
+  margin-left: unset;
+}
+
 .container mat-card {
   margin: 5% auto;
 }
@@ -23,4 +27,32 @@
   font-size: .8rem;
   height: auto;
   vertical-align: middle;
+}
+
+@media screen and (min-width: 280px) and (max-width: 570px) {
+  .container {
+    margin: unset;
+  }
+}
+
+@media screen and (min-width: 571px) and (max-width: 768px) {
+  .container {
+    margin: 1% 5vw;
+  }
+}
+
+@media screen and (min-width: 480px) and (max-width: 768px) and (orientation: landscape) {
+  
+}
+
+@media screen and (min-width: 769px) and (max-width: 1366px) {
+  .container {
+    margin: 1% 10vw;
+  }
+}
+
+@media screen and (min-width: 1367px) and (max-width: 1920px) {
+  .container {
+    margin: 1% 15vw;
+  }
 }
