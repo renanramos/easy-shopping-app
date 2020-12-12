@@ -15,6 +15,7 @@ import { ConstantMessages } from '../../constants/constant-messages';
 import { UserAuthService } from 'src/app/core/service/auth/user-auth-service.service';
 import { tap } from 'rxjs/operators';
 import { MatMenu, MatMenuItem } from '@angular/material/menu';
+import { AuthConstants } from '../../constants/auth-constants';
 
 @Component({
   selector: 'es-toolbar',
@@ -67,12 +68,14 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     if (this.isUserLoggedIn) {
       await this.loadUserProperties();
     }
+    this.router.events.subscribe(() => this.searchService.hideSearchFieldOption(true));
   }
 
   async loadUserProperties() {
     const userProfile = {
       next: (user) => {
         this.isUserSynchronized = user['sync'];
+        this.securityUserService.setUserSyncronized(this.isUserSynchronized);
       },
       error: () => {  }
     };
@@ -128,6 +131,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   }
 
   async logout() {
+    sessionStorage.removeItem(AuthConstants.SYNC);
     this.oauthService.logOut();
   }
 
