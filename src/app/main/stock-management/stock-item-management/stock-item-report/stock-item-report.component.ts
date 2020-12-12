@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
@@ -16,7 +16,7 @@ import { UtilsService } from 'src/app/core/shared/utils/utils.service';
   styleUrls: ['./stock-item-report.component.css'],
   providers: [StockItemService]
 })
-export class StockItemReportComponent implements OnInit {
+export class StockItemReportComponent implements OnInit, OnDestroy {
 
   stockId: number = null;
   stockItemsNotFound: boolean = false;
@@ -67,6 +67,10 @@ export class StockItemReportComponent implements OnInit {
     this.getItemPropertyId();
     await this.loadStockItems();
     this.searchService.hideSearchField.next(true);
+  }
+
+  ngOnDestroy(): void {
+    this.searchService.hideSearchField.next(false);
   }
 
   setPieChartProperties() {

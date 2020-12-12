@@ -59,6 +59,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   }
 
   async subscribeToSearchService() {
+    this.searchService.hideSearchFieldOption(false);
     this.searchServiceSubscription = await this.searchService.searchSubject$.subscribe(value => {
       this.pageNumber = ScrollValues.DEFAULT_PAGE_NUMBER;
       this.filterName = value;

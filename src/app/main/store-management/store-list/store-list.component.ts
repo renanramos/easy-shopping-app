@@ -48,7 +48,6 @@ export class StoreListComponent implements OnInit {
     private dialog: MatDialog) { }
 
   async ngOnInit() {
-    
     this.setUserComponentProperties();
     this.subscribeToSearchService();
     await this.loadStores();
@@ -60,6 +59,7 @@ export class StoreListComponent implements OnInit {
   }
 
   subscribeToSearchService() {
+    this.searchService.hideSearchFieldOption(false);
     this.searchSubscription = this.searchService.searchSubject$
     .subscribe((value) => {
       this.pageNumber = ScrollValues.DEFAULT_PAGE_NUMBER;

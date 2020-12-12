@@ -48,6 +48,7 @@ export class SubcategoryListComponent implements OnInit {
   }
 
   subscribeToSearchService() {
+    this.searchService.hideSearchFieldOption(false);
     this.searchSubsctiption = this.searchService.searchSubject$
     .subscribe((value) => {
       this.pageNumber = ScrollValues.DEFAULT_PAGE_NUMBER;

@@ -47,6 +47,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
   }
 
   subscribeToSearchService() {
+    this.searchService.hideSearchFieldOption(false);
     this.searchServiceSubscription = this.searchService.searchSubject$
     .subscribe((value) => {
         this.pageNumber = ScrollValues.DEFAULT_PAGE_NUMBER;

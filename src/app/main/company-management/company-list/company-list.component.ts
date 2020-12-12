@@ -45,6 +45,7 @@ export class CompanyListComponent implements OnInit, OnDestroy {
   }
 
   subscribeToSearchService() {
+    this.searchService.hideSearchFieldOption(false);
     this.searchSubscription = this.searchService.searchSubject$
     .subscribe((value) => {
       this.pageNumber = ScrollValues.DEFAULT_PAGE_NUMBER;
