@@ -51,6 +51,7 @@ export class WelcomeComponent implements OnInit {
   }
 
   subscribeToSearchService() {
+    this.searchService.hideSearchFieldOption(false);
     this.searchSubscription = this.searchService.searchSubject$.subscribe(value => {
       this.filterName = value;
       this.pageNumber = ScrollValues.DEFAULT_PAGE_NUMBER;
