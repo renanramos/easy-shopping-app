@@ -5,6 +5,7 @@ import { UserRolesConstants } from '../../shared/constants/user-roles-constants'
 import * as jwt_decode from 'jwt-decode';
 import { OAuthEvent, OAuthService } from 'angular-oauth2-oidc';
 import { Subject } from 'rxjs';
+import { AuthConstants } from '../../shared/constants/auth-constants';
 
 @Injectable()
 export class SecurityUserService extends ApiService<UserCredentials> {
@@ -56,5 +57,12 @@ export class SecurityUserService extends ApiService<UserCredentials> {
 
   get userName() {
     return this.oauthService.getIdentityClaims()['name'];
+  }
+  get isUserSyncronized() {
+    return sessionStorage.getItem(AuthConstants.SYNC);
+  }
+
+  setUserSyncronized(sync: boolean) {
+    sessionStorage.setItem(AuthConstants.SYNC, `${sync}`);
   }
 }
