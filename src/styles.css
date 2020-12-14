@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
+html, body { height: auto; }
 body { width: 100vw; margin: 0 auto; font-family: Roboto, "Helvetica Neue", sans-serif; overflow-x: hidden;}
 
 body  mat-toolbar > mat-form-field > div > div.mat-form-field-flex {
