@@ -1,4 +1,10 @@
+.header-button button {
+  width: 7vw;
+  color: #F2F2F2;
+  background-color: #3700B3 !important;
+}
+
 .header-button span {
-  margin: 15px 5px;
-  font-size: 1.3rem;
+  margin: 0px 10px;
+  font-size: 1em;
 }
