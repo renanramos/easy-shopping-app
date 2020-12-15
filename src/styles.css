@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: auto; }
-body { width: 100vw; margin: 0 auto; font-family: Roboto, "Helvetica Neue", sans-serif; overflow-x: hidden;}
+body { width: 100vw; margin: 0 auto; font-family: Roboto, "Helvetica Neue", sans-serif; overflow: hidden;}
 
 body  mat-toolbar > mat-form-field > div > div.mat-form-field-flex {
   height: 0;
@@ -13,8 +13,8 @@ body mat-toolbar > mat-form-field > div {
 }
 
 .mat-toolbar {
-  background-color: #50a591;
-  color: whitesmoke;
+  background-color:#3f51b5;
+  color:#F2F2F2;
   font: 400 26px Roboto, "Helvetica Neue", sans-serif;
 }
 
@@ -116,10 +116,6 @@ body mat-toolbar > mat-form-field > div {
 .header-button {
   float: right;
   margin-right: 3%;
-}
-
-.header-button button {
-  background-color: #50a591 !important;
 }
 
 .container-list {
