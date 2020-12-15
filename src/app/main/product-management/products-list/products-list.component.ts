@@ -36,12 +36,14 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   searchServiceSubscription: Subscription;
   pageNumber: number = ScrollValues.DEFAULT_PAGE_NUMBER;
   filterName: string = '';
+  isLoadingMore: boolean = false;
 
   dialogRef: MatDialogRef<ProductDetailComponent>;
   confirmDialogRef: MatDialogRef<ConfirmDialogComponent>;
   uploadImageDialogRef: MatDialogRef<ProductUploadImageComponent>;
   publishProductDialogRef: MatDialogRef<PublishProductComponentComponent>;
   userId: string = '';
+
   constructor(
     private dialog: MatDialog,
     private productService: ProductService,
@@ -84,18 +86,19 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   }
 
   async loadProducts(subcategory?: Subcategory) {
-    this.products = [];
     this.noProductsFound = false;
+    this.isLoadingMore = true;
+
     const receivedProducts = {
       next: (products: []) => {
         if (products.length) {
           this.products = products;
-        } else {
-          this.noProductsFound = true;
         }
+        this.isLoadingMore = false;
       },
       error: (error) => {
-        this.noProductsFound = false;
+        this.noProductsFound = true;
+        this.isLoadingMore = false;
       }
     }
 
