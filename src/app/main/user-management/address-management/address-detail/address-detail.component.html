@@ -27,20 +27,21 @@
       <input matInput formControlName="district" id="district">
       <mat-error *ngIf="district.hasError('required')">Campo obrigatório</mat-error>
     </mat-form-field>
-    <div class="input-full-width">
-      <mat-form-field class="input-half-width">
-        <mat-label>Cidade</mat-label>
-        <input matInput formControlName="city" id="city">
-        <mat-error *ngIf="city.hasError('required')">Campo obrigatório</mat-error>
-      </mat-form-field>
-      <mat-form-field class="input-half-width">
+      <mat-form-field class="input-full-width">
         <mat-label>Estado</mat-label>
-        <input matInput formControlName="state" id="state">
-        <mat-hint align="end">Sigla do seu estado</mat-hint>
+        <mat-select formControlName="state" id="state" (selectionChange)="loadCities(state.value)">
+          <mat-option *ngFor="let uf of ufs" [value]="uf.sigla">{{ uf.nome }}</mat-option>
+        </mat-select>
         <mat-error *ngIf="state.hasError('required')">Campo obrigatório</mat-error>
         <mat-error *ngIf="state.hasError('maxlength')">Máximo dois caracteres</mat-error>
       </mat-form-field>
-    </div>
+    <mat-form-field class="input-full-width">
+      <mat-label>Cidade</mat-label>
+      <mat-select formControlName="city" id="city">
+        <mat-option *ngFor="let cidade of cidades" [value]="cidade.nome">{{ cidade.nome }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="city.hasError('required')">Campo obrigatório</mat-error>
+    </mat-form-field>
   </form>
 </div>
 <div mat-dialog-actions align="right">
