@@ -34,8 +34,10 @@
               Saldo atual: <span>{{ item?.currentAmount }}</span>
             </p>
             <div class="stock-status">
-            <mat-icon matTooltip="{{stockItemIconStatus(item)['message']}}">{{ stockItemIconStatus(item)['icon'] }}</mat-icon>
-            </div>
+              <div [ngClass]="(stockItemIconStatus(item)['pulse']) ? 'icon-pulse' : ''">
+                <mat-icon matTooltip="{{stockItemIconStatus(item)['message']}}">{{ stockItemIconStatus(item)['icon'] }}</mat-icon>
+                </div>
+              </div>
           </div>
         </mat-card-content>
       </mat-card>
