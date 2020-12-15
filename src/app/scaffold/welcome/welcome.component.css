@@ -16,11 +16,13 @@
 .filter-list-content {
   display: flex;
   align-items: center;
+  margin-top: 1vw;
   margin-right: 1vw;
+  margin-left: 1vw;
 }
 
 .filter-list-content > span {
-  margin-right: 1vw;
+  margin-right: .5vw;
 }
 
 .products-header-image {
@@ -50,10 +52,11 @@ mat-chip {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
+  justify-content: space-between;
 }
 
 .card-actions button {
-  width: 50%;
+  width: 45%;
 }
 
 .img-container {
@@ -97,7 +100,7 @@ mat-chip {
 
 @media screen and (min-width: 769px) and (max-width: 1366px) {
   .card-items {
-    width: calc(33% - 15px);
+    width: calc(25% - 5px);
     min-width: unset;
   }
   
