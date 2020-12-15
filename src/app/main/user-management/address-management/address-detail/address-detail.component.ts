@@ -7,12 +7,15 @@ import { AddressService } from 'src/app/core/service/address/address.service';
 import { Address } from 'src/app/core/models/address/address.model';
 import { tap } from 'rxjs/internal/operators/tap';
 import { ConstantMessages } from 'src/app/core/shared/constants/constant-messages';
+import { UF } from 'src/app/core/models/ibge/uf.model';
+import { Cidade } from 'src/app/core/models/ibge/cidade.model';
+import { IBGESerice } from 'src/app/core/service/ibge/ibge.service';
 
 @Component({
   selector: 'es-address-detail',
   templateUrl: './address-detail.component.html',
   styleUrls: ['./address-detail.component.css'],
-  providers: [AddressService]
+  providers: [AddressService, IBGESerice]
 })
 export class AddressDetailComponent implements OnInit {
 
@@ -21,18 +24,67 @@ export class AddressDetailComponent implements OnInit {
   isWaitingResponse: boolean = false;
   customerId: string = null;
 
+  ufs: UF[] = [];
+  cidades: Cidade[] = [];
+
   constructor(
     private dialogRef: MatDialogRef<AddressDetailComponent>,
     private addressService: AddressService,
     private snackBarService: SnackbarService,
     private utilsService: UtilsService,
     private formBuilder: FormBuilder,
+    private ibgeService: IBGESerice,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.address = this.data['address'] ? this.data['address'] : new Address();
     this.customerId = this.data['userTokenId'];
     this.createForm();
+    await this.loadEstados();
+    if (this.address['id']) {
+      await this.loadCities(this.address['state']);
+    }
+  }
+
+  async loadEstados() {
+    const ufsReceived = {
+      next: (ufs: UF[]) => {
+        if (ufs.length) {
+          this.ufs = ufs;
+        }
+      },
+      error: (response) => {
+        const errorMessage = this.utilsService.handleErrorMessage(response);
+        this.snackBarService.openSnackBar(errorMessage);
+      }
+    };
+
+    await this.ibgeService.getEstados()
+      .pipe(tap(ufsReceived))
+      .toPromise()
+      .then(() => true)
+      .catch(() => false);
+  }
+
+  async loadCities(ufId: string) {
+
+    const citiesReceived = {
+      next: (cidades: Cidade[]) => {
+        if (cidades.length) {
+          this.cidades = cidades;
+        }
+      },
+      error: (response) => {
+        const errorMessage = this.utilsService.handleErrorMessage(response);
+        this.snackBarService.openSnackBar(errorMessage);
+      }
+    };
+
+    await this.ibgeService.getCidades(this.state.value)
+      .pipe(tap(citiesReceived))
+      .toPromise()
+      .then(() => true)
+      .catch(() => false);
   }
 
   createForm() {
