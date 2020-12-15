@@ -20,7 +20,7 @@ export class CompanyFormComponent implements OnInit {
 
   companyForm: FormGroup;
   currentCompanyId: string = null;
-  company: Company = null;
+  company: Company = new Company();
 
   constructor(
     private companyService: CompanyService,
@@ -32,7 +32,9 @@ export class CompanyFormComponent implements OnInit {
 
   async ngOnInit() {
     this.currentCompanyId = this.securityUserService.userLoggedId;
-    await this.loadCompanyInfo();
+    if (this.securityUserService.isUserSyncronized) {
+      await this.loadCompanyInfo();
+    }
     this.createForm();
   }
 
@@ -44,7 +46,7 @@ export class CompanyFormComponent implements OnInit {
   }
 
  async onSubmitCompany() {
-    this.companyForm.valid ?
+    this.companyForm.valid && this.securityUserService.isEmailVerified ?
       await this.handleCompanyOperations() :
       this.companyForm.markAllAsTouched();
   }
