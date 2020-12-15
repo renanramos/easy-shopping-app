@@ -35,7 +35,7 @@
             </small>
           </mat-card-content>
           <mat-card-actions class="card-actions" *ngIf="userLoggedRole != 'COMPANY' && userLoggedRole != 'ADMINISTRATOR'">
-            <button mat-raised-button color="{{ product.inCart ? 'none' : 'warn' }}" matTooltip="Adicionar ao carrinho" (click)="addItemToShoppingCart(product);">
+            <button mat-stroked-button color="{{ product.inCart ? 'none' : '#ff5e00eb' }}" matTooltip="Adicionar ao carrinho" (click)="addItemToShoppingCart(product);">
               <mat-icon>{{ product.inCart ? 'done' : 'add_shopping_cart' }}</mat-icon></button>
             <button mat-raised-button color="primary"(click)="prepareItemToBuy(product);">{{ 'Comprar' | uppercase }}</button>
           </mat-card-actions>
