@@ -177,13 +177,15 @@ export class StockItemListComponent implements OnInit {
     let status = { 
       icon: 'sentiment_very_satisfied',
       message: 'Estoque em nível normal',
-      color: '#797777'
+      color: '#797777',
+      pulse: false
     };
 
     if (current < min) {
       status['icon'] = 'south';
       status['message'] = 'Estoque abaixo do nível aceitável';
       status['color'] = '#f7264dfc';
+      status['pulse'] = true;
       return status;
     }
 
@@ -195,9 +197,5 @@ export class StockItemListComponent implements OnInit {
     }
 
     return status;
-  }
-
-  openReportDialog() {
-    
   }
 }
