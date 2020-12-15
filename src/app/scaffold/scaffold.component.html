@@ -7,7 +7,7 @@
     <ul class="categories-list">
       <li class="category-item"  *ngIf="!productsCategories.length">Não há categorias cadastradas</li>
       <li class="category-item" *ngFor="let productCategory of productsCategories">
-        <div class="item-option" [ngStyle]="{'font-weight':  productCategory.enabled ? '600' : 'normal'}" (click)="getSubcategory(productCategory)">
+        <div class="item-option" [ngStyle]="{'font-weight':  productCategory.enabled ? '500' : 'normal'}" (click)="getSubcategory(productCategory)">
           <span>{{ productCategory.name }}</span><mat-icon>{{ (changeArrowIcon && !productCategory.enabled ) ? 'keyboard_arrow_right' : 'keyboard_arrow_down' }}</mat-icon>
         </div>
         <ul class="categories-list" *ngIf="subcategories.length && productCategory.enabled">
@@ -15,8 +15,6 @@
             <a (click)="subcategorySelected(sub)">{{ sub.name }}</a>
           </li>
         </ul>
-      </li>
-      <li class="category-item">
       </li>
     </ul>
   </mat-drawer>
