@@ -38,6 +38,7 @@ mat-chip {
 
 .mat-card-image {
   max-height: 300px;
+  min-height: 33vh;
 }
 
 .card-actions {
