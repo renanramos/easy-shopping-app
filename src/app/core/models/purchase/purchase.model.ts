@@ -7,5 +7,5 @@ export class Purchase {
   public orderId: number;
   public addressId: number;
   public creditCardId: number;
-  public date?: any;
+  public purchaseDate?: any;
 }

@@ -113,7 +113,7 @@ export class PurchaseReportComponent implements OnInit {
 
   async configureBarChartData() {
     this.purchaseStatistics.forEach(statistic => {
-      let purchaseDate = statistic.purchase.date;
+      let purchaseDate = statistic.purchase.purchaseDate;
       if (purchaseDate && !this.findPurchaseMonths(purchaseDate[1])) {
         this.setPurchasePerMonthsValues(purchaseDate[1], statistic.purchase);
       }
@@ -128,12 +128,12 @@ export class PurchaseReportComponent implements OnInit {
       this.purchasePerMonths.push({
         date: monthId,
         purchase: purchase,
-        total: 0
+        total: 1
      });
     }
   }
 
-  findPurchaseMonths = (dateParam: number) => this.purchasePerMonths.find(purchase => purchase['date'] && purchase['date'][1] == dateParam);
+  findPurchaseMonths = (dateParam: number) => this.purchasePerMonths.find(purchase => purchase['purchaseDate'] && purchase['purchaseDate'][1] == dateParam);
 
   async loadBarChartInfo() {
     this.barChartData = [];
@@ -193,7 +193,7 @@ export class PurchaseReportComponent implements OnInit {
   }
 
   filterPurchaseStatisticByMonthId = async (monthId) => this.purchaseStatistics
-    .filter(statistic => statistic.purchase.date && statistic.purchase.date[1] === monthId);
+    .filter(statistic => statistic.purchase.purchaseDate && statistic.purchase.purchaseDate[1] === monthId);
 
   async resetChartPropertiesFields() {
     this.barChartData = [];
