@@ -100,7 +100,7 @@ mat-chip {
 
 @media screen and (min-width: 769px) and (max-width: 1366px) {
   .card-items {
-    width: calc(25% - 5px);
+    width: calc(25% - 15px);
     min-width: unset;
   }
   
