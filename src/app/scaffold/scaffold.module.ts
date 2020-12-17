@@ -6,6 +6,9 @@ import { ScaffoldComponent } from './scaffold.component';
 import { ScaffoldRoutingModule } from './scaffold-routing.module';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { SharedComponentsModule } from '../core/shared/components/shared-components.module';
+import { NgSlimScrollModule } from 'ngx-slimscroll';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { NgxMaskModule } from 'ngx-mask';
 
 const components = [
   ScaffoldComponent,
@@ -21,7 +24,10 @@ const components = [
     SharedModule,
     AngularMaterialModule,
     ScaffoldRoutingModule,
-    SharedComponentsModule
+    SharedComponentsModule,
+    NgSlimScrollModule,
+    InfiniteScrollModule,
+    NgxMaskModule.forRoot()
   ],
   exports: [
     ...components
