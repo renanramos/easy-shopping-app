@@ -178,7 +178,8 @@ export class SubcategoryListComponent implements OnInit {
       next: (subcategories: Subcategory[]) => {
         if (subcategories.length) {
           this.subcategoriesToExport = subcategories;
-          console.log(this.subcategories);
+        } else {
+          this.snackBarService.openSnackBar(ConstantMessages.NO_DATA_FOUND);
         }
       },
       error: (response) => {

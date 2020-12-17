@@ -173,7 +173,9 @@ export class ProductCategoryListComponent implements OnInit {
       next:(productCategories: ProductCategory[]) => {
         if (productCategories.length) {
           this.productCategoriesToExport = productCategories;
-        }        
+        } else {
+          this.snackBarService.openSnackBar(ConstantMessages.NO_DATA_FOUND);
+        }       
       },
       error: (response) => {
         const errorMessage = this.utilsService.handleErrorMessage(response);
