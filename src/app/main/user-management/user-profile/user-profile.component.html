@@ -63,7 +63,7 @@
           <mat-expansion-panel-header>
             <mat-panel-title>
               <p>
-                <button mat-stroked-button color="primary" matBadge="{{totalOrders}}" matBadgePosition="after" matBadgeSize="small" [disabled]="!isUserSynchronized">
+                <button mat-stroked-button matBadge="{{totalOrders}}" matBadgePosition="after" matBadgeSize="small" [disabled]="!isUserSynchronized">
                   <mat-icon>done_all</mat-icon> 
                   Ver pedidos
                 </button>
@@ -84,13 +84,15 @@
         <mat-expansion-panel >
           <mat-expansion-panel-header>
             <mat-panel-title>
-             <button mat-stroked-button color="primary">
+             <button mat-stroked-button>
               <mat-icon>my_location</mat-icon>
               Ver endereços
              </button> 
             </mat-panel-title>
             <mat-panel-description>
-                <mat-icon (click)="addNewAddress($event);"  matTooltip="Incluir novo endereço">add_location_alt</mat-icon>
+              <button mat-stroked-button (click)="addNewAddress($event);"  matTooltip="Incluir novo endereço">
+                <mat-icon>add_location_alt</mat-icon>
+              </button>
             </mat-panel-description>
           </mat-expansion-panel-header>
           <es-address-list [shouldUpdateList]="updateAddressSubject.asObservable()"></es-address-list>
@@ -108,13 +110,15 @@
           <mat-expansion-panel >
             <mat-expansion-panel-header>
               <mat-panel-title>
-                <button mat-stroked-button color="primary">
+                <button mat-stroked-button>
                   <mat-icon>credit_card</mat-icon> 
                   Ver cartões de crédito
                 </button>
               </mat-panel-title>
               <mat-panel-description>
-                  <mat-icon (click)="addNewCreditCard($event);"  matTooltip="Incluir novo cartão de crédito">add</mat-icon>
+                <button mat-stroked-button (click)="addNewCreditCard($event);"  matTooltip="Incluir novo cartão de crédito">
+                  <mat-icon >add</mat-icon>
+                </button>
               </mat-panel-description>
             </mat-expansion-panel-header>
             <es-credit-card-list [shouldUpdateList]="updateCreditCardSubject.asObservable()"></es-credit-card-list>
