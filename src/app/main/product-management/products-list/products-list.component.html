@@ -12,7 +12,7 @@
       [infiniteScrollUpDistance]="2"
       [infiniteScrollThrottle]="300"
       (scrolled)="onScroll();">
-    <p *ngIf="noProductsFound">Nenhum produto encontrado 
+    <p *ngIf="!noProductsFound && !products.length">Nenhum produto encontrado 
       <span *ngIf="categoryFiltered"> para a categoria<b> {{ categoryFiltered }}</b></span>
     </p>
     <li *ngFor="let product of products" class="card-items">
@@ -33,9 +33,14 @@
           <mat-card-header>
             <div mat-card-avatar class="products-header-image"></div>
             <mat-card-title>{{ product.name }}</mat-card-title>
-            <mat-card-subtitle>{{ product.subcategoryName }}</mat-card-subtitle>
+            <mat-card-subtitle>
+              {{ getStoreName(product.storeId) }}
+            </mat-card-subtitle>
           </mat-card-header>
           <mat-card-content>
+            <div>
+              Categoria: {{ product.subcategoryName }}
+            </div>
             <img *ngIf="product.productImages[0]?.picture; else showPlaceholderImage" mat-card-image src="{{'data:image/png;base64,' + product.productImages[0]?.picture}}" alt="{{ product.name }}" title="{{ product.name }}">
             <ng-template #showPlaceholderImage>
               <img mat-card-image src="../../../../assets/product-image-placeholder.png" alt="{{ product.name }}">
