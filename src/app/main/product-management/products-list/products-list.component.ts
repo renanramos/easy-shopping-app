@@ -17,17 +17,20 @@ import { SecurityUserService } from 'src/app/core/service/auth/security-user.ser
 import { PublishProductComponentComponent } from './publish-product-component/publish-product-component.component';
 import { ScrollValues } from 'src/app/core/shared/constants/scroll-values';
 import { SearchService } from 'src/app/core/shared/service/search-service';
+import { StoreService } from 'src/app/core/service/store/store.service';
+import { Store } from 'src/app/core/models/store/store.model';
 
 @Component({
   selector: 'es-products-list',
   templateUrl: './products-list.component.html',
   styleUrls: ['./products-list.component.css'],
-  providers: [ProductService]
+  providers: [ProductService, StoreService]
 })
 export class ProductsListComponent implements OnInit, OnDestroy {
 
   products: Product[] = [];
   productsToExport: Product[] = [];
+  stores: Store[] = [];
   csvHeaders: string[] = [];
   isListFiltererd: boolean = false;
   categoryFiltered: String = "";
@@ -51,13 +54,34 @@ export class ProductsListComponent implements OnInit, OnDestroy {
     private snackBarService: SnackbarService,
     private utilsService: UtilsService,
     private securityUserService: SecurityUserService,
-    private searchService: SearchService) { }
+    private searchService: SearchService,
+    private storeService: StoreService) { }
 
   async ngOnInit() {
     this.userId = this.securityUserService.userLoggedId;
+    await this.loadCompanyStores();
     await this.loadProducts();
     await this.subscribeToMenuService();
     await this.subscribeToSearchService();
+  }
+
+  async loadCompanyStores() {
+    const storesReceived = {
+      next: (stores: Store[]) => {
+        this.stores = stores;
+      },
+      error: () => {}
+    };
+
+    await this.storeService.getCompanyOwnStores(null, null, true)
+      .pipe(tap(storesReceived))
+      .toPromise()
+      .then(() => true)
+      .catch(() => false); 
+  }
+
+  getStoreName(id: number) {
+    return this.stores && this.stores.find(store => store['id'] === id)['name'];
   }
 
   async subscribeToSearchService() {
@@ -234,6 +258,8 @@ export class ProductsListComponent implements OnInit, OnDestroy {
       next: (products: Product[]) => {
         if (products.length) {
           this.prepareProductsToExport(products);
+        } else {
+          this.snackBarService.openSnackBar(ConstantMessages.NO_DATA_FOUND);
         }
       },
       error: (response) => {
