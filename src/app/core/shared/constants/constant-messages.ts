@@ -14,4 +14,6 @@ export class ConstantMessages {
   public static AUTH_SERVER_ERROR: string = 'Não foi possível comunicar com servidor de autenticação';
 
   public static PRODUCT_PUBLISHED_SUCCESSFULLY: string = 'Produto publicado com sucesso.';
+
+  public static NO_DATA_FOUND: string = 'Não há registros para mostrar';
 }
