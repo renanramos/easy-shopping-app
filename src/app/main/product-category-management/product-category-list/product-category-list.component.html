@@ -8,6 +8,8 @@
   [infiniteScrollDistance]="1"
   [infiniteScrollUpDistance]="2"
   [infiniteScrollThrottle]="300"
+  [fromRoot]="true"
+  [infiniteScrollContainer]="'.main'"
   (scrolled)="onScroll();" >
     <p *ngIf="dataNotFound && !productCategories.length">
       Não há categorias cadastradas.
