@@ -64,7 +64,7 @@ export class ProductCategoryListComponent implements OnInit {
     const productCategoriesReceived = {
       next: (productCategories: ProductCategory[]) => {
         if (productCategories.length) {
-          this.productCategories = productCategories;
+          this.productCategories = [...this.productCategories, ...productCategories];
           this.dataNotFound = false;
         }
       },
