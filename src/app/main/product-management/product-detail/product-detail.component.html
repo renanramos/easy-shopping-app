@@ -3,6 +3,14 @@
 </div>
 <div mat-dialog-content *ngIf="productForm">
   <form class="container-registration-form" [formGroup]="productForm">
+    <mat-form-field appearance="outline" class="input-full-width">
+      <mat-label>Categoria</mat-label>
+      <mat-select formControlName="productSubcategoryId" id="productSubcategoryId">
+        <mat-option *ngFor="let subcategory of subcategories" [value]="subcategory.id">{{ subcategory.name }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="productSubcategoryId.hasError('required')">Campo obrigatório</mat-error>
+      <mat-error *ngIf="productSubcategoryId.hasError('notFound')">Não há categorias cadastradas.</mat-error>
+    </mat-form-field>
     <mat-form-field class="input-full-width">
       <mat-label>Nome</mat-label>
       <input type="text" matInput formControlName="name" id="name">
@@ -17,14 +25,6 @@
       <mat-label>Preço</mat-label>
       <input matInput formControlName="price" id="price" mask="separator.2" thousandSeparator="." >
       <mat-error *ngIf="price.hasError('required')">Campo obrigatório</mat-error>
-    </mat-form-field>
-    <mat-form-field appearance="outline" class="input-full-width">
-      <mat-label>Categoria</mat-label>
-      <mat-select formControlName="productSubcategoryId" id="productSubcategoryId">
-        <mat-option *ngFor="let subcategory of subcategories" [value]="subcategory.id">{{ subcategory.name }}</mat-option>
-      </mat-select>
-      <mat-error *ngIf="productSubcategoryId.hasError('required')">Campo obrigatório</mat-error>
-      <mat-error *ngIf="productSubcategoryId.hasError('notFound')">Não há categorias cadastradas.</mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline" class="input-full-width">
       <mat-label>Loja</mat-label>
