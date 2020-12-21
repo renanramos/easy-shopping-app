@@ -32,7 +32,7 @@
           </mat-menu>
           <mat-card-header>
             <div mat-card-avatar class="products-header-image"></div>
-            <mat-card-title>{{ product.name }}</mat-card-title>
+            <mat-card-title title="{{ product.name }}">{{ product.name }}</mat-card-title>
             <mat-card-subtitle>
               {{ getStoreName(product.storeId) }}
             </mat-card-subtitle>
@@ -43,7 +43,7 @@
             </div>
             <img *ngIf="product.productImages[0]?.picture; else showPlaceholderImage" mat-card-image src="{{'data:image/png;base64,' + product.productImages[0]?.picture}}" alt="{{ product.name }}" title="{{ product.name }}">
             <ng-template #showPlaceholderImage>
-              <img mat-card-image src="../../../../assets/product-image-placeholder.png" alt="{{ product.name }}">
+              <img mat-card-image src="../../../../assets/product-image-placeholder.png" alt="{{ product.name }}" title="{{ product.name }}">
             </ng-template>
           </mat-card-content>
           <mat-card-actions align="right" *esHasPermission="['COMPANY']">
