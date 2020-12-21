@@ -95,7 +95,7 @@ export class PurchaseReportComponent implements OnInit {
     const purchaseDataReceived = {
       next: async (purchaseStatistics: PurchaseStatistic[]) => {
         if(purchaseStatistics.length) {
-          this.purchaseStatistics = purchaseStatistics;
+          this.preparePurchaseList(purchaseStatistics);
         }
       },
       error: (response) => {
@@ -109,6 +109,14 @@ export class PurchaseReportComponent implements OnInit {
       .toPromise()
       .then(() => true)
       .catch(() => false);
+  }
+
+  preparePurchaseList(purchaseStatistics: PurchaseStatistic[]) {
+    purchaseStatistics.forEach(purchaseStatistic => {
+      if (this.purchaseStatistics.findIndex(statistic => statistic['order']['id'] === purchaseStatistic['order']['id']) === -1) {
+        this.purchaseStatistics.push(purchaseStatistic);
+      }
+    });
   }
 
   async configureBarChartData() {
