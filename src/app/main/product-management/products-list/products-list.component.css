@@ -36,11 +36,6 @@ mat-chip {
   padding-bottom: 1rem !important;
 }
 
-.mat-card-image {
-  max-height: 300px;
-  min-height: 33vh;
-}
-
 .card-actions {
   width: 100%;
   display: flex;
