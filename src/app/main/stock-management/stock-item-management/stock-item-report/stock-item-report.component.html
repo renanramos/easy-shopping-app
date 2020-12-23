@@ -1,37 +1,60 @@
 <div class="title">
   Indicadores de estoque
 </div>
+<div *ngIf="reportForm" class="form-filter">
+  <form [formGroup]="reportForm">
+    <div class="input-half-width">
+      <mat-form-field appearance="outline" class="input-full-width">
+        <mat-label>Produto</mat-label>
+        <mat-select formControlName="product" (selectionChange)="onSelectProduct();">
+          <mat-option *ngFor="let prod of products" [value]="prod.id">{{ prod.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="input-half-width">
+      <mat-form-field appearance="outline" class="input-full-width">
+        <mat-label>Categorias</mat-label>
+        <mat-select formControlName="subcategory" (selectionChange)="onSelectCategory();">
+          <mat-option *ngFor="let subcategory of subcategories" [value]="subcategory.id">{{ subcategory.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="input-half-with">
+      <button mat-stroked-button (click)="removeFilter();">Remover filtro</button>
+    </div>
+  </form>
+</div>
 <div class="graphic-container">
-  <mat-card>
+  <mat-card >
     <mat-card-title>
-      Nível de estoque totalizado
+      {{ isBarChart ? 'Nível de estoque por item' : 'Nível de estoque totalizado'}}
+      <div class="btn-change-chart">
+        <button mat-mini-fab (click)="changeGraphicFormat();">
+          <mat-icon>{{ isBarChart ? 'pie_chart' : 'equalizer' }}</mat-icon>
+        </button>
+      </div>
     </mat-card-title>
-    <mat-card-content>
+    <mat-card-content *ngIf="!isBarChart">
       <canvas 
-      class="pie-chart"
-      baseChart
-      [data]="pieChartData"
-      [chartType]="pieChartType"
-      [options]="pieChartOptions"
-      [colors]="pieChartColors"
-      [labels]="pieChartLabels"
-      [legend]="pieChartLegend">
-    </canvas>
+        class="pie-chart"
+        baseChart
+        [data]="pieChartData"
+        [chartType]="pieChartType"
+        [options]="pieChartOptions"
+        [colors]="pieChartColors"
+        [labels]="pieChartLabels"
+        [legend]="pieChartLegend">
+      </canvas>
     </mat-card-content>
-  </mat-card>
-  <mat-card>
-    <mat-card-title>
-      Nível de estoque por item
-    </mat-card-title>
-    <mat-card-content>
+    <mat-card-content *ngIf="isBarChart">
       <canvas 
-      class="bar-chart"
-      baseChart
-      [datasets]="barChartData"
-      [labels]="barChartLabels"
-      [options]="barChartOptions"
-      [legend]="barChartLegend"
-      [chartType]="barChartType">
+        class="bar-chart"
+        baseChart
+        [datasets]="barChartData"
+        [labels]="barChartLabels"
+        [options]="barChartOptions"
+        [legend]="barChartLegend"
+        [chartType]="barChartType">
       </canvas>
     </mat-card-content>
   </mat-card>
