@@ -1,7 +1,7 @@
 .graphic-container {
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   flex-wrap: nowrap;
   margin: 0 auto;
   height: 100vh;
@@ -9,6 +9,14 @@
 
 .graphic-container > mat-card {
   width: 45%;
+}
+
+.form-filter {
+  margin: 0 1%;
+}
+
+.btn-change-chart {
+  float: right;
 }
 
 @media screen and (min-width: 280px) and (max-width: 570px) {
@@ -65,7 +73,7 @@
   }
 
   .graphic-container > mat-card {
-    width: calc(100% - 75px);
+    width: calc(50% - 75px);
     margin: 15px 5px;
     height: 100%;
   }
