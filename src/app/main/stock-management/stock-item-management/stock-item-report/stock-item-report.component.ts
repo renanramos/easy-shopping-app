@@ -1,11 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { tap } from 'rxjs/operators';
+import { Product } from 'src/app/core/models/product/product.model';
 import { StockItem } from 'src/app/core/models/stock-item/stock-item.model';
+import { Subcategory } from 'src/app/core/models/subcategory/subcategory.model';
+import { ProductService } from 'src/app/core/service/product/product.service';
 import { StockItemService } from 'src/app/core/service/stock-item/stock-item.service';
+import { SubcategoryService } from 'src/app/core/service/subcategory/subcategory.service';
 import { SearchService } from 'src/app/core/shared/service/search-service';
 import { SnackbarService } from 'src/app/core/shared/service/snackbar.service';
 import { UtilsService } from 'src/app/core/shared/utils/utils.service';
@@ -14,13 +19,18 @@ import { UtilsService } from 'src/app/core/shared/utils/utils.service';
   selector: 'es-stock-item-report',
   templateUrl: './stock-item-report.component.html',
   styleUrls: ['./stock-item-report.component.css'],
-  providers: [StockItemService]
+  providers: [StockItemService, ProductService, SubcategoryService]
 })
 export class StockItemReportComponent implements OnInit, OnDestroy {
 
   stockId: number = null;
   stockItemsNotFound: boolean = false;
   stockItems: StockItem[] = [];
+  products: Product[] = [];
+  subcategories: Subcategory[] = [];
+
+  reportForm: FormGroup;
+  isBarChart: boolean = true;
 
   barChartOptions: ChartOptions;
 
@@ -54,19 +64,48 @@ export class StockItemReportComponent implements OnInit, OnDestroy {
   totalMaximumAmount: number = 0;
   totalMinimumAmount: number = 0;  
 
-  constructor(private dialog: MatDialog,
+  constructor(
+    private formBuilder: FormBuilder,
     private snackBarService: SnackbarService,
     private utilsService: UtilsService,
     private stockItemService: StockItemService,
+    private productService: ProductService,
+    private subcategoryService: SubcategoryService,
     private activatedRoute: ActivatedRoute,
     private searchService: SearchService) { }
 
   async ngOnInit() {
-    this.setBarChartProperties();
-    this.setPieChartProperties();
-    this.getItemPropertyId();
-    await this.loadStockItems();
+    this.setFilterForm();
+    await this.initializeComponentsProperties();
     this.searchService.hideSearchField.next(true);
+  }
+
+  setFilterForm() {
+    this.reportForm = this.formBuilder.group({
+      product: [null],
+      subcategory: [null]
+    });
+  }
+
+  async loadProducts() {
+    const productsReceived = {
+      next: (products: Product[]) => {
+        if(products.length) {
+          console.log(products);
+          this.products = products;
+        }
+      },
+      error: (response) => {
+        const errorMessage = this.utilsService.handleErrorMessage(response);
+        this.snackBarService.openSnackBar(errorMessage);
+      }
+    };
+
+    await this.productService.getProducts()
+      .pipe(tap(productsReceived))
+      .toPromise()
+      .then(() => true)
+      .catch(() => false);
   }
 
   ngOnDestroy(): void {
@@ -141,9 +180,79 @@ export class StockItemReportComponent implements OnInit, OnDestroy {
   }
 
   generatePizzaData() {
-    this.totalCurrentAmount = this.stockItems.filter(stockItem => stockItem['currentAmount']).map( stockItem => stockItem['currentAmount']).reduce((a, b) => a + b);
-    this.totalMaximumAmount = this.stockItems.filter(stockItem => stockItem['maxAmount']).map( stockItem => stockItem['maxAmount']).reduce((a, b) => a + b);
-    this.totalMinimumAmount = this.stockItems.filter(stockItem => stockItem['minAmount']).map( stockItem => stockItem['minAmount']).reduce((a, b) => a + b);
+    if (this.stockItems.length) {
+      this.totalCurrentAmount = this.stockItems.filter(stockItem => stockItem['currentAmount']).map( stockItem => stockItem['currentAmount']).reduce((a, b) => a + b);
+      this.totalMaximumAmount = this.stockItems.filter(stockItem => stockItem['maxAmount']).map( stockItem => stockItem['maxAmount']).reduce((a, b) => a + b);
+      this.totalMinimumAmount = this.stockItems.filter(stockItem => stockItem['minAmount']).map( stockItem => stockItem['minAmount']).reduce((a, b) => a + b);
+    }
     this.pieChartData = [this.totalCurrentAmount, this.totalMaximumAmount, this.totalMinimumAmount];
+  }
+
+  get productId() {
+    return this.reportForm.get('product');
+  }
+
+  get subcategoryId() {
+    return this.reportForm.get('subcategory');
+  }
+
+  async onSelectProduct() {
+    await this.initializeComponentsProperties();
+    this.stockItems = this.stockItems.filter(prod => prod['productId'] === this.productId.value);
+    this.barChartData = [];
+    this.barChartLabels = [];
+    this.pieChartData = [];
+    this.pieChartLabels = [];
+    this.setBarChartProperties();
+    this.setPieChartProperties();
+    this.prepareChartData();
+    this.generatePizzaData();
+  }
+
+  async onSelectCategory() {
+
+  }
+
+  async removeFilter(){
+    await this.initializeComponentsProperties();
+    this.productId.setValue(null);
+    this.subcategoryId.setValue(null);
+  }
+  
+  async initializeComponentsProperties() {
+    this.barChartData = [];
+    this.barChartLabels = [];
+    this.pieChartData = [];
+    this.pieChartLabels = [];
+    this.setBarChartProperties();
+    this.setPieChartProperties();
+    this.getItemPropertyId();
+    await this.loadStockItems();
+    await this.loadProducts();
+    await this.loadSubcategories();
+  }
+
+  async loadSubcategories() {
+    const subcategoriesReceived = {
+      next: (subcategories: Subcategory[]) => {
+        if (subcategories.length) {
+          this.subcategories = subcategories;
+        }
+      },
+      error: (response) => {
+        const errorMessage = this.utilsService.handleErrorMessage(response);
+        this.snackBarService.openSnackBar(errorMessage);
+      }
+    };
+
+    await this.subcategoryService.getSubcategories(null, null, null, null)
+      .pipe(tap(subcategoriesReceived))
+      .toPromise()
+      .then(() => true)
+      .catch(() => false);
+  }
+
+  changeGraphicFormat() {
+    this.isBarChart = !this.isBarChart;
   }
 }
