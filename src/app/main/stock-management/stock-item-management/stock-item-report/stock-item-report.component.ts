@@ -7,9 +7,11 @@ import { Label } from 'ng2-charts';
 import { tap } from 'rxjs/operators';
 import { Product } from 'src/app/core/models/product/product.model';
 import { StockItem } from 'src/app/core/models/stock-item/stock-item.model';
+import { Store } from 'src/app/core/models/store/store.model';
 import { Subcategory } from 'src/app/core/models/subcategory/subcategory.model';
 import { ProductService } from 'src/app/core/service/product/product.service';
 import { StockItemService } from 'src/app/core/service/stock-item/stock-item.service';
+import { StoreService } from 'src/app/core/service/store/store.service';
 import { SubcategoryService } from 'src/app/core/service/subcategory/subcategory.service';
 import { SearchService } from 'src/app/core/shared/service/search-service';
 import { SnackbarService } from 'src/app/core/shared/service/snackbar.service';
@@ -19,7 +21,7 @@ import { UtilsService } from 'src/app/core/shared/utils/utils.service';
   selector: 'es-stock-item-report',
   templateUrl: './stock-item-report.component.html',
   styleUrls: ['./stock-item-report.component.css'],
-  providers: [StockItemService, ProductService, SubcategoryService]
+  providers: [StockItemService, ProductService, StoreService]
 })
 export class StockItemReportComponent implements OnInit, OnDestroy {
 
@@ -27,7 +29,7 @@ export class StockItemReportComponent implements OnInit, OnDestroy {
   stockItemsNotFound: boolean = false;
   stockItems: StockItem[] = [];
   products: Product[] = [];
-  subcategories: Subcategory[] = [];
+  stores: Store[] = [];
 
   reportForm: FormGroup;
   isBarChart: boolean = true;
@@ -70,7 +72,7 @@ export class StockItemReportComponent implements OnInit, OnDestroy {
     private utilsService: UtilsService,
     private stockItemService: StockItemService,
     private productService: ProductService,
-    private subcategoryService: SubcategoryService,
+    private storeService: StoreService,
     private activatedRoute: ActivatedRoute,
     private searchService: SearchService) { }
 
@@ -83,7 +85,7 @@ export class StockItemReportComponent implements OnInit, OnDestroy {
   setFilterForm() {
     this.reportForm = this.formBuilder.group({
       product: [null],
-      subcategory: [null]
+      store: [null]
     });
   }
 
@@ -91,7 +93,6 @@ export class StockItemReportComponent implements OnInit, OnDestroy {
     const productsReceived = {
       next: (products: Product[]) => {
         if(products.length) {
-          console.log(products);
           this.products = products;
         }
       },
@@ -192,13 +193,15 @@ export class StockItemReportComponent implements OnInit, OnDestroy {
     return this.reportForm.get('product');
   }
 
-  get subcategoryId() {
-    return this.reportForm.get('subcategory');
+  get storeId() {
+    return this.reportForm.get('store');
   }
 
   async onSelectProduct() {
     await this.initializeComponentsProperties();
-    this.stockItems = this.stockItems.filter(prod => prod['productId'] === this.productId.value);
+    if (this.productId.value) {
+      this.stockItems = this.stockItems.filter(prod => prod['productId'] === this.productId.value);
+    }
     this.barChartData = [];
     this.barChartLabels = [];
     this.pieChartData = [];
@@ -209,14 +212,14 @@ export class StockItemReportComponent implements OnInit, OnDestroy {
     this.generatePizzaData();
   }
 
-  async onSelectCategory() {
+  async onSelectStore() {
 
   }
 
   async removeFilter(){
     await this.initializeComponentsProperties();
     this.productId.setValue(null);
-    this.subcategoryId.setValue(null);
+    this.storeId.setValue(null);
   }
   
   async initializeComponentsProperties() {
@@ -229,14 +232,14 @@ export class StockItemReportComponent implements OnInit, OnDestroy {
     this.getItemPropertyId();
     await this.loadStockItems();
     await this.loadProducts();
-    await this.loadSubcategories();
+    await this.loadStores();
   }
 
-  async loadSubcategories() {
-    const subcategoriesReceived = {
-      next: (subcategories: Subcategory[]) => {
-        if (subcategories.length) {
-          this.subcategories = subcategories;
+  async loadStores() {
+    const storesReceived = {
+      next: (stores: Store[]) => {
+        if (stores.length) {
+          this.stores = stores;
         }
       },
       error: (response) => {
@@ -245,8 +248,8 @@ export class StockItemReportComponent implements OnInit, OnDestroy {
       }
     };
 
-    await this.subcategoryService.getSubcategories(null, null, null, null)
-      .pipe(tap(subcategoriesReceived))
+    await this.storeService.getCompanyOwnStores(null, null, true)
+      .pipe(tap(storesReceived))
       .toPromise()
       .then(() => true)
       .catch(() => false);
