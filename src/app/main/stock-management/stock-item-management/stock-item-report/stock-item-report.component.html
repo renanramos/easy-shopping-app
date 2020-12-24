@@ -7,15 +7,17 @@
       <mat-form-field appearance="outline" class="input-full-width">
         <mat-label>Produto</mat-label>
         <mat-select formControlName="product" (selectionChange)="onSelectProduct();">
+          <mat-option></mat-option>
           <mat-option *ngFor="let prod of products" [value]="prod.id">{{ prod.name }}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>
     <div class="input-half-width">
       <mat-form-field appearance="outline" class="input-full-width">
-        <mat-label>Categorias</mat-label>
-        <mat-select formControlName="subcategory" (selectionChange)="onSelectCategory();">
-          <mat-option *ngFor="let subcategory of subcategories" [value]="subcategory.id">{{ subcategory.name }}</mat-option>
+        <mat-label>Lojas</mat-label>
+        <mat-select formControlName="store" (selectionChange)="onSelectStore();">
+          <mat-option></mat-option>
+          <mat-option *ngFor="let store of stores" [value]="store.id">{{ store.name }}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>
