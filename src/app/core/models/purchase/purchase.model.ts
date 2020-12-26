@@ -8,4 +8,5 @@ export class Purchase {
   public addressId: number;
   public creditCardId: number;
   public purchaseDate?: any;
+  public customerId?: string;
 }
