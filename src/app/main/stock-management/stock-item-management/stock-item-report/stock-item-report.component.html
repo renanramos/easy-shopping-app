@@ -1,30 +1,28 @@
-<div class="title">
-  Indicadores de estoque
+<div class="container">
+  <div class="title">
+    Indicadores de estoque
+  </div>
 </div>
 <div *ngIf="reportForm" class="form-filter">
-  <form [formGroup]="reportForm">
-    <div class="input-half-width">
-      <mat-form-field appearance="outline" class="input-full-width">
-        <mat-label>Produto</mat-label>
-        <mat-select formControlName="product" (selectionChange)="onSelectProduct();">
-          <mat-option></mat-option>
-          <mat-option *ngFor="let prod of products" [value]="prod.id">{{ prod.name }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-    <div class="input-half-width">
-      <mat-form-field appearance="outline" class="input-full-width">
-        <mat-label>Lojas</mat-label>
-        <mat-select formControlName="store" (selectionChange)="onSelectStore();">
-          <mat-option></mat-option>
-          <mat-option *ngFor="let store of stores" [value]="store.id">{{ store.name }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-    <div class="input-half-with">
-      <button mat-stroked-button (click)="removeFilter();">Remover filtro</button>
-    </div>
-  </form>
+  <mat-card>
+    <mat-card-title>Filtro</mat-card-title>
+    <mat-card-content>
+      <form [formGroup]="reportForm">
+        <div class="input-full-width">
+          <mat-form-field appearance="outline" class="input-full-width">
+            <mat-label>Produto</mat-label>
+            <mat-select formControlName="product" (selectionChange)="onSelectProduct();">
+              <mat-option></mat-option>
+              <mat-option *ngFor="let prod of products" [value]="prod.id">{{ prod.name }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="input-half-with" align="right">
+          <button mat-stroked-button (click)="removeFilter();">Remover filtro</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
 </div>
 <div class="graphic-container">
   <mat-card >
