@@ -1,6 +1,6 @@
 <div class="container">
   <div class="title">
-    Estatísticas de vendas
+    Relatório de vendas
   </div>
   <mat-card>
     <mat-card-subtitle>
@@ -17,25 +17,31 @@
     </mat-card-subtitle>
     <mat-card-content *ngIf="formFilter">
       <form [formGroup]="formFilter">
-        <div class="input-full-width">
-          <div class="input-half-width">
-            <mat-form-field appearance="outline" class="input-full-width">
+          <div class="input-full-width">
+            <mat-form-field appearance="outline" class="input-half-width">
               <mat-label>Mês</mat-label>
               <mat-select formControlName="month" (selectionChange)="onSelectMonth();">
                 <mat-option *ngFor="let month of monthNames" [value]="month">{{ month }}</mat-option>
               </mat-select>
             </mat-form-field>
-          </div>
-          <div class="input-half-width">
-            <mat-form-field appearance="outline" class="input-full-width">
+            <mat-form-field appearance="outline" class="input-half-width">
               <mat-label>Produto</mat-label>
               <mat-select formControlName="product" (selectionChange)="onSelectProduct();">
                 <mat-option *ngFor="let prod of products" [value]="prod.id">{{ prod.name }}</mat-option>
               </mat-select>
             </mat-form-field>
+            <mat-form-field appearance="outline" class="input-half-width">
+              <mat-label>Cliente</mat-label>
+              <mat-select formControlName="customerId" (selectionChange)="onSelectCustomer();">
+                <mat-option *ngFor="let customer of customers" [value]="customer.tokenId">{{ customer.name }}</mat-option>
+              </mat-select>
+            </mat-form-field>
           </div>
-        </div>
       </form>
+    </mat-card-content>
+  </mat-card>
+  <mat-card>
+    <mat-card-content>
       <canvas
         class="bar-chart"
         baseChart
