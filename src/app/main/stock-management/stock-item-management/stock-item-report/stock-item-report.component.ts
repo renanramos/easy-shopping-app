@@ -21,7 +21,7 @@ import { UtilsService } from 'src/app/core/shared/utils/utils.service';
   selector: 'es-stock-item-report',
   templateUrl: './stock-item-report.component.html',
   styleUrls: ['./stock-item-report.component.css'],
-  providers: [StockItemService, ProductService, StoreService]
+  providers: [StockItemService, ProductService]
 })
 export class StockItemReportComponent implements OnInit, OnDestroy {
 
@@ -29,7 +29,6 @@ export class StockItemReportComponent implements OnInit, OnDestroy {
   stockItemsNotFound: boolean = false;
   stockItems: StockItem[] = [];
   products: Product[] = [];
-  stores: Store[] = [];
 
   reportForm: FormGroup;
   isBarChart: boolean = true;
@@ -72,7 +71,6 @@ export class StockItemReportComponent implements OnInit, OnDestroy {
     private utilsService: UtilsService,
     private stockItemService: StockItemService,
     private productService: ProductService,
-    private storeService: StoreService,
     private activatedRoute: ActivatedRoute,
     private searchService: SearchService) { }
 
@@ -149,6 +147,7 @@ export class StockItemReportComponent implements OnInit, OnDestroy {
   async loadStockItems() {
     const stockItemsReceived = {
       next: (stockItems: StockItem[]) => {
+        console.log(stockItems);
         if (stockItems.length) {
           this.stockItems = stockItems;
           this.prepareChartData();
@@ -202,18 +201,9 @@ export class StockItemReportComponent implements OnInit, OnDestroy {
     if (this.productId.value) {
       this.stockItems = this.stockItems.filter(prod => prod['productId'] === this.productId.value);
     }
-    this.barChartData = [];
-    this.barChartLabels = [];
-    this.pieChartData = [];
-    this.pieChartLabels = [];
-    this.setBarChartProperties();
-    this.setPieChartProperties();
+    this.resetGraphicProperties();
     this.prepareChartData();
     this.generatePizzaData();
-  }
-
-  async onSelectStore() {
-
   }
 
   async removeFilter(){
@@ -223,39 +213,22 @@ export class StockItemReportComponent implements OnInit, OnDestroy {
   }
   
   async initializeComponentsProperties() {
+    this.resetGraphicProperties();
+    this.getItemPropertyId();
+    await this.loadStockItems();
+    await this.loadProducts();
+  }
+
+  changeGraphicFormat() {
+    this.isBarChart = !this.isBarChart;
+  }
+
+  resetGraphicProperties() {
     this.barChartData = [];
     this.barChartLabels = [];
     this.pieChartData = [];
     this.pieChartLabels = [];
     this.setBarChartProperties();
     this.setPieChartProperties();
-    this.getItemPropertyId();
-    await this.loadStockItems();
-    await this.loadProducts();
-    await this.loadStores();
-  }
-
-  async loadStores() {
-    const storesReceived = {
-      next: (stores: Store[]) => {
-        if (stores.length) {
-          this.stores = stores;
-        }
-      },
-      error: (response) => {
-        const errorMessage = this.utilsService.handleErrorMessage(response);
-        this.snackBarService.openSnackBar(errorMessage);
-      }
-    };
-
-    await this.storeService.getCompanyOwnStores(null, null, true)
-      .pipe(tap(storesReceived))
-      .toPromise()
-      .then(() => true)
-      .catch(() => false);
-  }
-
-  changeGraphicFormat() {
-    this.isBarChart = !this.isBarChart;
   }
 }
