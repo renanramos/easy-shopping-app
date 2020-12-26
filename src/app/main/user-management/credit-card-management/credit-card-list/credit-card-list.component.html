@@ -2,7 +2,7 @@
   <table mat-table [dataSource]="creditCards">
     <ng-container matColumnDef="ownerName">
       <th mat-header-cell *matHeaderCellDef>Nome do titular</th>
-      <td mat-cell *matCellDef="let creditCard">{{ creditCard.ownerName }}</td>
+      <td mat-cell *matCellDef="let creditCard">{{ creditCard.ownerName | uppercase }}</td>
     </ng-container>
   
     <ng-container matColumnDef="creditCardNumber">
