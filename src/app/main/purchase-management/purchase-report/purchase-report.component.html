@@ -3,18 +3,7 @@
     Relatório de vendas
   </div>
   <mat-card>
-    <mat-card-subtitle>
-      <div class="clear-filter">
-        <button 
-          type="button" 
-          mat-button 
-          aria-label="Clear" 
-          (click)="onClearSelectSelectField($event);">
-          Limpar filtro
-          <mat-icon>close</mat-icon>
-        </button>
-      </div>
-    </mat-card-subtitle>
+    <mat-card-title>Filtro</mat-card-title>
     <mat-card-content *ngIf="formFilter">
       <form [formGroup]="formFilter">
           <div class="input-full-width">
@@ -36,6 +25,9 @@
                 <mat-option *ngFor="let customer of customers" [value]="customer.tokenId">{{ customer.name }}</mat-option>
               </mat-select>
             </mat-form-field>
+          </div>
+          <div class="input-half-with" align="right">
+            <button mat-stroked-button (click)="onClearSelectSelectField($event);">Remover filtro</button>
           </div>
       </form>
     </mat-card-content>

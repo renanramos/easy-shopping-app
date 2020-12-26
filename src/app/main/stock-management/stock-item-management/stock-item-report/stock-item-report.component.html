@@ -6,7 +6,7 @@
 <div *ngIf="reportForm" class="form-filter">
   <mat-card>
     <mat-card-title>Filtro</mat-card-title>
-    <mat-card-content>
+    <mat-card-content *ngIf="reportForm">
       <form [formGroup]="reportForm">
         <div class="input-full-width">
           <mat-form-field appearance="outline" class="input-full-width">
