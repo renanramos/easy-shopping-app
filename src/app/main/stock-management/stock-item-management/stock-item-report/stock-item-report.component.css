@@ -1,3 +1,7 @@
+.container {
+  margin: 1% 25vw;
+}
+
 .graphic-container {
   width: 100%;
   display: flex;
@@ -7,12 +11,16 @@
   height: 100vh;
 }
 
-.graphic-container > mat-card {
+mat-card {
   width: 45%;
 }
 
 .form-filter {
-  margin: 0 1%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+  margin: 0 auto;
 }
 
 .btn-change-chart {
@@ -24,11 +32,19 @@
 }
 
 @media screen and (min-width: 280px) and (max-width: 570px) {
+  .container {
+    margin: 1% 0;
+  }
+  
   .graphic-container {
     flex-wrap: wrap;
   }
 
-  .graphic-container > mat-card {
+  .mat-card-title {
+    width: 100% !important;
+  }
+
+  mat-card {
     width: calc(100% - 75px);
     margin: 15px 5px;
   }
@@ -48,11 +64,15 @@
 }
 
 @media screen and (min-width: 480px) and (max-width: 768px) and (orientation: landscape) {
+  .container {
+    margin: 1% 0;
+  }
+
   .graphic-container {
     flex-wrap: wrap;
   }
 
-  .graphic-container > mat-card {
+  mat-card {
     width: calc(100% - 75px);
     margin: 15px 5px;
     height: 100%;
@@ -60,12 +80,16 @@
 }
 
 @media screen and (min-width: 769px) and (max-width: 1366px) {
+  .container {
+    margin: 1% 15vw;
+  }
+
   .graphic-container {
     height: auto;
   }
 
-  .graphic-container > mat-card {
-    width: calc(100% - 75px);
+  mat-card {
+    width: calc(70% - 75px);
     margin: 15px 5px;
     height: 100%;
   }
@@ -76,7 +100,7 @@
     height: auto;
   }
 
-  .graphic-container > mat-card {
+  mat-card {
     width: calc(50% - 75px);
     margin: 15px 5px;
     height: 100%;
