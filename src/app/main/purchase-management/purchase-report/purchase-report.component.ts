@@ -8,6 +8,8 @@ import { OrderItem } from 'src/app/core/models/orderItem/order-item.model';
 import { Product } from 'src/app/core/models/product/product.model';
 import { PurchaseStatistic } from 'src/app/core/models/purchase/purchase-statistic.model';
 import { Purchase } from 'src/app/core/models/purchase/purchase.model';
+import { Customer } from 'src/app/core/models/registration/customer.model';
+import { CustomerService } from 'src/app/core/service/customer/customer.service';
 import { ProductService } from 'src/app/core/service/product/product.service';
 import { PurchaseService } from 'src/app/core/service/purchase/purchase.service';
 import { SearchService } from 'src/app/core/shared/service/search-service';
@@ -18,15 +20,16 @@ import { UtilsService } from 'src/app/core/shared/utils/utils.service';
   selector: 'es-purchase-report',
   templateUrl: './purchase-report.component.html',
   styleUrls: ['./purchase-report.component.css'],
-  providers: [PurchaseService, ProductService]
+  providers: [PurchaseService, ProductService, CustomerService]
 })
 export class PurchaseReportComponent implements OnInit {
   monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
-                  "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+                "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
 
   products: Product[] = [];
   purchaseStatistics: PurchaseStatistic[] = [];
   purchasePerMonths: any[] = [];
+  customers: Customer[] = [];
 
   barChartOptions: ChartOptions;
 
@@ -43,7 +46,8 @@ export class PurchaseReportComponent implements OnInit {
     private productService: ProductService,
     private utilsService: UtilsService,
     private snackBarService: SnackbarService,
-    private searchService: SearchService) { }
+    private searchService: SearchService,
+    private customerService: CustomerService) { }
 
   async ngOnInit() {
     this.searchService.hideSearchFieldOption(true);
@@ -53,6 +57,27 @@ export class PurchaseReportComponent implements OnInit {
     await this.loadProducts();
     await this.configureBarChartData();
     await this.loadBarChartInfo();
+    await this.loadCustomers();
+  }
+
+  async loadCustomers() {
+    const customersReceived = {
+      next: (customers: Customer[]) => {
+        if (customers.length) {
+          this.customers = customers;
+        }
+      },
+      error: (response) => {
+        const errorMessage = this.utilsService.handleErrorMessage(response);
+        this.snackBarService.openSnackBar(errorMessage);
+      }
+    };
+
+    await this.customerService.getCustomers(null, null, null)
+      .pipe(tap(customersReceived))
+      .toPromise()
+      .then(() => true)
+      .catch(() => false);
   }
 
   async loadProducts() {
@@ -78,7 +103,8 @@ export class PurchaseReportComponent implements OnInit {
   createFormFilter() {
     this.formFilter = this.formBuilder.group({
       month: [''],
-      product: [null]
+      product: [null],
+      customerId: ['']
     });
   }
 
@@ -88,6 +114,10 @@ export class PurchaseReportComponent implements OnInit {
 
   get product() {
     return this.formFilter.get('product');
+  }
+
+  get customer() {
+    return  this.formFilter.get('customerId');
   }
 
   async loadStatistics() {
@@ -145,19 +175,13 @@ export class PurchaseReportComponent implements OnInit {
 
   async loadBarChartInfo() {
     this.barChartData = [];
-    this.barChartLabels.push('Vendas no mês');
+    let data = [];
     this.purchasePerMonths.forEach(purchase => {
       let month = this.monthNames[purchase.date - 1];
-      this.barChartData.push(
-        {
-          data: [purchase.total], 
-          label: month,
-          borderColor: 'rgba(0,0,0,1)',
-          borderWidth: 1,
-          hoverBorderWidth: 1,
-          hoverBorderColor: 'rgba(0,0,0,1)'
-        });
-      });
+      this.barChartLabels.push(month);
+      data.push(purchase.total);
+    });
+    this.barChartData.push({data});
   }
 
   setBarChartProperties() {
@@ -165,15 +189,7 @@ export class PurchaseReportComponent implements OnInit {
       responsive: true,
       showLines: true,
       legend: {
-        display: true
-      },
-      plugins: {
-        datalabels: {
-          formatter: (value, ctx) => {
-            const label = ctx.chart.data.labels[ctx.dataIndex];
-            return label;
-          },
-        },
+        display: false
       },
       scales: {
         yAxes: [{
@@ -183,8 +199,7 @@ export class PurchaseReportComponent implements OnInit {
           }
         }],
         gridLines: {
-          display: true,
-          circular: true
+          display: true
         }
       }
     };
@@ -212,8 +227,7 @@ export class PurchaseReportComponent implements OnInit {
 
   async onClearSelectSelectField(event?: any) {
    event.preventDefault();
-   this.month.setValue('');
-   this.product.setValue(null);
+   this.formFilter.reset();
    await this.resetGraphic();
   }
 
@@ -246,5 +260,21 @@ export class PurchaseReportComponent implements OnInit {
 
   hasItemWithProductId(items: OrderItem[], productId?: number) {
     return items && items.filter(item => item['productId'] == productId);
+  }
+
+  async onSelectCustomer() {
+    this.month.setValue('');
+    this.product.setValue(null);
+    const customerId = this.customer.value;
+    await this.resetChartPropertiesFields();
+    await this.loadStatistics();
+    this.purchaseStatistics = this.filterPurchaseStatisticByCustomerId(customerId);
+    await this.configureBarChartData();
+    await this.loadBarChartInfo();
+  }
+
+  filterPurchaseStatisticByCustomerId(customerId: string): PurchaseStatistic[] {
+    return this.purchaseStatistics
+      .filter(statistic => statistic['purchase']['customerId'] === customerId);
   }
 }
