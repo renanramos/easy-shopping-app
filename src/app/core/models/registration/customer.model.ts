@@ -8,4 +8,5 @@ export class Customer {
   public cpf: string;
   public address: Address[];
   public creditCards: CreditCard[];
+  public customerId?: string;
 }
