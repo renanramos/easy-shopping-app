@@ -1,9 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { tap } from 'rxjs/operators';
 import { ProductImage } from 'src/app/core/models/product-image/product-image.model';
 import { ProductImageService } from 'src/app/core/service/product-image/product-image.service';
+import { AlertDialogComponent } from 'src/app/core/shared/components/alert-dialog/alert-dialog.component';
+import { ConstantMessages } from 'src/app/core/shared/constants/constant-messages';
 import { SnackbarService } from 'src/app/core/shared/service/snackbar.service';
 import { UtilsService } from 'src/app/core/shared/utils/utils.service';
 
@@ -15,6 +17,7 @@ import { UtilsService } from 'src/app/core/shared/utils/utils.service';
 })
 export class ProductUploadImageComponent implements OnInit {
 
+  maxImageSize: number = 1024;
   productImageForm: FormGroup;
 
   selectedFile: File;
@@ -26,7 +29,11 @@ export class ProductUploadImageComponent implements OnInit {
   isCoverImageFlag: boolean = true;
   pictureNotSelected: boolean = false;
 
-  constructor(private formBuilder: FormBuilder,
+  alertDialogRef: MatDialogRef<AlertDialogComponent>;
+
+  constructor(
+    private dialog: MatDialog,
+    private formBuilder: FormBuilder,
     private productImageService: ProductImageService,
     private dialogRef: MatDialogRef<ProductUploadImageComponent>,
     private utilsService: UtilsService,
@@ -40,7 +47,7 @@ export class ProductUploadImageComponent implements OnInit {
 
   createForm() {
     this.productImageForm = this.formBuilder.group({
-      description: ['', [Validators.required]],
+      description: [''],
       picture: [null],
       isCoverImage: [this.isCoverImageFlag, [Validators.required]]
     })
@@ -77,7 +84,32 @@ export class ProductUploadImageComponent implements OnInit {
 
   onSelectFile(event) {
     this.selectedFile = event.target.files[0];
-    this.setPreviewImageProperty();
+    if (this.selectedFile) {
+      this.isValidImageSize();
+    }
+  }
+
+  isValidImageSize() {
+    const imageSize = (this.selectedFile.size / 1000);
+    (imageSize > this.maxImageSize) ?
+      this.openaAlertDialog() :
+      this.setPreviewImageProperty();
+  }
+
+  openaAlertDialog() {
+    this.alertDialogRef = this.dialog.open(AlertDialogComponent, {
+      data: { message: ConstantMessages.INVALID_IMAGE_SIZE },
+      disableClose: true,
+      autoFocus: false,
+      panelClass: 'es-small-dialog'
+    });
+
+    this.alertDialogRef.afterClosed()
+      .subscribe(() => {
+        this.productImageForm.reset();
+        this.selectedFile = null;
+        this.picture.setValue(null);
+      });
   }
 
   async setPreviewImageProperty() {
