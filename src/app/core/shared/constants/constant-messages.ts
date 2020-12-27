@@ -16,4 +16,6 @@ export class ConstantMessages {
   public static PRODUCT_PUBLISHED_SUCCESSFULLY: string = 'Produto publicado com sucesso.';
 
   public static NO_DATA_FOUND: string = 'Não há registros para mostrar';
+
+  public static INVALID_IMAGE_SIZE: string = 'Imagem com tamanho acima do permitido';
 }
