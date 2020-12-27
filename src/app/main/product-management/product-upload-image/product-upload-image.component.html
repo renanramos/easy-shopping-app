@@ -9,6 +9,8 @@
       <mat-error *ngIf="description.hasError('required')">Campo obrigatório</mat-error>
     </mat-form-field>
     <input type="file" accept='image/*' formControlName="picture" id="picture" (change)="onSelectFile($event);">
+    <br>
+    <span class="picture-error">Máximo de 1Mb</span>
     <span *ngIf="pictureNotSelected" class="picture-error mat-error">Campo obrigatório</span>
     <div class="image-preview">
       <div *ngIf="base64Data">
