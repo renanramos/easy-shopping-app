@@ -1,18 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { tap } from 'rxjs/operators';
+
 import { Product } from 'src/app/core/models/product/product.model';
 import { StockItem } from 'src/app/core/models/stock-item/stock-item.model';
-import { Store } from 'src/app/core/models/store/store.model';
-import { Subcategory } from 'src/app/core/models/subcategory/subcategory.model';
 import { ProductService } from 'src/app/core/service/product/product.service';
 import { StockItemService } from 'src/app/core/service/stock-item/stock-item.service';
-import { StoreService } from 'src/app/core/service/store/store.service';
-import { SubcategoryService } from 'src/app/core/service/subcategory/subcategory.service';
 import { SearchService } from 'src/app/core/shared/service/search-service';
 import { SnackbarService } from 'src/app/core/shared/service/snackbar.service';
 import { UtilsService } from 'src/app/core/shared/utils/utils.service';
@@ -147,7 +143,6 @@ export class StockItemReportComponent implements OnInit, OnDestroy {
   async loadStockItems() {
     const stockItemsReceived = {
       next: (stockItems: StockItem[]) => {
-        console.log(stockItems);
         if (stockItems.length) {
           this.stockItems = stockItems;
           this.prepareChartData();
