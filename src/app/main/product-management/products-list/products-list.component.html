@@ -11,6 +11,8 @@
       [infiniteScrollDistance]="1"
       [infiniteScrollUpDistance]="2"
       [infiniteScrollThrottle]="300"
+      [fromRoot]="true"
+      [infiniteScrollContainer]="'.main'"
       (scrolled)="onScroll();">
     <p *ngIf="!noProductsFound && !products.length">Nenhum produto encontrado 
       <span *ngIf="categoryFiltered"> para a categoria<b> {{ categoryFiltered }}</b></span>
@@ -28,6 +30,9 @@
             </button>
             <button mat-menu-item (click)="openUploadProductImage(product);">
               <span>Adicionar foto</span>
+            </button>
+            <button mat-menu-item (click)="openRemoveProductImage(product);" [disabled]="!product.productImages[0]?.picture">
+              <span>Remover foto</span>
             </button>
           </mat-menu>
           <mat-card-header>
