@@ -14,5 +14,9 @@ export class ProductImageService extends ApiService<ProductImage>{
   
   uploadImage(productImage: ProductImage): Observable<any> {
     return this.post(`${this.url}/images/${productImage['productId']}/upload`, productImage);
-   }
+  }
+
+  removeImage(productId: number): Observable<any> {
+    return this.delete(`${this.url}/images/${productId}`);
+  }
 }
