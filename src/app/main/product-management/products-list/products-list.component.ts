@@ -19,12 +19,13 @@ import { ScrollValues } from 'src/app/core/shared/constants/scroll-values';
 import { SearchService } from 'src/app/core/shared/service/search-service';
 import { StoreService } from 'src/app/core/service/store/store.service';
 import { Store } from 'src/app/core/models/store/store.model';
+import { ProductImageService } from 'src/app/core/service/product-image/product-image.service';
 
 @Component({
   selector: 'es-products-list',
   templateUrl: './products-list.component.html',
   styleUrls: ['./products-list.component.css'],
-  providers: [ProductService, StoreService]
+  providers: [ProductService, StoreService, ProductImageService]
 })
 export class ProductsListComponent implements OnInit, OnDestroy {
 
@@ -55,7 +56,8 @@ export class ProductsListComponent implements OnInit, OnDestroy {
     private utilsService: UtilsService,
     private securityUserService: SecurityUserService,
     private searchService: SearchService,
-    private storeService: StoreService) { }
+    private storeService: StoreService,
+    private productImageService: ProductImageService) { }
 
   async ngOnInit() {
     this.userId = this.securityUserService.userLoggedId;
@@ -222,6 +224,36 @@ export class ProductsListComponent implements OnInit, OnDestroy {
     }
 
     this.uploadImageDialogRef.afterClosed().subscribe(receivedUploadedImage);
+  }
+
+  openRemoveProductImage(product: Product) {
+    this.confirmDialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: { name: 'esta imagem do produto' },
+      disableClose: true,
+      autoFocus: false,
+      panelClass: 'es-small-dialog'
+    });
+
+    this.confirmDialogRef.afterClosed().subscribe((response) => response && this.removeProductImage(product));
+  }
+
+  async removeProductImage(product: Product) {
+    const removeProductImage = {
+      next: (response: any) => {
+        this.loadProducts();
+        this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_REMOVED, 'close');
+      },
+      error: (response) => {
+        const errorMessage = this.utilsService.handleErrorMessage(response);
+        this.snackBarService.openSnackBar(errorMessage);
+      }
+    };
+
+    await this.productImageService.removeImage(product['id'])
+      .pipe(tap(removeProductImage))
+      .toPromise()
+      .then(() => true)
+      .catch(() => false);
   }
 
   openPublishProduct(product: Product) {
