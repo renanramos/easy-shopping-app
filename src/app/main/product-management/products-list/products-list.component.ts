@@ -61,13 +61,13 @@ export class ProductsListComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.userId = this.securityUserService.userLoggedId;
-    await this.loadCompanyStores();
+    await this.loadStores();
     await this.loadProducts();
     await this.subscribeToMenuService();
     await this.subscribeToSearchService();
   }
 
-  async loadCompanyStores() {
+  async loadStores() {
     const storesReceived = {
       next: (stores: Store[]) => {
         this.stores = stores;
@@ -75,11 +75,18 @@ export class ProductsListComponent implements OnInit, OnDestroy {
       error: () => {}
     };
 
-    await this.storeService.getCompanyOwnStores(null, null, true)
-      .pipe(tap(storesReceived))
-      .toPromise()
-      .then(() => true)
-      .catch(() => false); 
+    
+    (this.securityUserService.isAdminUser) ?
+        await this.storeService.getStores(null, null, null, true)
+        .pipe(tap(storesReceived))
+        .toPromise()
+        .then(() => true)
+        .catch(() => false) :
+        await this.storeService.getCompanyOwnStores(null, null, true)
+        .pipe(tap(storesReceived))
+        .toPromise()
+        .then(() => true)
+        .catch(() => false);
   }
 
   getStoreName(id: number) {
