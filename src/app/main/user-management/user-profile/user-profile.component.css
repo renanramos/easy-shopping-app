@@ -70,6 +70,10 @@ mat-icon {
   font-size: .8rem;
 }
 
+.mat-card-title {
+  font-size: 1rem;
+}
+
 @media screen and (min-width: 280px) and (max-width: 570px) {
   .card-user-info,
   .card-user-cart {
@@ -79,25 +83,40 @@ mat-icon {
 }
 
 @media screen and (min-width: 480px) and (max-width: 768px) {
-  .card-user-info,
-  .card-user-cart {
+  .cards-container {
+    justify-content: unset;
+  }
+
+  .card-user-info {
     width: 100%;
-    margin: 1%;
   }
 }
 
 @media screen and (min-width: 480px) and (max-width: 768px) and (orientation: landscape) {
-  .card-user-info,
+  .cards-container {
+    justify-content: flex-start;
+  }
+
+  .card-user-info {
+    width: 30%;
+    margin: 1%;
+  }
+
   .card-user-cart {
-    width: 100%;
+    width: 50%;
     margin: 1%;
   }
 }
 
 @media screen and (min-width: 769px) and (max-width: 1366px) {
+
+  .cards-container {
+    justify-content: unset;
+  }
+
   .card-user-info,
   .card-user-cart {
-    width: 100%;
+    width: 42%;
     margin: 1%;
   }
 }

@@ -1,5 +1,5 @@
 <div class="cards-container">
-  <mat-card class="card-user-info mat-elevation-z2" [ngStyle]="{'width': (isCustomerUser ? '35%' : '95%')}">
+  <mat-card class="card-user-info mat-elevation-z2">
     <mat-card-title>
       {{ currentUserCompleteName }}
     </mat-card-title>
@@ -65,7 +65,7 @@
               <p>
                 <button mat-stroked-button matBadge="{{totalOrders}}" matBadgePosition="after" matBadgeSize="small" [disabled]="!isUserSynchronized">
                   <mat-icon>done_all</mat-icon> 
-                  Ver pedidos
+                  Visualizar
                 </button>
               </p>
             </mat-panel-title>
@@ -86,7 +86,7 @@
             <mat-panel-title>
              <button mat-stroked-button>
               <mat-icon>my_location</mat-icon>
-              Ver endereços
+              Visualizar
              </button> 
             </mat-panel-title>
             <mat-panel-description>
@@ -112,7 +112,7 @@
               <mat-panel-title>
                 <button mat-stroked-button>
                   <mat-icon>credit_card</mat-icon> 
-                  Ver cartões de crédito
+                  Visualizar
                 </button>
               </mat-panel-title>
               <mat-panel-description>
