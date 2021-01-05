@@ -148,7 +148,7 @@ export class ProductCategoryListComponent implements OnInit {
 
     const productCategoryRemoved = {
       next: () => {
-        this.loadProductCategories();
+        this.reloadListOfItens();
         this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_REMOVED, 'close');
       },
       error: (response) => {
@@ -164,6 +164,7 @@ export class ProductCategoryListComponent implements OnInit {
   }
 
   reloadListOfItens() {
+    this.productCategories = [];
     this.pageNumber = ScrollValues.DEFAULT_PAGE_NUMBER;
     this.loadProductCategories();
   }

@@ -4,7 +4,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { tap } from 'rxjs/operators';
 import { ProductCategory } from 'src/app/core/models/product-category/product-category.model';
 import { ProductCategoryService } from 'src/app/core/service/productCategory/product-category.service';
-import { SubcategoryService } from 'src/app/core/service/subcategory/subcategory.service';
 import { SnackbarService } from 'src/app/core/shared/service/snackbar.service';
 
 @Component({
