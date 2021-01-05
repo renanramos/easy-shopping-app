@@ -34,7 +34,7 @@
       <mat-form-field appearance="outline" class="input-full-width">
         <mat-label>Cartão de crédito</mat-label>
         <mat-select formControlName="creditCardId" id="creditCardId">
-          <mat-option *ngFor="let creditCard of creditCards" [value]="creditCard.id">
+          <mat-option *ngFor="let creditCard of creditCards" [value]="creditCard.id" mask="0000 0000 0000 0000">
             {{ creditCard.creditCardNumber }}
           </mat-option>
         </mat-select>
@@ -45,7 +45,7 @@
   </div>
 </div>
 <div mat-dialog-actions align="right">
-  <button mat-dialog-close mat-raised-button>Fechar</button>
+  <button mat-dialog-close mat-raised-button>FECHAR</button>
   <button mat-raised-button color="primary" (click)="openPurchaseForm();" *ngIf="!showForm" [disabled]="order.finished">Finalizar pedido</button>
-  <button mat-raised-button color="primary" (click)="closeOrder();" *ngIf="showForm">Comprar</button>
+  <button mat-raised-button color="primary" (click)="closeOrder();" *ngIf="showForm">COMPRAR</button>
 </div>
