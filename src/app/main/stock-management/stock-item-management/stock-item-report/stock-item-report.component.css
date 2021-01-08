@@ -84,10 +84,6 @@ mat-card {
     margin: 1% 15vw;
   }
 
-  .graphic-container {
-    height: auto;
-  }
-
   mat-card {
     width: calc(70% - 75px);
     margin: 15px 5px;
