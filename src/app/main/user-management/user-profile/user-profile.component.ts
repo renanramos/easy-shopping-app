@@ -20,6 +20,7 @@ import { Order } from 'src/app/core/models/order/order.model';
 import { OrderService } from 'src/app/core/service/order/order.service';
 import { MatSelectionListChange } from '@angular/material/list';
 import { AlertDialogComponent } from 'src/app/core/shared/components/alert-dialog/alert-dialog.component';
+import { SearchService } from 'src/app/core/shared/service/search-service';
 
 @Component({
   selector: 'es-user-profile',
@@ -62,10 +63,12 @@ export class UserProfileComponent implements OnInit, OnDestroy, OnChanges {
     private dialog: MatDialog,
     private snackBarService: SnackbarService,
     private securityUserService: SecurityUserService,
-    private shoppingCartService: ShoppingCartService) {
+    private shoppingCartService: ShoppingCartService,
+    private searchService: SearchService) {
     }
   
   async ngOnInit() {
+    this.searchService.hideSearchFieldOption(true);
     this.loadUserLoggedInfo();
     this.subscribeToShoppingCartUpdates();
     this.subscribeToUserUpdate();
@@ -84,6 +87,7 @@ export class UserProfileComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnDestroy(): void {
+    this.searchService.hideSearchFieldOption(false);
     this.updateShoppingCartSubscription
       && this.updateShoppingCartSubscription.unsubscribe();
     this.userUpdatedSubscription
