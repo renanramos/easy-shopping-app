@@ -127,9 +127,9 @@ export class StockItemReportComponent implements OnInit, OnDestroy {
       }
     };
     this.barChartData = [
-      {data: [], label: 'Atual'},
-      {data: [], label: 'Mínimo'},
-      {data: [], label: 'Máximo'}
+      {data: [], label: 'Mínimo', type: 'scatter', pointRadius: 5},
+      {data: [], label: 'Máximo', type: 'scatter', pointRadius: 5},
+      {data: [], label: 'Atual'}
     ];
   }
 
@@ -168,9 +168,9 @@ export class StockItemReportComponent implements OnInit, OnDestroy {
   prepareChartData() {
     this.stockItems.forEach(stockItem => {
       this.barChartLabels.push(stockItem['productName']);
-      this.barChartData[0].data.push(stockItem['currentAmount']);
-      this.barChartData[1].data.push(stockItem['minAmount']);
-      this.barChartData[2].data.push(stockItem['maxAmount']);
+      this.barChartData[0].data.push(stockItem['minAmount']);
+      this.barChartData[1].data.push(stockItem['maxAmount']);
+      this.barChartData[2].data.push(stockItem['currentAmount']);
     });
   }
 
