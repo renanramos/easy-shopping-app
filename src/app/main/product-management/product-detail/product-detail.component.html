@@ -31,6 +31,7 @@
     </mat-form-field>
     <mat-form-field class="input-full-width">
       <mat-label>Preço</mat-label>
+      <span matPrefix>R$ &nbsp;</span>
       <input matInput formControlName="price" id="price" mask="separator.2" thousandSeparator="." >
       <mat-error *ngIf="price.hasError('required')">Campo obrigatório</mat-error>
     </mat-form-field>
