@@ -22,7 +22,7 @@
   <mat-card class="card-user-cart mat-elevation-z2" *esHasPermission="['CUSTOMER']">
     <mat-card-title>Seu carrinho de compras</mat-card-title>
     <mat-card-content id="cart-content-list">
-      <mat-list *ngIf="products.length; else emptyShoppingCart" (selectionChange)="viewSelected($event)">
+      <mat-list *ngIf="products && products.length; else emptyShoppingCart" (selectionChange)="viewSelected($event)">
         <mat-list-item *ngFor="let product of products">
           <mat-icon mat-list-icon>arrow_right</mat-icon>
           <div mat-line>{{ product?.name }}</div>
