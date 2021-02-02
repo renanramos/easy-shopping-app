@@ -25,16 +25,15 @@ import { ProductImageService } from 'src/app/core/service/product-image/product-
   selector: 'es-products-list',
   templateUrl: './products-list.component.html',
   styleUrls: ['./products-list.component.css'],
-  providers: [ProductService, StoreService, ProductImageService]
+  providers: [ProductService, StoreService, ProductImageService, MatDialog],
 })
 export class ProductsListComponent implements OnInit, OnDestroy {
-
   products: Product[] = [];
   productsToExport: Product[] = [];
   stores: Store[] = [];
   csvHeaders: string[] = [];
   isListFiltererd: boolean = false;
-  categoryFiltered: String = "";
+  categoryFiltered: String = '';
   noProductsFound: boolean = false;
   menuSubscription: Subscription;
   searchServiceSubscription: Subscription;
@@ -57,7 +56,8 @@ export class ProductsListComponent implements OnInit, OnDestroy {
     private securityUserService: SecurityUserService,
     private searchService: SearchService,
     private storeService: StoreService,
-    private productImageService: ProductImageService) { }
+    private productImageService: ProductImageService
+  ) {}
 
   async ngOnInit() {
     this.userId = this.securityUserService.userLoggedId;
@@ -72,50 +72,56 @@ export class ProductsListComponent implements OnInit, OnDestroy {
       next: (stores: Store[]) => {
         this.stores = stores;
       },
-      error: () => {}
+      error: () => {},
     };
 
-    
-    (this.securityUserService.isAdminUser) ?
-        await this.storeService.getStores(null, null, null, true)
-        .pipe(tap(storesReceived))
-        .toPromise()
-        .then(() => true)
-        .catch(() => false) :
-        await this.storeService.getCompanyOwnStores(null, null, true)
-        .pipe(tap(storesReceived))
-        .toPromise()
-        .then(() => true)
-        .catch(() => false);
+    this.securityUserService.isAdminUser
+      ? await this.storeService
+          .getStores(null, null, null, true)
+          .pipe(tap(storesReceived))
+          .toPromise()
+          .then(() => true)
+          .catch(() => false)
+      : await this.storeService
+          .getCompanyOwnStores(null, null, true)
+          .pipe(tap(storesReceived))
+          .toPromise()
+          .then(() => true)
+          .catch(() => false);
   }
 
   getStoreName(id: number) {
-    return this.stores && this.stores.find(store => store['id'] === id)['name'];
+    return (
+      this.stores && this.stores.find((store) => store['id'] === id)['name']
+    );
   }
 
   async subscribeToSearchService() {
     this.searchService.hideSearchFieldOption(false);
-    this.searchServiceSubscription = await this.searchService.searchSubject$.subscribe(value => {
-      this.pageNumber = ScrollValues.DEFAULT_PAGE_NUMBER;
-      this.filterName = value;
-      this.products = [];
-      this.loadProducts();
-    })
+    this.searchServiceSubscription = await this.searchService.searchSubject$.subscribe(
+      (value) => {
+        this.pageNumber = ScrollValues.DEFAULT_PAGE_NUMBER;
+        this.filterName = value;
+        this.products = [];
+        this.loadProducts();
+      }
+    );
   }
 
   async subscribeToMenuService() {
-    this.menuSubscription = await this.menuService.currentSubcategoryId.subscribe(subcategory => {
-      if (subcategory.id) {
-        this.isListFiltererd = true;
-        this.categoryFiltered = subcategory.name;
-        this.loadProducts(subcategory);
+    this.menuSubscription = await this.menuService.currentSubcategoryId.subscribe(
+      (subcategory) => {
+        if (subcategory.id) {
+          this.isListFiltererd = true;
+          this.categoryFiltered = subcategory.name;
+          this.loadProducts(subcategory);
+        }
       }
-    });
+    );
   }
 
   ngOnDestroy() {
-    this.menuSubscription &&
-      this.menuSubscription.unsubscribe();
+    this.menuSubscription && this.menuSubscription.unsubscribe();
   }
 
   async loadProducts(subcategory?: Subcategory) {
@@ -132,19 +138,26 @@ export class ProductsListComponent implements OnInit, OnDestroy {
       error: (error) => {
         this.noProductsFound = true;
         this.isLoadingMore = false;
-      }
-    }
+      },
+    };
 
-    await this.productService.getProducts(subcategory?.id, null, null, this.pageNumber, this.filterName)
-    .pipe(tap(receivedProducts))
-    .toPromise()
-    .then()
-    .catch();
+    await this.productService
+      .getProducts(
+        subcategory?.id,
+        null,
+        null,
+        this.pageNumber,
+        this.filterName
+      )
+      .pipe(tap(receivedProducts))
+      .toPromise()
+      .then()
+      .catch();
   }
 
   async removeFilter() {
     this.isListFiltererd = false;
-    this.categoryFiltered = "";
+    this.categoryFiltered = '';
     await this.loadProducts();
   }
 
@@ -153,17 +166,20 @@ export class ProductsListComponent implements OnInit, OnDestroy {
       data: new Product(),
       disableClose: true,
       autoFocus: false,
-      panelClass: 'es-dialog'
+      panelClass: 'es-dialog',
     });
 
     const afterDialogClose = {
       next: (response) => {
         if (response) {
-          this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_CREATED, 'close');
+          this.snackBarService.openSnackBar(
+            ConstantMessages.SUCCESSFULLY_CREATED,
+            'close'
+          );
           this.loadProducts();
         }
-      }
-    }
+      },
+    };
 
     this.dialogRef.afterClosed().subscribe(afterDialogClose);
   }
@@ -173,11 +189,14 @@ export class ProductsListComponent implements OnInit, OnDestroy {
       data: { product: product },
       disableClose: true,
       autoFocus: false,
-      panelClass: 'es-dialog'
+      panelClass: 'es-dialog',
     });
 
     this.dialogRef.afterClosed().subscribe((response) => {
-      response && this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_UPDATED);
+      response &&
+        this.snackBarService.openSnackBar(
+          ConstantMessages.SUCCESSFULLY_UPDATED
+        );
       this.loadProducts();
     });
   }
@@ -187,22 +206,27 @@ export class ProductsListComponent implements OnInit, OnDestroy {
       data: { name: product['name'] },
       disableClose: true,
       autoFocus: false,
-      panelClass: 'es-small-dialog'
+      panelClass: 'es-small-dialog',
     });
 
-    this.confirmDialogRef.afterClosed().subscribe((response) => response && this.removeProduct(product));
+    this.confirmDialogRef
+      .afterClosed()
+      .subscribe((response) => response && this.removeProduct(product));
   }
 
   async removeProduct(product: Product) {
-
     const receivedRemoveResponse = {
       next: (response) => {
         this.loadProducts();
-        this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_REMOVED, 'close');
-      }
+        this.snackBarService.openSnackBar(
+          ConstantMessages.SUCCESSFULLY_REMOVED,
+          'close'
+        );
+      },
     };
 
-    await this.productService.removeProduct(product.id)
+    await this.productService
+      .removeProduct(product.id)
       .pipe(tap(receivedRemoveResponse))
       .toPromise()
       .then(() => true)
@@ -214,21 +238,23 @@ export class ProductsListComponent implements OnInit, OnDestroy {
       data: { product: product },
       disableClose: true,
       autoFocus: false,
-      panelClass: 'es-dialog'
+      panelClass: 'es-dialog',
     });
 
     const receivedUploadedImage = {
       next: (isUploaded: boolean) => {
         if (isUploaded) {
-          this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_CREATED);
+          this.snackBarService.openSnackBar(
+            ConstantMessages.SUCCESSFULLY_CREATED
+          );
           this.loadProducts();
         }
       },
       error: (response) => {
         const errorMessage = this.utilsService.handleErrorMessage(response);
         this.snackBarService.openSnackBar(errorMessage, 'close');
-      }
-    }
+      },
+    };
 
     this.uploadImageDialogRef.afterClosed().subscribe(receivedUploadedImage);
   }
@@ -238,25 +264,31 @@ export class ProductsListComponent implements OnInit, OnDestroy {
       data: { name: 'esta imagem do produto' },
       disableClose: true,
       autoFocus: false,
-      panelClass: 'es-small-dialog'
+      panelClass: 'es-small-dialog',
     });
 
-    this.confirmDialogRef.afterClosed().subscribe((response) => response && this.removeProductImage(product));
+    this.confirmDialogRef
+      .afterClosed()
+      .subscribe((response) => response && this.removeProductImage(product));
   }
 
   async removeProductImage(product: Product) {
     const removeProductImage = {
       next: (response: any) => {
         this.loadProducts();
-        this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_REMOVED, 'close');
+        this.snackBarService.openSnackBar(
+          ConstantMessages.SUCCESSFULLY_REMOVED,
+          'close'
+        );
       },
       error: (response) => {
         const errorMessage = this.utilsService.handleErrorMessage(response);
         this.snackBarService.openSnackBar(errorMessage);
-      }
+      },
     };
 
-    await this.productImageService.removeImage(product['id'])
+    await this.productImageService
+      .removeImage(product['id'])
       .pipe(tap(removeProductImage))
       .toPromise()
       .then(() => true)
@@ -264,25 +296,30 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   }
 
   openPublishProduct(product: Product) {
-    this.publishProductDialogRef = this.dialog.open(PublishProductComponentComponent, {
-      data: { product: product },
-      disableClose: true,
-      autoFocus: false,
-      panelClass: 'es-small-dialog'
-    });
+    this.publishProductDialogRef = this.dialog.open(
+      PublishProductComponentComponent,
+      {
+        data: { product: product },
+        disableClose: true,
+        autoFocus: false,
+        panelClass: 'es-small-dialog',
+      }
+    );
 
     const productPublished = {
       next: (product: Product) => {
         if (product) {
           this.loadProducts();
-          this.snackBarService.openSnackBar(ConstantMessages.PRODUCT_PUBLISHED_SUCCESSFULLY);
+          this.snackBarService.openSnackBar(
+            ConstantMessages.PRODUCT_PUBLISHED_SUCCESSFULLY
+          );
         }
       },
       error: (response) => {
         const errorMessage = this.utilsService.handleErrorMessage(response);
         this.snackBarService.openSnackBar(errorMessage);
-      }
-    }
+      },
+    };
 
     this.publishProductDialogRef.afterClosed().subscribe(productPublished);
   }
@@ -304,10 +341,11 @@ export class ProductsListComponent implements OnInit, OnDestroy {
       error: (response) => {
         const errorMessage = this.utilsService.handleErrorMessage(response);
         this.snackBarService.openSnackBar(errorMessage);
-      }
+      },
     };
-  
-    await this.productService.getProducts(null, null, null, null, null)
+
+    await this.productService
+      .getProducts(null, null, null, null, null)
       .pipe(tap(productsReceived))
       .toPromise()
       .then(() => true)
@@ -316,14 +354,20 @@ export class ProductsListComponent implements OnInit, OnDestroy {
 
   prepareProductsToExport(products: Product[]) {
     let prodToExport: Product[] = [];
-    this.csvHeaders = ['Id do produto', 'Nome do produto', 'Descrição', 'Preço', 'Categoria'];
+    this.csvHeaders = [
+      'Id do produto',
+      'Nome do produto',
+      'Descrição',
+      'Preço',
+      'Categoria',
+    ];
     products.forEach((product: Product) => {
       const prod: Product = {
         id: product['id'],
         name: product['name'],
         description: product['description'],
         price: product['price'],
-        productCategoryName: product['subcategoryName']
+        productCategoryName: product['subcategoryName'],
       };
       prodToExport.push(prod);
     });

@@ -19,10 +19,14 @@ import { ProductCategoryDetailComponent } from '../product-category-detail/produ
   selector: 'es-product-category-list',
   templateUrl: './product-category-list.component.html',
   styleUrls: ['./product-category-list.component.css'],
-  providers: [ProductCategoryService, SecurityUserService, UtilsService]
+  providers: [
+    ProductCategoryService,
+    SecurityUserService,
+    UtilsService,
+    MatDialog,
+  ],
 })
 export class ProductCategoryListComponent implements OnInit {
-
   pageNumber: number = ScrollValues.DEFAULT_PAGE_NUMBER;
   dataNotFound: boolean = false;
   productCategories: ProductCategory[] = [];
@@ -40,7 +44,8 @@ export class ProductCategoryListComponent implements OnInit {
     private dialog: MatDialog,
     private snackBarService: SnackbarService,
     private productCategoryService: ProductCategoryService,
-    private utilsService: UtilsService) { }
+    private utilsService: UtilsService
+  ) {}
 
   async ngOnInit() {
     await this.loadProductCategories();
@@ -48,14 +53,15 @@ export class ProductCategoryListComponent implements OnInit {
   }
 
   subscribeToSearchService() {
-     this.searchService.hideSearchFieldOption(false);
-    this.searchSubscription = this.searchService.searchSubject$
-    .subscribe((value) => {
-      this.pageNumber = ScrollValues.DEFAULT_PAGE_NUMBER;
-      this.filterParameter = value;
-      this.productCategories = [];
-      this.loadProductCategories();
-    });
+    this.searchService.hideSearchFieldOption(false);
+    this.searchSubscription = this.searchService.searchSubject$.subscribe(
+      (value) => {
+        this.pageNumber = ScrollValues.DEFAULT_PAGE_NUMBER;
+        this.filterParameter = value;
+        this.productCategories = [];
+        this.loadProductCategories();
+      }
+    );
   }
 
   async loadProductCategories() {
@@ -64,16 +70,20 @@ export class ProductCategoryListComponent implements OnInit {
     const productCategoriesReceived = {
       next: (productCategories: ProductCategory[]) => {
         if (productCategories.length) {
-          this.productCategories = [...this.productCategories, ...productCategories];
+          this.productCategories = [
+            ...this.productCategories,
+            ...productCategories,
+          ];
           this.dataNotFound = false;
         }
       },
       error: (response) => {
         this.snackBarService.openSnackBar(response.error.message, 'close');
-      }
+      },
     };
 
-    await this.productCategoryService.getProductCategories(this.pageNumber, this.filterParameter, false)
+    await this.productCategoryService
+      .getProductCategories(this.pageNumber, this.filterParameter, false)
       .pipe(tap(productCategoriesReceived))
       .toPromise()
       .then(() => true)
@@ -90,16 +100,19 @@ export class ProductCategoryListComponent implements OnInit {
       data: { productCategory: productCategory },
       autoFocus: false,
       disableClose: true,
-      panelClass: 'es-small-dialog'
+      panelClass: 'es-small-dialog',
     });
 
     const afterDialogClosed = {
       next: (productCategoryReceived) => {
         if (productCategoryReceived) {
           this.reloadListOfItens();
-          this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_UPDATED, 'close');
+          this.snackBarService.openSnackBar(
+            ConstantMessages.SUCCESSFULLY_UPDATED,
+            'close'
+          );
         }
-      }
+      },
     };
 
     this.dialogRef.afterClosed().subscribe(afterDialogClosed);
@@ -110,7 +123,7 @@ export class ProductCategoryListComponent implements OnInit {
       data: { name: productCategory['name'] },
       disableClose: true,
       autoFocus: false,
-      panelClass: 'es-small-dialog'
+      panelClass: 'es-small-dialog',
     });
 
     const afterDialogClosed = {
@@ -118,45 +131,51 @@ export class ProductCategoryListComponent implements OnInit {
         if (response) {
           this.removeProductCategory(productCategory['id']);
         }
-      }
-    }
+      },
+    };
 
     this.dialogRefConfirm.afterClosed().subscribe(afterDialogClosed);
   }
 
   onAddNewProductCategory() {
     this.dialogRef = this.dialog.open(ProductCategoryDetailComponent, {
-      data: { productCategory: new ProductCategory()},
+      data: { productCategory: new ProductCategory() },
       autoFocus: false,
       disableClose: true,
-      panelClass: 'es-small-dialog'
+      panelClass: 'es-small-dialog',
     });
 
     const afterDialogClosed = {
       next: (productCategoryReceived) => {
         if (productCategoryReceived) {
           this.reloadListOfItens();
-          this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_CREATED, 'close');
+          this.snackBarService.openSnackBar(
+            ConstantMessages.SUCCESSFULLY_CREATED,
+            'close'
+          );
         }
-      }
+      },
     };
 
     this.dialogRef.afterClosed().subscribe(afterDialogClosed);
   }
 
   async removeProductCategory(productCategoryId: number) {
-
     const productCategoryRemoved = {
       next: () => {
         this.reloadListOfItens();
-        this.snackBarService.openSnackBar(ConstantMessages.SUCCESSFULLY_REMOVED, 'close');
+        this.snackBarService.openSnackBar(
+          ConstantMessages.SUCCESSFULLY_REMOVED,
+          'close'
+        );
       },
       error: (response) => {
         this.snackBarService.openSnackBar(response.error.message, 'close');
-      }
-    }
+      },
+    };
 
-    await this.productCategoryService.removeProductCategory(productCategoryId)
+    await this.productCategoryService
+      .removeProductCategory(productCategoryId)
       .pipe(tap(productCategoryRemoved))
       .toPromise()
       .then(() => true)
@@ -171,20 +190,21 @@ export class ProductCategoryListComponent implements OnInit {
 
   async loadAllProductCategories() {
     const productCategoriesReceived = {
-      next:(productCategories: ProductCategory[]) => {
+      next: (productCategories: ProductCategory[]) => {
         if (productCategories.length) {
           this.productCategoriesToExport = productCategories;
         } else {
           this.snackBarService.openSnackBar(ConstantMessages.NO_DATA_FOUND);
-        }       
+        }
       },
       error: (response) => {
         const errorMessage = this.utilsService.handleErrorMessage(response);
         this.snackBarService.openSnackBar(errorMessage);
-      }
+      },
     };
 
-    await this.productCategoryService.getProductCategories(null, null, true)
+    await this.productCategoryService
+      .getProductCategories(null, null, true)
       .pipe(tap(productCategoriesReceived))
       .toPromise()
       .then(() => true)

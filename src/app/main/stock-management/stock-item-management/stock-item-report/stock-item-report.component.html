@@ -28,11 +28,6 @@
   <mat-card >
     <mat-card-title>
       {{ isBarChart ? 'Nível de estoque por item' : 'Nível de estoque totalizado'}}
-      <div class="btn-change-chart">
-        <button mat-mini-fab (click)="changeGraphicFormat();">
-          <mat-icon>{{ isBarChart ? 'pie_chart' : 'equalizer' }}</mat-icon>
-        </button>
-      </div>
     </mat-card-title>
     <mat-card-content *ngIf="!isBarChart">
       <canvas 

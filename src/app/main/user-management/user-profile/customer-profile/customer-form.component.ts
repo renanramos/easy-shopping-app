@@ -48,9 +48,9 @@ export class CustomerFormComponent implements OnInit {
   }
 
   async handleCustomerOperation() {
-    this.customer['cpf'] ?
-    await this.updateCustomer() :
-    await this.saveCustomer();
+    this.customer && this.customer['cpf'] && this.currentCustomerId
+      ? await this.updateCustomer()
+      : await this.saveCustomer();
   }
 
   async saveCustomer() {
