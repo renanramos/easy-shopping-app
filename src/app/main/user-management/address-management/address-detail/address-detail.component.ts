@@ -10,6 +10,7 @@ import { ConstantMessages } from 'src/app/core/shared/constants/constant-message
 import { UF } from 'src/app/core/models/ibge/uf.model';
 import { Cidade } from 'src/app/core/models/ibge/cidade.model';
 import { IBGESerice } from 'src/app/core/service/ibge/ibge.service';
+import { IbgeConstants } from 'src/app/core/shared/constants/ibge-constants';
 
 @Component({
   selector: 'es-address-detail',
@@ -54,8 +55,7 @@ export class AddressDetailComponent implements OnInit {
         }
       },
       error: (response) => {
-        const errorMessage = this.utilsService.handleErrorMessage(response);
-        this.snackBarService.openSnackBar(errorMessage);
+        this.snackBarService.openSnackBar(ConstantMessages.SERVER_UNAVAILABLE);
       }
     };
 
