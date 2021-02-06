@@ -1,0 +1,6 @@
+[0114/091431.947:ERROR:filesystem_win.cc(129)] GetFileAttributes C:\Users\RENAN~1.RAM\AppData\Local\Temp\karma-66888998\Crashpad\attachments\a18c764a-21d9-451b-a819-b8a0bfc8a26e: The system cannot find the path specified. (0x3)
+[0114/091432.011:ERROR:process_reader_win.cc(151)] SuspendThread: Access is denied. (0x5)
+[0114/091432.011:ERROR:process_reader_win.cc(151)] SuspendThread: Access is denied. (0x5)
+[0114/091432.012:ERROR:process_reader_win.cc(151)] SuspendThread: Access is denied. (0x5)
+[0126/073519.560:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[0127/073949.442:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)

@@ -11,8 +11,8 @@ const authConfig: AuthConfig = {
   scope: 'profile email roles',
   responseType: 'code',
   disableAtHashCheck: true,
-  showDebugInformation: false
-}
+  showDebugInformation: false,
+};
 
 export const environment = {
   production: false,
