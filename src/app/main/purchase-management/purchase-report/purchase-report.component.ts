@@ -207,6 +207,7 @@ export class PurchaseReportComponent implements OnInit {
 
   async onSelectMonth() {
     this.product.setValue(null);
+    this.customer.setValue('');
     await this.resetChartPropertiesFields();
     await this.loadStatistics();
     const monthSelectedIndex = await this.monthNames.findIndex(month => month === this.month.value);
@@ -240,6 +241,7 @@ export class PurchaseReportComponent implements OnInit {
 
   async onSelectProduct() {
     this.month.setValue('');
+    this.customer.setValue('');
     const productId = this.product.value;
     await this.resetChartPropertiesFields();
     await this.loadStatistics();
